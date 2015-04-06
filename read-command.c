@@ -13,9 +13,10 @@
 
 /*
 
-char read_char ()
+char read_char (int (*get_next_byte) (void *),
+		     void *get_next_byte_argument)
 {
-	
+	return (char) (*get_next_byte)(get_next_byte_argument);
 }
 
 bool is_valid(char c) 
@@ -57,8 +58,51 @@ make_command_stream (int (*get_next_byte) (void *),
   /* FIXME: Replace this with your implementation.  You may need to
      add auxiliary functions and otherwise modify the source code.
      You can also use external functions defined in the GNU C Library.  */
-  error (1, 0, "command reading not yet implemented");
-  return 0;
+  //error (1, 0, "command reading not yet implemented");
+  //return 0;
+  
+  char curr; //current character
+  char prev = ' '; //previous character
+  command_stream_t root = NULL;
+  command_stream_t current = NULL; //this is used to point to the current command_t
+  //buffer
+  
+  curr = read_char (get_next_byte, get_next_byte_argument);
+  
+  while(c != EOF)
+  {
+  	if(is_word(c))
+  	{
+  		
+  	}
+  	else if( c== ';')
+  	{
+  		
+  	}
+  	else if( c== ';')
+  	{
+  		
+  	}
+  	else if( c== ';')
+  	{
+  		
+  	}
+  	else if( c== ';')
+  	{
+  		
+  	}
+  	else if( c== ';')
+  	{
+  		
+  	}
+  	else if( c== ';')
+  	{
+  		
+  	}
+  	
+  }
+  
+  
 }
 
 command_t
