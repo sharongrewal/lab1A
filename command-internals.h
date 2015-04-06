@@ -37,7 +37,7 @@ struct command
 
 struct command_stream
 {
-  command current_root_command;
+  command_t current_root_command;
   struct command_stream *next_command_stream;
 };
 }
