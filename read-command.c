@@ -71,35 +71,47 @@ make_command_stream (int (*get_next_byte) (void *),
   
   while(c != EOF)
   {
-  	if(is_word(c))
+  	if(is_word(curr))
   	{
   		
   	}
-  	else if( c== ';')
+  	else if( curr== ';')
   	{
   		
   	}
-  	else if( c== ';')
+  	else if( curr== '|')
+  	{
+  		if( )	
+  	}
+  	else if( curr== '&')
   	{
   		
   	}
-  	else if( c== ';')
+  	else if( curr== '(' || curr ==')')
   	{
   		
   	}
-  	else if( c== ';')
+  	else if( curr == '>' || curr == '<')
   	{
   		
   	}
-  	else if( c== ';')
+  	else if( curr== '\n')
   	{
   		
   	}
-  	else if( c== ';')
+  	else if ( curr== '#')
   	{
   		
+  	}
+  	else if (curr != ' ')
+  	{
+  		//anything invalid.
   	}
   	
+  	prev = curr;
+  	
+  	curr = read_char (get_next_byte, get_next_byte_argument);
+  	// handle about comments after #, need to skip everything
   }
   
   
@@ -108,7 +120,11 @@ make_command_stream (int (*get_next_byte) (void *),
 command_t
 read_command_stream (command_stream_t s)
 {
-  /* FIXME: Replace this with your implementation too.  */
-  error (1, 0, "command reading not yet implemented");
-  return 0;
+  	command_t output = s -> current_command;
+	if (s -> next_command_stream == NULL)
+		memset(s,0,sizeof(struct command_stream));
+	else
+		memcpy(s,s->next_command_stream,sizeof(struct command_stream));
+		//memset(s->next_command_stream,0,sizeof(struct command_stream));
+	return output;
 }
