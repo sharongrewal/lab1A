@@ -97,11 +97,13 @@ make_command_stream (int (*get_next_byte) (void *),
   	}
   	else if( curr== '\n')
   	{
-  		
+  	//one newline is treated as a ';'
+  	//newline can not appear after '<' or '>'
+  	//newline can ONLY appear before '(' or ')'
   	}
   	else if ( curr== '#')
   	{
-  		
+  		//up to but not including the newline
   	}
   	else if (curr != ' ')
   	{
