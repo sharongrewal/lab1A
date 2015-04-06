@@ -34,3 +34,10 @@ struct command
     struct command *subshell_command;
   } u;
 };
+
+struct command_stream
+{
+  command current_root_command;
+  struct command_stream *next_command_stream;
+};
+}
