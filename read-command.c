@@ -71,7 +71,7 @@ make_command_stream (int (*get_next_byte) (void *),
   
   while(c != EOF)
   {
-  	if(is_word(curr))
+  	if(is_valid(curr))
   	{
   		
   	}
