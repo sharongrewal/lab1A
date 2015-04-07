@@ -69,7 +69,7 @@ make_command_stream (int (*get_next_byte) (void *),
   
   curr = read_char (get_next_byte, get_next_byte_argument);
   
-  while(c != EOF)
+  while(curr != EOF)
   {
   	if(is_valid(curr))
   	{
