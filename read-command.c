@@ -56,7 +56,7 @@ command_t make_complete_command (char* curr, command_t stack)
 	return new_command;
 }
 
-command_t combine_complete_command (commant_t stack, command_t curr_command)
+command_t combine_complete_command (command_t stack, command_t curr_command)
 { 
 	stack -> u.command[1] = curr_command;	
 	return stack;
