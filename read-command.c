@@ -11,7 +11,6 @@
 /* FIXME: Define the type 'struct command_stream' here.  This should
    complete the incomplete type declaration in command.h.  */
 
-/*
 
 char read_char (int (*get_next_byte) (void *),
 		     void *get_next_byte_argument)
@@ -34,9 +33,11 @@ command_t make_simple_command ()
 	
 }
 
-command_t make_complete_command ()
+command_t make_complete_command (char* curr, command_stream current_command)
 {	// for complete commands including subshell commands
-	// type, 		
+	// type, 	
+	
+	command_t new_command = 
 }
 
 
@@ -49,7 +50,7 @@ int  compare_operator ()
 	
 	return (current_opr - stack_opr);
 }
-*/
+
 
 command_stream_t
 make_command_stream (int (*get_next_byte) (void *),
