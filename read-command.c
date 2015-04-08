@@ -66,14 +66,14 @@ command_t combine_complete_command (commant_t stack, command_t curr_command)
 //stack of commands, stack_size starting from 0 to array size-1
 //pushing stack 
 // when calling push, stack_size should ++
-void push (command_t curr_command, commnad_t* stack, int stack_size)
+void push (command_t curr_command, command_t* stack, int stack_size)
 {
 	stack[stack_size] = curr_command;
 }
 
 //popping stack
 //after calling pop, stack_size should --
-void pop (commnad_t* stack, int stack_size)
+void pop (command_t* stack, int stack_size)
 {
 	stack[stack_size-1] = NULL; //should it be stack_num-1?
 }
