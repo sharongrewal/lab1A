@@ -41,7 +41,19 @@ command_t make_complete_command (char* curr, command_stream current_command)
 }
 
 
-//stack for operators 
+//stack for operators and commands
+
+//pushing stack 
+void push (command_t current_command, commnad_t* stack, int stack_num)
+{
+	stack[stack_num] = current command;
+}
+
+//popping stack
+void pop (commnad_t* stack, int stack_num)
+{
+	stack[stack_num] = NULL; //should it be stack_num-1?
+}
 
 int  compare_operator ()
 {
