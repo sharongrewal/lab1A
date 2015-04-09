@@ -48,9 +48,11 @@ command_t make_complete_command (char* curr, command_t stack)
 				break;
 			case '&':
 				new_command -> type = AND_COMMAND;
+				new_command -> u.command[0] = stack;
 				break;
 			case '|':
 				new_command -> type = PIPE_COMMAND;
+				new_command -> u.command[0] = stack;
 				break;
 			case '(':
 				new_comman d-> type = SUBSHELL_COMMAND;
@@ -60,7 +62,17 @@ command_t make_complete_command (char* curr, command_t stack)
 
 command_t combine_complete_command (command_t stack, command_t curr_command)
 { 
-	stack -> u.command[1] = curr_command;	
+	switch (stack->type)
+		{
+			case SEQUENCE_COMMAND:
+			case AND_COMMAND:
+			case PIPE_COMMAND:
+				stack -> u.command[1] = curr_command;	
+				break;
+			case SUBSHELL_COMMAND:
+				stack -> subshell_command = curr_command;
+		}
+		
 	return stack;
 }
 
