@@ -44,6 +44,7 @@ command_t make_complete_command (char* curr, command_t stack)
 		{
 			case ';':
 				new_command -> type = SEQUENCE_COMMAND;
+				new_command -> u.command[0] = stack;
 				break;
 			case '&':
 				new_command -> type = AND_COMMAND;
@@ -51,8 +52,9 @@ command_t make_complete_command (char* curr, command_t stack)
 			case '|':
 				new_command -> type = PIPE_COMMAND;
 				break;
+			case '(':
+				new_comman d-> type = SUBSHELL_COMMAND;
 		}
-	new_command -> u.command[0] = stack;
 	return new_command;
 }
 
