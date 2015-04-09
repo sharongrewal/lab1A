@@ -242,7 +242,7 @@ make_command_stream (int (*get_next_byte) (void *),
 	  		if(prev == '\n' && stack_size ==0)
 	  		{
 	  			//new command
-	  			numLine ++;
+	  			lineNumber ++;
 	  			command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
 	  			current_stream ->command = current_command;
 	  			current_stream ->next_stream = new_stream;
