@@ -1,4 +1,4 @@
-/ UCLA CS 111 Lab 1 command reading
+// UCLA CS 111 Lab 1 command reading
 
 #include "command.h"
 #include "command-internals.h"
@@ -477,6 +477,11 @@ make_command_stream (int (*get_next_byte) (void *),
     fprintf(stderr, "Number of '(' and ')' are different");
     exit(1);
   }
+
+  //when curr == 'EOF'
+  current_stream->command = current_command;
+
+  //if you free it how do you return it????
   free(current_stream);
   free(current_command);
   free(command_stack);
