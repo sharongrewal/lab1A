@@ -43,6 +43,7 @@ command_t make_simple_command (char** word_buffer, command_t current_command,
   }
 
   current_command -> word = word_buffer;
+  // probably need to use strcpy? or some other assignment method for char **
     
 }
 
@@ -109,7 +110,7 @@ void pop (command_t* stack, int stack_size)
 
 //need detailed implementation
 //need one for END? and NONE?
-int  compare_operator (command_type current_type, command_type stack )
+int  compare_operator (enum command_type current_type, enum command_type stack )
 {
   int current_opr;
   int stack_opr;
@@ -168,7 +169,7 @@ make_command_stream (int (*get_next_byte) (void *),
 
   current_stream = root; 
   //command_stream_t current = NULL; //used to point to the current command_t
-  //buffer
+  
 
 //check if the enum is needed
   enum command_type current_type = NULL; //what is command_type? has it been declared?
@@ -194,18 +195,24 @@ make_command_stream (int (*get_next_byte) (void *),
     {
       if(prev_prev =='\n' && prev =='\n')
       {
-        //new command
+        //new command stream (new line)
           command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
           current_stream->command = current_command;
           current_stream->next_stream = new_stream;
       }
-      if ((prev =='&' && is_valid (prev_prev) )
+      if (prev =='&' && is_valid (prev_prev) )
       {
          fprintf(stderr, "%d: invalid operator. Must have two '&'.", lineNumber);
         exit(1); 
       }
       if (is_valid(prev_prev) && prev =='\n')
       {
+         // A \n B == A ; B
+         
+        command_t new_simple_command = (command_t)malloc(sizeof(struct comamnd));
+        current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output);
+        has_input = false;
+        has_output = false;
         current_command = make_complete_command(';', current_command);
         push(current_command, command_stack, stack_size);
         stack_size ++;
@@ -235,10 +242,11 @@ make_command_stream (int (*get_next_byte) (void *),
           //
         }
         strcpy(output, word);
-        erase word; // 
+        erase word // 
       }
       else
       {
+         //copy word to word_buffer and erase word
         char* oneword = (char*) malloc (sizeof(char)*word_length); //word length of that copied word...???
         strcpy(oneword,word);
         word_buffer[word_num] = oneword;
@@ -324,14 +332,15 @@ make_command_stream (int (*get_next_byte) (void *),
       }
       else
       {
-        // make simple command
+        // make simple command when you reached  '&&' '|' '||' ')'
         // add everything in word buffer into simple command
         //if there's input and output assign them too.
 
         command_t new_simple_command = (command_t)malloc(sizeof(struct comamnd));
-        current_command = make_simple_command(curr, new_simple_command, has_input,has_output, input, output);
+        current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output);
         has_input = false;
         has_output = false;
+        // shoudl reset input, output to NULL here or indside make_simple_command
       }
       if(stack_size > 0)
       {
@@ -452,17 +461,20 @@ make_command_stream (int (*get_next_byte) (void *),
     {
       comments = true;
       //ignore up to but not including newline
+      // use you're way to deal with comments.. can't remember how you did that
     }
     else if(curr != ' ')
     {
-      //anything invalid
-      //error message must start with lineNumber and ':'
+      //anything invalid 
+      //it's here just in case.. something is missing
       fprintf(stderr, "%d: Invalid Syntax", lineNumber);
       exit(1);
     }
 
     if( curr != ' ')
     {
+       // only store the char that is not a ' ' 
+       // white space.. ' ' '\n' and tab? how are we dealing with tab?
       prev_prev = prev;
       prev = curr;
     }
@@ -474,6 +486,7 @@ make_command_stream (int (*get_next_byte) (void *),
 
   if(subshell_level != 0)
   {
+     // if number of '(' and ')' are different.. at the end
     fprintf(stderr, "Number of '(' and ')' are different");
     exit(1);
   }
@@ -482,12 +495,14 @@ make_command_stream (int (*get_next_byte) (void *),
   current_stream->command = current_command;
 
   //if you free it how do you return it????
+  //are we really need to free it? 
+  // shouldn't some of them freed after read_command_stream read it?
   free(current_stream);
   free(current_command);
   free(command_stack);
   free(new_stream);
 
-  //free other malloc.
+  //free other malloc if necessary
 
   return root;
 
