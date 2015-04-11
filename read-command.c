@@ -287,6 +287,6 @@ command_t read_command_stream (command_stream_t s)
 		//memset(s->next_command_stream,0,sizeof(struct command_stream));
 	}
 	printf ("inside read_command_Stream");
-	free(s);
+	
 	return output;
 }
