@@ -189,7 +189,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 		if(is_valid (curr))
 		{
-
+			fprintf(stderr, "%d: Something in the file", lineNumber);
+        		exit(1);
 		}
 		else if( curr ==' ' && is_valid (prev))
 		{
