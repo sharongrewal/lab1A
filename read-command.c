@@ -404,7 +404,7 @@ make_command_stream (int (*get_next_byte) (void *),
 
         if( curr ==')')
         {
-          current_command = combine_complete_command(curr, command_stack[stack_size-1]);
+          current_command = combine_complete_command(current_command, command_stack[stack_size-1]);
           push(current_command, command_stack, stack_size-1);
           subshell_level --;
           was_subshell =true;
