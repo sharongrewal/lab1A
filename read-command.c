@@ -1,14 +1,15 @@
-
+// UCLA CS 111 LAB1a read-command.c
 #include "command.h"
 #include "command-internals.h"
 
 #include <error.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdio.h>
 
-/* FIXME: You may need to add #include directives, macro definitions,
-   static function definitions, etc.  */
 
-/* FIXME: Define the type 'struct command_stream' here.  This should
-   complete the incomplete type declaration in command.h.  */
+
 char read_char (int (*get_next_byte) (void *),
          void *get_next_byte_argument)
 {
