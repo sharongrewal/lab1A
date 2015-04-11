@@ -48,7 +48,7 @@ bool has_input, bool has_output, char* i, char* o, int nWords)
     int c = 0;
     for(; c < nWords; c++)
     {
-       current_command -> word[c] = word_buffer[c];
+       current_command -> u.word[c] = word_buffer[c];
     }
 }
 
@@ -73,7 +73,7 @@ command_t make_complete_command (char* curr, command_t stack)
         new_command -> u.command[0] = stack;
         break;
       case '(':
-        new_comman d-> type = SUBSHELL_COMMAND;
+        new_command-> type = SUBSHELL_COMMAND;
     }
   
   return new_command;
@@ -85,11 +85,15 @@ command_t combine_complete_command (command_t stack, command_t curr_command)
     {
       case SEQUENCE_COMMAND:
       case AND_COMMAND:
+      case OR_COMMAND:
       case PIPE_COMMAND:
         stack -> u.command[1] = curr_command; 
         break;
       case SUBSHELL_COMMAND:
-        stack -> subshell_command = curr_command;
+        stack -> u.subshell_command = curr_command;
+        break;
+      default:
+         break;
     }
     
   return stack;
@@ -188,11 +192,10 @@ make_command_stream (int (*get_next_byte) (void *),
   command_stream_t current_stream = (command_stream_t)malloc(sizeof(struct command_stream));
 
   current_stream = root; 
-  //command_stream_t current = NULL; //used to point to the current command_t
   
 
 //check if the enum is needed
-  enum command_type current_type = NULL; //what is command_type? has it been declared?
+  enum command_type current_type = SIMPLE_COMMAND; //what is command_type? has it been declared?
 
   command_t current_command = (command_t)malloc(sizeof(struct comamnd));
 
