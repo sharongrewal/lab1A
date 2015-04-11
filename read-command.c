@@ -285,20 +285,17 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
              		char** word_buffer = (char**)realloc(word_buffer, wordsize);
             
         	 }
-         	word_buffer[nWords] = newword;
+         	strcpy(word_buffer[nWords], newword);
          	nWords ++;
         
          	
         }
 	
 	printf("AAA\n");
-    		char * temp = (char*) malloc (sizeof(char) *wordsize);
-		
-    		strcpy(temp , word_buffer[0]);
-    		printf("\nBBB\n");
+    		
 	
 	printf("CCC \n");
-	  current_command -> u.word= &temp;
+	  current_command -> u.word= word_buffer;
 	printf("CCC \n");
 	printf(current_command -> u.word);
 	printf("CCC \n");
