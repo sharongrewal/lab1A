@@ -296,10 +296,10 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		
     		strcpy(temp , word_buffer[0]);
     		printf("\nBBB\n");
-	
-
+	char **temp1 = (char**) malloc (sizeof(char*));
+	temp1[0] = temp;
 	printf("CCC \n");
-	  strcpy(current_command -> u.word[0],temp);
+	  current_command -> u.word= temp;
 	printf("CCC \n");
 	printf(current_command -> u.word);
 	printf("CCC \n");
