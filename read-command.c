@@ -222,8 +222,8 @@ make_command_stream (int (*get_next_byte) (void *),
       {
         //new command stream (new line)
           command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
-          current_stream->command = current_command;
-          current_stream->next_stream = new_stream;
+          current_stream->current_root_command = current_command;
+          current_stream->next_command_stream = new_stream;
       }
       if (prev =='&' && is_valid (prev_prev) )
       {
@@ -302,7 +302,7 @@ make_command_stream (int (*get_next_byte) (void *),
          {
            if(nWords == wordsize) //REALLOCATE!
            {
-             char** temp2 = (char**)realloc(word_buffer, wordsize*2*(char**));
+             char** word_buffer = (char**)realloc(word_buffer, wordsize*2*(char**));
              wordsize *= 2;
            }
            word_buffer[nWords] = &newword[i];
