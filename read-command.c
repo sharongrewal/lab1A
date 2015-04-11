@@ -261,19 +261,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 	//when curr == 'EOF'
 	
-	if(nChars >0)
-        {
-        	
-         	//copy word to word_buffer
-         	int i = 0;
-         	i = nChars;
-         	
-        	 while(i > 0) //delete word
-         	{
-          		word[i-1] = '0';
-        		 i--;
-         	}
-         
+	printf(word[0]);
          	
          	if(nWords == wordsize) //REALLOCATE!
            	{
@@ -284,10 +272,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
         	 
          	strcpy(word_buffer[nWords], word);
          	nWords ++;
-        
-         	
-        }
-	
+        printf(word_buffer[0]);
+         
 	printf("AAA\n");
     		
 	printf("CCC \n");
