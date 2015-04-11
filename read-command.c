@@ -404,7 +404,7 @@ make_command_stream (int (*get_next_byte) (void *),
 
         if( curr ==')')
         {
-          current_command = combine_complete_command(curr, command_stack[stack_size-1]);
+          current_command = combine_complete_command((char*)curr, command_stack[stack_size-1]);
           push(current_command, command_stack, stack_size-1);
           subshell_level --;
           was_subshell =true;
@@ -412,7 +412,7 @@ make_command_stream (int (*get_next_byte) (void *),
         else 
         {
           //if it's end of line, you won't need to start a new command
-          current_command = make_complete_command(curr, command_stack[stack_size-1]);
+          current_command = make_complete_command((char*)curr, command_stack[stack_size-1]);
           push(current_command, command_stack, stack_size-1);
          //this push overwrites an entry; does not increase stack_size
         }
@@ -420,7 +420,7 @@ make_command_stream (int (*get_next_byte) (void *),
       }
       else
       {
-        current_command = make_complete_command((char*)curr, current_command);
+        current_command = make_complete_command(curr, current_command);
         push(current_command, command_stack, stack_size);
         stack_size++; 
       }
@@ -435,7 +435,7 @@ make_command_stream (int (*get_next_byte) (void *),
         exit(1);
       }
       subshell_level ++;
-      current_command = make_complete_command((char*)curr, current_command);
+      current_command = make_complete_command(curr, current_command);
       push (current_command, command_stack, stack_size);
       stack_size ++;
     }
