@@ -298,13 +298,16 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
     		printf("AAA\n");
     		char * temp = (char*) malloc (sizeof(char) *nChars);
     		strcpy(temp, word_buffer[c]);
+    		printf("\nBBB\n");
 	  current_command -> u.word[c] = temp;
 	}
-	printf(word_buffer[0]);
-	current_command -> u.word = word_buffer;
-	printf("\nBBB\n");
-	current_command ->type = SIMPLE_COMMAND;
 	printf("CCC \n");
+	printf(word_buffer[0]);
+	printf("CCC \n");
+	current_command -> u.word = word_buffer;
+	printf("CCC \n");
+	current_command ->type = SIMPLE_COMMAND;
+	
 	current_stream->current_root_command = current_command;
 	printf("DDD \n");
 	free (command_stack);
