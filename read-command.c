@@ -50,7 +50,7 @@ current_command -> u.word = word_buffer;
     //{
       // current_command -> u.word[c] = word_buffer[c];
     //}
-    //return current_command;
+    return current_command;
 }
 
 command_t make_complete_command (char curr, command_t stack)
