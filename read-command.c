@@ -140,7 +140,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	char prev_prev =' '; //two characters before curr
 
 	//word holding data structures
-	char ** word_buffer=(char**) malloc(sizeof(char*)*wordsize); //contains the list of words in a line?
+	char ** word_buffer= malloc(sizeof(char*)*wordsize); //contains the list of words in a line?
 	char * word= (char*) malloc(sizeof(char)*wordsize); //contains a word
 	int wordsize = 50; //max number of chars in a word
 	int nChars = 0; //number of chars
@@ -266,7 +266,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
          	//copy word to word_buffer
          	int i = 0;
          	i = nChars;
-         		word_buffer [nWords] = (char*)malloc(sizeof(char)*wordsize);
+         	
         	 while(i > 0) //delete word
          	{
           		word[i-1] = '0';
@@ -277,7 +277,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
          	if(nWords == wordsize) //REALLOCATE!
            	{
         		 wordsize *= 2;
-             		word_buffer [nWords] = (char*)realloc(word_buffer[nWords], wordsize);
+             		word_buffer= realloc(word_buffer[nWords], wordsize);
             
         	 }
         	 
