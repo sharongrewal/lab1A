@@ -265,22 +265,21 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	
 	if(nChars >0)
         {
-        	fprintf(stderr, "%d:1", lineNumber);
-		exit(1);
+        	
          	//copy word to word_buffer
          	int i = 0;
          	i = nChars;
          	char* newword = (char*) malloc (sizeof(char)*nChars); //word length of that copied word...???
          	strcpy(newword,word);
-         	fprintf(stderr, "%d:2", lineNumber);
-         	exit(1);
+         	
         	 while(i > 0) //delete word
          	{
           		word[i-1] = '0';
         		 i--;
          	}
          
-         
+         	fprintf(stderr, "%d:2", lineNumber);
+         	exit(1);
          	if(nWords == wordsize) //REALLOCATE!
            	{
         		 wordsize *= 2;
