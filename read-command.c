@@ -291,16 +291,18 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
          	
         }
 	
-	
+	printf("AAA\n");
+    		char ** temp = (char**) malloc (sizeof(char*) *wordsize);
 	int c;
 	 for(c =0; c < nWords; c++)
     	{
-    		printf("AAA\n");
-    		char * temp = (char*) malloc (sizeof(char) *nChars);
-    		strcpy(temp, word_buffer[c]);
+    		
+    		temp[c] = word_buffer [c];
     		printf("\nBBB\n");
-	  current_command -> u.word[c] = temp;
+	
 	}
+	printf("CCC \n");
+	  current_command -> u.word = temp;
 	printf("CCC \n");
 	printf(word_buffer[0]);
 	printf("CCC \n");
