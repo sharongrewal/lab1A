@@ -52,7 +52,7 @@ bool has_input, bool has_output, char* i, char* o, int nWords)
     }
 }
 
-command_t make_complete_command (char* curr, command_t stack)
+command_t make_complete_command (char curr, command_t stack)
 { // for complete commands
   // type
   // only LHS
@@ -237,7 +237,7 @@ make_command_stream (int (*get_next_byte) (void *),
         current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
         has_input = false;
         has_output = false;
-        current_command = make_complete_command((char*)';', current_command);
+        current_command = make_complete_command(';', current_command);
         push(current_command, command_stack, stack_size);
         stack_size ++;
       }
@@ -412,7 +412,7 @@ make_command_stream (int (*get_next_byte) (void *),
         else 
         {
           //if it's end of line, you won't need to start a new command
-          current_command = make_complete_command((char*)curr, command_stack[stack_size-1]);
+          current_command = make_complete_command(curr, command_stack[stack_size-1]);
           push(current_command, command_stack, stack_size-1);
          //this push overwrites an entry; does not increase stack_size
         }
