@@ -43,7 +43,7 @@ bool has_input, bool has_output, char* i, char* o, int nWords)
    current_command -> output = o; 
   }
 
-curren_command -> u.word = word_buffer;
+current_command -> u.word = word_buffer;
   // for loop?
    // int c = 0;
     //for(; c < nWords; c++)
