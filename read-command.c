@@ -147,7 +147,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	int nWords = 0; //number of words
 
 	//allocate memory for word_buffer and word
-	word_buffer = (char**)malloc(sizeof(char*)*wordsize);
+	//word_buffer [nWords] = (char*)malloc(sizeof(char)*wordsize);
 	word = (char*) malloc(sizeof(char)*wordsize);
 
 	curr = read_char(get_next_byte, get_next_byte_argument);
@@ -282,9 +282,10 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
          	if(nWords == wordsize) //REALLOCATE!
            	{
         		 wordsize *= 2;
-             		char** word_buffer = (char**)realloc(word_buffer, wordsize);
+             		word_buffer [nWords] = (char*)realloc(word_buffer[nWords], wordsize);
             
         	 }
+        	 word_buffer [nWords] = (char*)malloc(sizeof(char)*wordsize);
          	strcpy(word_buffer[nWords], newword);
          	nWords ++;
         
