@@ -161,8 +161,7 @@ make_command_stream (int (*get_next_byte) (void *),
   
   int lineNumber = 0; //keeping track of line number for error message
   int subshell_level =0; //level of subshell
-  int word_num = 0; //number of words in the word_buffer/
-
+  
   char curr; //current character
   char prev = ' '; //previous character
   char prev_prev =' '; //two characters before curr
@@ -175,8 +174,8 @@ make_command_stream (int (*get_next_byte) (void *),
   int nWords = 0; //number of words
   
   //allocate memory for word_buffer and word
-  word_buffer = (char*)malloc(sizeof(char*)*wordsize);
-  word = malloc(sizeof(char)*wordsize);
+  word_buffer = (char**)malloc(sizeof(char*)*wordsize);
+  word = (char*) malloc(sizeof(char)*wordsize);
   
   curr = read_char(get_next_byte, get_next_byte_argument);
   if(curr == EOF)
@@ -197,7 +196,7 @@ make_command_stream (int (*get_next_byte) (void *),
 //check if the enum is needed
   enum command_type current_type = SIMPLE_COMMAND; //what is command_type? has it been declared?
 
-  command_t current_command = (command_t)malloc(sizeof(struct comamnd));
+  command_t current_command = (command_t)malloc(sizeof(command_t));
 
   //stack
   int stack_size = 0;
@@ -234,11 +233,11 @@ make_command_stream (int (*get_next_byte) (void *),
       {
          // A \n B == A ; B
          
-        command_t new_simple_command = (command_t)malloc(sizeof(struct comamnd));
+        command_t new_simple_command = (command_t)malloc(sizeof(command_t));
         current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
         has_input = false;
         has_output = false;
-        current_command = make_complete_command(';', current_command);
+        current_command = make_complete_command((char*)';', current_command);
         push(current_command, command_stack, stack_size);
         stack_size ++;
       }
@@ -251,14 +250,14 @@ make_command_stream (int (*get_next_byte) (void *),
           wordsize *= 2;
         }
         word[nChars] = curr;
-       nChar++;     
+       nChars++;     
        }
     }
     else if( curr ==' ' && is_valid (prev))
     {
       if( has_input )
       {
-        if(nChars > word_size)
+        if(nChars > wordsize)
         {
           input = (char*) realloc(input,wordsize);
           //
@@ -266,7 +265,7 @@ make_command_stream (int (*get_next_byte) (void *),
         strcpy(input,word);
         while(nChars >= 0) //delete word or set everything to ''
         {
-          word[nChars] = '';
+          word[nChars] = NULL;
           nChars--;
         }
       }
@@ -280,7 +279,7 @@ make_command_stream (int (*get_next_byte) (void *),
         strcpy(output, word);
         while(nChars >= 0) //delete word
         {
-          word[nChars] = '';
+          word[nChars] = NULL;
           nChars--;
         }
       }
@@ -294,7 +293,7 @@ make_command_stream (int (*get_next_byte) (void *),
          
           while(i >= 0) //delete word
          {
-          word[i] = '';
+          word[i] = NULL;
           i--;
          }
          
@@ -358,7 +357,7 @@ make_command_stream (int (*get_next_byte) (void *),
       else if(curr = '|' && prev == '|')
       {
         current_type = OR_COMMAND;
-        if(nWords == 0 && !was_subshell)
+        if(nWords == 0 && (!was_subshell))
         {
           fprintf(stderr, "%d: No LHS", lineNumber);
           exit(1);
@@ -388,7 +387,7 @@ make_command_stream (int (*get_next_byte) (void *),
         // add everything in word buffer into simple command
         //if there's input and output assign them too.
 
-        command_t new_simple_command = (command_t)malloc(sizeof(struct comamnd));
+        command_t new_simple_command = (command_t)malloc(sizeof(command_t));
         current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
         has_input = false;
         has_output = false;
