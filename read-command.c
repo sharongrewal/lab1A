@@ -277,8 +277,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 command_t read_command_stream (command_stream_t s)
 {
-	command_t output = (command_t)malloc(sizeof(command_t));
-	output = s -> current_root_command;
+	command_t output = s -> current_root_command;
 	if (s -> next_command_stream == NULL)
 		memset(s,0,sizeof(command_stream_t));
 	else
