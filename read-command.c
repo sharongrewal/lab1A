@@ -303,6 +303,7 @@ make_command_stream (int (*get_next_byte) (void *),
           i--;
          }
          
+         /*
          for( i = 0; i < nChars; i++) //copy word into word_buffer: word_buffer
          {
            if(nWords == wordsize) //REALLOCATE!
@@ -313,7 +314,15 @@ make_command_stream (int (*get_next_byte) (void *),
            }
            word_buffer[nWords] = &newword[i];
            nWords++;
-         }
+         }*/
+         if(nWords == wordsize) //REALLOCATE!
+           {
+             wordsize *= 2;
+             char** word_buffer = (char**)realloc(word_buffer, wordsize);
+            
+           }
+         word_buffer[nWords] = newword;
+         nWords ++;
          
     
       }
@@ -405,17 +414,16 @@ make_command_stream (int (*get_next_byte) (void *),
           j--;
          }
          
-         for( j = 0; j < nChars; j++) //copy word into word_buffer: word_buffer
-         {
+         
            if(nWords == wordsize) //REALLOCATE!
            {
              wordsize *= 2;
              char** word_buffer = (char**)realloc(word_buffer, wordsize);
             
            }
-           word_buffer[nWords] = &newword[j];
-           nWords++;
-         }
+           word_buffer[nWords] = newword;
+           nWords ++;
+         
         command_t new_simple_command = (command_t)malloc(sizeof(command_t));
         current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
         has_input = false;
@@ -521,17 +529,16 @@ make_command_stream (int (*get_next_byte) (void *),
           k--;
          }
          
-         for( k = 0; k < nChars; k++) //copy word into word_buffer: word_buffer
-         {
+         
            if(nWords == wordsize) //REALLOCATE!
            {
              wordsize *= 2;
              char** word_buffer = (char**)realloc(word_buffer, wordsize);
             
            }
-           word_buffer[nWords] = &newword[k];
-           nWords++;
-         }
+           word_buffer[nWords] = newword;
+         nWords ++;
+        
         command_t new_simple_command = (command_t)malloc(sizeof(command_t));
         current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
         has_input = false;
