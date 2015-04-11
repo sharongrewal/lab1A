@@ -237,10 +237,10 @@ make_command_stream (int (*get_next_byte) (void *),
       {
          // A \n B == A ; B
          
-        command_t new_simple_command = (command_t)malloc(sizeof(command_t));
-        current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
-        has_input = false;
-        has_output = false;
+        //command_t new_simple_command = (command_t)malloc(sizeof(command_t));
+        //current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
+        //has_input = false;
+        //has_output = false;
         current_command = make_complete_command(';', current_command);
         push(current_command, command_stack, stack_size);
         stack_size ++;
@@ -393,7 +393,29 @@ make_command_stream (int (*get_next_byte) (void *),
         // make simple command when you reached  '&&' '|' '||' ')'
         // add everything in word buffer into simple command
         //if there's input and output assign them too.
-
+         //copy word to word_buffer
+         int j = 0;
+         j = nChars;
+         char* newword = (char*) malloc (sizeof(char)*nChars); //word length of that copied word...???
+         strcpy(newword,word);
+         
+          while(j >= 0) //delete word
+         {
+          word[j] = '0';
+          j--;
+         }
+         
+         for( j = 0; j < nChars; j++) //copy word into word_buffer: word_buffer
+         {
+           if(nWords == wordsize) //REALLOCATE!
+           {
+             wordsize *= 2;
+             char** word_buffer = (char**)realloc(word_buffer, wordsize);
+            
+           }
+           word_buffer[nWords] = &newword[j];
+           nWords++;
+         }
         command_t new_simple_command = (command_t)malloc(sizeof(command_t));
         current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
         has_input = false;
@@ -487,6 +509,29 @@ make_command_stream (int (*get_next_byte) (void *),
       //end of line 
       if( !was_subshell)
       {
+               //copy word to word_buffer
+         int k = 0;
+         k = nChars;
+         char* newword = (char*) malloc (sizeof(char)*nChars); //word length of that copied word...???
+         strcpy(newword,word);
+         
+          while(k >= 0) //delete word
+         {
+          word[k] = '0';
+          k--;
+         }
+         
+         for( k = 0; k < nChars; k++) //copy word into word_buffer: word_buffer
+         {
+           if(nWords == wordsize) //REALLOCATE!
+           {
+             wordsize *= 2;
+             char** word_buffer = (char**)realloc(word_buffer, wordsize);
+            
+           }
+           word_buffer[nWords] = &newword[k];
+           nWords++;
+         }
         command_t new_simple_command = (command_t)malloc(sizeof(command_t));
         current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
         has_input = false;
