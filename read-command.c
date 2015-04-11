@@ -50,6 +50,7 @@ bool has_input, bool has_output, char* i, char* o, int nWords)
     {
        current_command -> u.word[c] = word_buffer[c];
     }
+    return current_command;
 }
 
 command_t make_complete_command (char curr, command_t stack)
