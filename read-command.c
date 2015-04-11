@@ -292,14 +292,14 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
         }
 	
 	printf("AAA\n");
-    		char ** temp = (char**) malloc (sizeof(char*) *wordsize);
+    		char * temp = (char*) malloc (sizeof(char) *wordsize);
 		
-    		temp[0] = word_buffer [0];
+    		temp = word_buffer [0];
     		printf("\nBBB\n");
 	
 
 	printf("CCC \n");
-	  current_command -> u.word = temp;
+	  current_command -> u.word[0] = temp;
 	printf("CCC \n");
 	printf(current_command -> u.word);
 	printf("CCC \n");
