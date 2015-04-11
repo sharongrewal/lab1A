@@ -169,14 +169,14 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 	//word holding data structures
 	char * word_buffer[10]; //contains the list of words in a line?
-	char * word; //contains a word
+	char  word [10]; //contains a word
 	int wordsize = 50; //max number of chars in a word
 	int nChars = 0; //number of chars
 	int nWords = 0; //number of words
 
 	//allocate memory for word_buffer and word
 	//word_buffer = (char**)malloc(sizeof(char*)*wordsize);
-	word = (char*) malloc(sizeof(char)*wordsize);
+	//word = (char*) malloc(sizeof(char)*wordsize);
 
 	curr = read_char(get_next_byte, get_next_byte_argument);
 	if(curr == EOF)
@@ -251,14 +251,17 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			else 
 			{
 				//put characters in words
-
+				/*
 				if(nChars == wordsize) //NEED TO REALLOC!
 				{        
 					wordsize = wordsize*2;
 					word= (char*)realloc(word, wordsize);
 				}
+				*/
 				word[nChars] = curr;
-				nChars++;     
+				nChars++;  
+				printf(nChars);
+				printf("\n");
 			}
 
 		}
@@ -601,6 +604,46 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	}
 
 	//at the EOF
+	if( !was_subshell)
+			{
+
+				
+				//copy word to word_buffer
+
+					strcpy(word_buffer[nWords], word);
+					//strcpy (word_buffer[nWords],newword);
+					nWords ++;
+
+					while(nChars > 0) //delete word
+					{
+						word[nChars-1] = '0';
+						nChars--;
+					}
+				
+
+				command_t new_simple_command = (command_t)malloc(sizeof(command_t));
+				current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
+				has_input = false;
+				has_output = false;
+				nWords = 0;
+
+				while (stack_size >0)
+				{
+					current_command = combine_complete_command(command_stack[stack_size-1], current_command);
+					pop(command_stack, stack_size);
+					stack_size--;
+				}
+
+			}
+
+			if(prev == '\n')
+			{
+				if(stack_size !=0)
+				{
+					fprintf(stderr, "%d: No RHS", lineNumber);
+					exit(1);
+				}
+			}
 
 	if(subshell_level != 0)
 	{
