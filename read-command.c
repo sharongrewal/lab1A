@@ -190,6 +190,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		if(is_valid (curr))
 		{
 			printf("Something is in the file");
+			word[nChars] = curr;
+       			nChars++;  
+			
         		
 		}
 		else if( curr ==' ' && is_valid (prev))
@@ -259,6 +262,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	}
 
 	//when curr == 'EOF'
+	word_buffer[0] = word;
+	current_command ->u.word = word_buffer;
+	current_command ->type = SIMPLE_COMMAND;
 	current_stream->current_root_command = current_command;
 
 
@@ -271,8 +277,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 command_t read_command_stream (command_stream_t s)
 {
-	//command_t outpu = (command_t)malloc(sizeof(command_t));
-	command_t output = s -> current_root_command;
+	command_t output = (command_t)malloc(sizeof(command_t));
+	output = s -> current_root_command;
 	if (s -> next_command_stream == NULL)
 		memset(s,0,sizeof(command_stream_t));
 	else
@@ -281,6 +287,6 @@ command_t read_command_stream (command_stream_t s)
 		//memset(s->next_command_stream,0,sizeof(struct command_stream));
 	}
 	printf ("inside read_command_Stream");
-	//free(s);
+	free(s);
 	return output;
 }
