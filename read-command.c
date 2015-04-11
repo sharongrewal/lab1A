@@ -154,7 +154,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	if(curr == EOF)
 	{
 	  	fprintf(stderr, "%d: Nothing in the file", lineNumber);
-        exit(1);
+        	exit(1);
 
 	}    //FILE IS EMPTY
 
@@ -189,8 +189,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 		if(is_valid (curr))
 		{
-			fprintf(stderr, "%d: Something in the file", lineNumber);
-        		exit(1);
+			printf("Something is in the file");
+        		
 		}
 		else if( curr ==' ' && is_valid (prev))
 		{
@@ -264,7 +264,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 
 	free (command_stack);
-
+	printf("right before returning");
 	return root;
 
 }
@@ -280,7 +280,7 @@ command_t read_command_stream (command_stream_t s)
 		memcpy(s,s->next_command_stream,sizeof(command_stream_t));
 		//memset(s->next_command_stream,0,sizeof(struct command_stream));
 	}
-	
+	printf ("inside read_command_Stream");
 	//free(s);
 	return output;
 }
