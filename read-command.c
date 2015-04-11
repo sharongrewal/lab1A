@@ -293,7 +293,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	
 	printf("AAA\n");
     		
-	
+	printf(word_buffer[0]);
+	printf(word_buffer);
 	printf("CCC \n");
 	  current_command -> u.word= word_buffer;
 	printf("CCC \n");
