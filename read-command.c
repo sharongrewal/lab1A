@@ -265,7 +265,7 @@ make_command_stream (int (*get_next_byte) (void *),
         strcpy(input,word);
         while(nChars >= 0) //delete word or set everything to ''
         {
-          word[nChars] = NULL;
+          word[nChars] = '0';
           nChars--;
         }
       }
@@ -279,7 +279,7 @@ make_command_stream (int (*get_next_byte) (void *),
         strcpy(output, word);
         while(nChars >= 0) //delete word
         {
-          word[nChars] = NULL;
+          word[nChars] = '0';
           nChars--;
         }
       }
@@ -293,7 +293,7 @@ make_command_stream (int (*get_next_byte) (void *),
          
           while(i >= 0) //delete word
          {
-          word[i] = NULL;
+          word[i] = '0';
           i--;
          }
          
@@ -354,7 +354,7 @@ make_command_stream (int (*get_next_byte) (void *),
           exit(1);
         }
       }
-      else if(curr = '|' && prev == '|')
+      else if(curr == '|' && prev == '|')
       {
         current_type = OR_COMMAND;
         if(nWords == 0 && (!was_subshell))
@@ -416,11 +416,12 @@ make_command_stream (int (*get_next_byte) (void *),
           push(current_command, command_stack, stack_size-1);
          //this push overwrites an entry; does not increase stack_size
         }
+      
       }
       else
       {
         current_command = make_complete_command(curr, current_command);
-        push(current_command, command_stack, size_size);
+        push(current_command, command_stack, stack_size);
         stack_size++; 
       }
 
@@ -434,7 +435,7 @@ make_command_stream (int (*get_next_byte) (void *),
         exit(1);
       }
       subshell_level ++;
-      current_command = make_complete_command(curr, current_command);
+      current_command = make_complete_command((char*)curr, current_command);
       push (current_command, command_stack, stack_size);
       stack_size ++;
     }
@@ -484,7 +485,7 @@ make_command_stream (int (*get_next_byte) (void *),
         has_input = false;
         has_output = false;
 
-        while (stack >0)
+        while (stack_size >0)
         {
           current_command = combine_complete_command(command_stack[stack_size-1], current_command);
           pop(command_stack, stack_size);
@@ -540,7 +541,7 @@ else if(curr == '#' && (prev == ' ' || prev == '\n' || prev =='\t'))
   }
 
   //when curr == 'EOF'
-  current_stream->command = current_command;
+  current_stream->current_root_command = current_command;
 
   //if you free it how do you return it????
   //are we really need to free it? 
