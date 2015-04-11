@@ -278,8 +278,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
         		 i--;
          	}
          
-         	fprintf(stderr, "%d:2", lineNumber);
-         	exit(1);
+         	
          	if(nWords == wordsize) //REALLOCATE!
            	{
         		 wordsize *= 2;
