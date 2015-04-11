@@ -262,12 +262,40 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	}
 
 	//when curr == 'EOF'
-	word_buffer[0] = word;
-	current_command ->u.word = word_buffer;
+	
+	if(nChars >0)
+        {
+         	//copy word to word_buffer
+         	int i = 0;
+         	i = nChars;
+         	char* newword = (char*) malloc (sizeof(char)*nChars); //word length of that copied word...???
+         	strcpy(newword,word);
+         
+        	 while(i > 0) //delete word
+         	{
+          		word[i-1] = '0';
+        		 i--;
+         	}
+         
+         
+         	if(nWords == wordsize) //REALLOCATE!
+           	{
+        		 wordsize *= 2;
+             		char** word_buffer = (char**)realloc(word_buffer, wordsize);
+            
+        	 }
+         	word_buffer[nWords] = newword;
+         	nWords ++;
+        }
+	
+	int c;
+	 for(c =0; c < nWords; c++)
+    	{
+	  current_command -> u.word[c] = word_buffer[c];
+	}
 	current_command ->type = SIMPLE_COMMAND;
+	
 	current_stream->current_root_command = current_command;
-
-
 
 	free (command_stack);
 	printf("right before returning");
