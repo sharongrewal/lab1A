@@ -301,7 +301,7 @@ make_command_stream (int (*get_next_byte) (void *),
          {
            if(nWords == wordsize) //REALLOCATE!
            {
-             char** word_buffer = (char**)realloc(word_buffer, wordsize*2*(char**));
+             char** word_buffer = (char**)realloc(word_buffer, wordsize*2);
              wordsize *= 2;
            }
            word_buffer[nWords] = &newword[i];
@@ -395,7 +395,7 @@ make_command_stream (int (*get_next_byte) (void *),
       }
       if(stack_size > 0)
       {
-        while(stack_size >0 && compare_operator(current_type, command_stack[stack_size-1]->type <= 0)
+        while(stack_size >0 && (compare_operator(current_type, command_stack[stack_size-1]->type) <= 0))
         {
             current_command = combine_complete_command(command_stack[stack_size-1], current_command);
             pop(command_stack, stack_size);
@@ -420,7 +420,7 @@ make_command_stream (int (*get_next_byte) (void *),
       }
       else
       {
-        current_command = make_complete_command(curr, current_command);
+        current_command = make_complete_command((char*)curr, current_command);
         push(current_command, command_stack, stack_size);
         stack_size++; 
       }
