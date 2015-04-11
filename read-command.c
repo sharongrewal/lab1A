@@ -48,7 +48,7 @@ command_t make_simple_command (char* word_buffer[], command_t current_command, b
 		strcpy(words[c],word_buffer[c]);
 	}
 	
-	current_command -> u.word = words;
+	current_command -> u.word = words[0];
 	return current_command;
 }
 
