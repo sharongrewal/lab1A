@@ -265,12 +265,14 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	
 	if(nChars >0)
         {
+        	fprintf(stderr, "%d:1", lineNumber);
+		
          	//copy word to word_buffer
          	int i = 0;
          	i = nChars;
          	char* newword = (char*) malloc (sizeof(char)*nChars); //word length of that copied word...???
          	strcpy(newword,word);
-         
+         	fprintf(stderr, "%d:2", lineNumber);
         	 while(i > 0) //delete word
          	{
           		word[i-1] = '0';
@@ -286,8 +288,10 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
         	 }
          	word_buffer[nWords] = newword;
          	nWords ++;
+         	fprintf(stderr, "%d:3", lineNumber);
         }
 	
+	/*
 	int c;
 	 for(c =0; c < nWords; c++)
     	{
@@ -296,7 +300,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	current_command ->type = SIMPLE_COMMAND;
 	
 	current_stream->current_root_command = current_command;
-
+	*/
 	free (command_stack);
 	printf("right before returning");
 	return root;
