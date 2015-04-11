@@ -58,7 +58,7 @@ command_t make_complete_command (char curr, command_t stack)
   // only LHS
   //curr is the operator
   command_t new_command = (command_t)malloc(sizeof(struct command));
-  switch(curr[0])
+  switch(curr)
     {
         case ';':
         new_command -> type = SEQUENCE_COMMAND;
@@ -404,7 +404,7 @@ make_command_stream (int (*get_next_byte) (void *),
 
         if( curr ==')')
         {
-          current_command = combine_complete_command((char*)curr, command_stack[stack_size-1]);
+          current_command = combine_complete_command(curr, command_stack[stack_size-1]);
           push(current_command, command_stack, stack_size-1);
           subshell_level --;
           was_subshell =true;
