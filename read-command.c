@@ -147,7 +147,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	int nWords = 0; //number of words
 
 	//allocate memory for word_buffer and word
-	char* word_buffer1 [nWords] = (char*)malloc(sizeof(char)*wordsize);
+	char word_buffer1 [][] = (char*)malloc(sizeof(char)*wordsize);
 	word = (char*) malloc(sizeof(char)*wordsize);
 
 	curr = read_char(get_next_byte, get_next_byte_argument);
@@ -297,7 +297,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	printf(word_buffer[0]);
 	printf(word_buffer);
 	printf("CCC \n");
-	word_buffer = word_buffer1
+	word_buffer = &word_buffer1[0][0];
 	  current_command -> u.word= word_buffer;
 	printf("CCC \n");
 	printf(current_command -> u.word);
