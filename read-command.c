@@ -143,7 +143,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	int wordsize = 50; //max number of chars in a word
 	int nChars = 0; //number of chars
 	int nWords = 0; //number of words
-	printf("here");
+	fprintf(stderr, "%d: why", lineNumber);
+        	exit(1);
 	char ** word_buffer;
 	word_buffer = malloc(sizeof(char*)*wordsize); //contains the list of words in a line?
 	char * word= (char*) malloc(sizeof(char)*wordsize); //contains a word
