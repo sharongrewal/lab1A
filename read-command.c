@@ -241,7 +241,7 @@ make_command_stream (int (*get_next_byte) (void *),
         current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
         has_input = false;
         has_output = false;
-        current_command = make_complete_command(";", current_command);
+        current_command = make_complete_command(';', current_command);
         push(current_command, command_stack, stack_size);
         stack_size ++;
       }
@@ -549,7 +549,7 @@ else if(curr == '#' && (prev == ' ' || prev == '\n' || prev =='\t'))
   
   if(stack_size >0)
   {
-     fprintf(stderr, tderr, "%d: stack is not empty at the end", lineNumber);
+     fprintf(stderr, "%d: stack is not empty at the end", lineNumber);
     exit(1);  
   }
 
