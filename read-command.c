@@ -140,16 +140,13 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	char prev_prev =' '; //two characters before curr
 
 	//word holding data structures
-	char ** word_buffer; //contains the list of words in a line?
-	char * word; //contains a word
+	char ** word_buffer=(char**) malloc(sizeof(char*)*wordsize); //contains the list of words in a line?
+	char * word= (char*) malloc(sizeof(char)*wordsize); //contains a word
 	int wordsize = 50; //max number of chars in a word
 	int nChars = 0; //number of chars
 	int nWords = 0; //number of words
 
-	//allocate memory for word_buffer and word
-	char word_buffer1 [][] = (char*)malloc(sizeof(char)*wordsize);
-	word = (char*) malloc(sizeof(char)*wordsize);
-
+	
 	curr = read_char(get_next_byte, get_next_byte_argument);
 	if(curr == EOF)
 	{
@@ -271,7 +268,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
          	i = nChars;
          	char* newword = (char*) malloc (sizeof(char)*nChars); //word length of that copied word...???
          	strcpy(newword,word);
-         	
+         	word_buffer [nWords] = (char*)malloc(sizeof(char)*wordsize);
         	 while(i > 0) //delete word
          	{
           		word[i-1] = '0';
@@ -282,11 +279,11 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
          	if(nWords == wordsize) //REALLOCATE!
            	{
         		 wordsize *= 2;
-             		word_buffer1 [nWords] = (char*)realloc(word_buffer1[nWords], wordsize);
+             		word_buffer [nWords] = (char*)realloc(word_buffer[nWords], wordsize);
             
         	 }
-        	 word_buffer1 [nWords] = (char*)malloc(sizeof(char)*wordsize);
-         	strcpy(word_buffer1[nWords], newword);
+        	 
+         	strcpy(word_buffer[nWords], newword);
          	nWords ++;
         
          	
@@ -297,7 +294,6 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	printf(word_buffer[0]);
 	printf(word_buffer);
 	printf("CCC \n");
-	word_buffer = &word_buffer1[0][0];
 	  current_command -> u.word= word_buffer;
 	printf("CCC \n");
 	printf(current_command -> u.word);
