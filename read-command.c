@@ -287,20 +287,22 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
         	 }
          	word_buffer[nWords] = newword;
          	nWords ++;
-         	printf("AAA");
+        
          	
         }
 	
-	/*
+	
 	int c;
 	 for(c =0; c < nWords; c++)
     	{
+    		printf("AAA\n");
 	  current_command -> u.word[c] = word_buffer[c];
 	}
+	printf("BBB\n");
 	current_command ->type = SIMPLE_COMMAND;
-	
+	printf("CCC \n");
 	current_stream->current_root_command = current_command;
-	*/
+	printf("DDD \n");
 	free (command_stack);
 	printf("right before returning");
 	return root;
