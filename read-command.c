@@ -294,7 +294,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	printf("AAA\n");
     		char * temp = (char*) malloc (sizeof(char) *wordsize);
 		
-    		temp = word_buffer [0];
+    		strcpy(temp , word_buffer[0]);
     		printf("\nBBB\n");
 	
 
