@@ -299,7 +299,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	
 
 	printf("CCC \n");
-	  current_command -> u.word[0] = temp;
+	  strcpy(current_command -> u.word[0],temp);
 	printf("CCC \n");
 	printf(current_command -> u.word);
 	printf("CCC \n");
