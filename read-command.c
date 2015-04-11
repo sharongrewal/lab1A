@@ -291,6 +291,8 @@ make_command_stream (int (*get_next_byte) (void *),
       }
       else
       {
+          if(nChars >0)
+          {
          //copy word to word_buffer
          int i = 0;
          i = nChars;
@@ -323,7 +325,7 @@ make_command_stream (int (*get_next_byte) (void *),
            }
          word_buffer[nWords] = newword;
          nWords ++;
-         
+          }
     
       }
     }
@@ -403,6 +405,9 @@ make_command_stream (int (*get_next_byte) (void *),
         // add everything in word buffer into simple command
         //if there's input and output assign them too.
          //copy word to word_buffer
+         
+          if(nChars >0)
+          {
          int j = 0;
          j = nChars;
          char* newword = (char*) malloc (sizeof(char)*nChars); //word length of that copied word...???
@@ -423,7 +428,7 @@ make_command_stream (int (*get_next_byte) (void *),
            }
            word_buffer[nWords] = newword;
            nWords ++;
-         
+          }
         command_t new_simple_command = (command_t)malloc(sizeof(command_t));
         current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
         has_input = false;
@@ -518,6 +523,9 @@ make_command_stream (int (*get_next_byte) (void *),
       //end of line 
       if( !was_subshell)
       {
+         
+          if(nChars >0)
+          {
                //copy word to word_buffer
          int k = 0;
          k = nChars;
@@ -539,6 +547,7 @@ make_command_stream (int (*get_next_byte) (void *),
            }
            word_buffer[nWords] = newword;
          nWords ++;
+          }
         
         command_t new_simple_command = (command_t)malloc(sizeof(command_t));
         current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
