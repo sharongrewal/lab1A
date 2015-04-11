@@ -299,7 +299,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	char **temp1 = (char**) malloc (sizeof(char*));
 	temp1[0] = temp;
 	printf("CCC \n");
-	  current_command -> u.word= temp;
+	  current_command -> u.word= temp1;
 	printf("CCC \n");
 	printf(current_command -> u.word);
 	printf("CCC \n");
