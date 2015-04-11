@@ -1,4 +1,3 @@
-// UCLA CS 111 Lab 1 command reading
 
 #include "command.h"
 #include "command-internals.h"
@@ -28,31 +27,35 @@ bool is_valid(char c)
 
 
 command_t make_simple_command (char** word_buffer, command_t current_command, 
-                                bool input, bool output, char* input, char* output)
+
+bool has_input, bool has_output, char* i, char* o, int nWords)
 { // words, input, output
   //read from word_buffer
   //clear buffer
-  if(input)
+  if(has_input)
   {
-    current_command -> input = input; 
+    current_command -> input = i; 
   }
 
-  if(output)
+  if(has_output)
   {
-    current_command -> output = output; 
+   current_command -> output = o; 
   }
 
-  current_command -> word = word_buffer;
-  // probably need to use strcpy? or some other assignment method for char **
-    
+
+  // for loop?
+    int c = 0;
+    for(; c < nWords; c++)
+    {
+       current_command -> word[c] = word_buffer[c];
+    }
 }
 
 command_t make_complete_command (char* curr, command_t stack)
 { // for complete commands
   // type
   // only LHS
-  //curr is the token
-
+  //curr is the operator
   command_t new_command = (command_t)malloc(sizeof(struct command));
   switch(curr[0])
     {
@@ -146,7 +149,6 @@ make_command_stream (int (*get_next_byte) (void *),
      add auxiliary functions and otherwise modify the source code.
      You can also use external functions defined in the GNU C Library.  */
   
-  bool comments = false; //check for #
   bool was_subshell = false; //check if immediately before was an end of subshell 
   bool has_input =false; // current simple commadn has input
   bool has_output = false; //current simple command has output
@@ -154,15 +156,32 @@ make_command_stream (int (*get_next_byte) (void *),
   
   int lineNumber = 0; //keeping track of line number for error message
   int subshell_level =0; //level of subshell
-  int word_max = 20; //max number of letters in a word
   int word_num = 0; //number of words in the word_buffer/
 
   char curr; //current character
   char prev = ' '; //previous character
   char prev_prev =' '; //two characters before curr
+  
+  //word holding data structures
+  char ** word_buffer; //contains the list of words in a line?
+  char * word; //contains a word
+  int wordsize = 50; //max number of chars in a word
+  int nChars = 0; //number of chars
+  int nWords = 0; //number of words
+  
+  //allocate memory for word_buffer and word
+  word_buffer = (char*)malloc(sizeof(char*)*wordsize);
+  word = malloc(sizeof(char)*wordsize);
+  
+  curr = read_char(get_next_byte, get_next_byte_argument);
+  if(curr == EOF)
+  {
+    return 0;
+    
+  }    //FILE IS EMPTY
 
-  char* input = (char*) malloc(word_max*sizeof(char)); //space for input storing //needed for make_simple_command
-  char* output = (char*) malloc(word_max*sizeof(char)); //space for output storing
+  char* input = (char*) malloc(wordsize*sizeof(char)); //space for input storing //needed for make_simple_command
+  char* output = (char*) malloc(wordsize*sizeof(char)); //space for output storing
 
   command_stream_t root = (command_stream_t)malloc(sizeof(struct command_stream));
   command_stream_t current_stream = (command_stream_t)malloc(sizeof(struct command_stream));
@@ -187,12 +206,14 @@ make_command_stream (int (*get_next_byte) (void *),
     command_stack = (command_t*)realloc(command_stack, max_stack_size);
   }
 
-    curr = read_char(get_next_byte, get_next_byte_argument);
+    
 
   while(curr != EOF)
   {
     if(is_valid(curr))
     {
+      
+      
       if(prev_prev =='\n' && prev =='\n')
       {
         //new command stream (new line)
@@ -210,7 +231,7 @@ make_command_stream (int (*get_next_byte) (void *),
          // A \n B == A ; B
          
         command_t new_simple_command = (command_t)malloc(sizeof(struct comamnd));
-        current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output);
+        current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
         has_input = false;
         has_output = false;
         current_command = make_complete_command(';', current_command);
@@ -219,44 +240,71 @@ make_command_stream (int (*get_next_byte) (void *),
       }
       else 
       {
-        add curr to word.
-      }
+        if(nChars == wordsize) //NEED TO REALLOC!
+        {        
+          char * temp = (char*)realloc(word, sizeof(char)*wordsize*2);
+          word = temp;
+          wordsize *= 2;
+        }
+        word[nChars] = curr;
+       nChar++;     
+       }
     }
-    if( curr ==' ' && is_valid (prev))
+    else if( curr ==' ' && is_valid (prev))
     {
       if( has_input )
       {
-        if( word size is bigger than size left for input)
+        if(nChars > word_size)
         {
-          input = (char*) realloc(input,word size);
+          input = (char*) realloc(input,wordsize);
           //
         }
         strcpy(input,word);
-        erase word
+        while(nChars >= 0) //delete word or set everything to ''
+        {
+          word[nChars] = '';
+          nChars--;
+        }
       }
       else if (has_output)
       {
-        if( word size is bigger than size left for output)
+        if(nChars > wordsize)
         {
-          output = (char*) realloc(output,word size);
+          output = (char*) realloc(output,wordsize);
           //
         }
         strcpy(output, word);
-        erase word // 
+        while(nChars >= 0) //delete word
+        {
+          word[nChars] = '';
+          nChars--;
+        }
       }
       else
       {
-         //copy word to word_buffer and erase word
-        char* oneword = (char*) malloc (sizeof(char)*word_length); //word length of that copied word...???
-        strcpy(oneword,word);
-        word_buffer[word_num] = oneword;
-        memset(word,0,sizeof(char)*strlen(word_length));
-        word_num++;
-        if (word_num + 1 == max_word_buffer)
-        {
-          max_word_buffer = max_word_buffer * 2;
-          word_buffer = (char**) realloc (word_buffer,max_word_buffer);
-        }
+         //copy word to word_buffer
+         int i = 0;
+         i = nChars;
+         char* newword = (char*) malloc (sizeof(char)*nChars); //word length of that copied word...???
+         strcpy(newword,word);
+         
+          while(i >= 0) //delete word
+         {
+          word[i] = '';
+          i--;
+         }
+         
+         for( i = 0; i < nChars; i++) //copy word into word_buffer: word_buffer
+         {
+           if(nWords == wordsize) //REALLOCATE!
+           {
+             char** temp2 = (char**)realloc(word_buffer, wordsize*2*(char**));
+             wordsize *= 2;
+           }
+           word_buffer[nWords] = &newword[i];
+           nWords++;
+         }
+         
     
       }
     }
@@ -288,7 +336,7 @@ make_command_stream (int (*get_next_byte) (void *),
       else if(curr == '&' && prev == '&')
       {
         current_type = AND_COMMAND;
-        if(word_buffer == NULL && !was_subshell)
+        if(nWords == 0 && !was_subshell)
         {
           fprintf(stderr, "%d: No LHS", lineNumber);
           exit(1);
@@ -297,7 +345,7 @@ make_command_stream (int (*get_next_byte) (void *),
       else if(curr == '|' && prev != '|')
       {
         current_type = PIPE_COMMAND;
-        if(word_buffer == NULL && !was_subshell)
+        if(nWords == 0  && !was_subshell)
         {
           fprintf(stderr, "%d: No LHS", lineNumber);
           exit(1);
@@ -306,7 +354,7 @@ make_command_stream (int (*get_next_byte) (void *),
       else if(curr = '|' && prev == '|')
       {
         current_type = OR_COMMAND;
-        if(word_buffer == NULL && !was_subshell)
+        if(nWords == 0 && !was_subshell)
         {
           fprintf(stderr, "%d: No LHS", lineNumber);
           exit(1);
@@ -316,7 +364,7 @@ make_command_stream (int (*get_next_byte) (void *),
       {
         current_type = SUBSHELL_COMMAND;
 
-        if(word_buffer == NULL && !was_subshell)
+        if(nWords == 0  && !was_subshell)
         {
           fprintf(stderr, "%d: No LHS", lineNumber);
           exit(1);
@@ -337,10 +385,10 @@ make_command_stream (int (*get_next_byte) (void *),
         //if there's input and output assign them too.
 
         command_t new_simple_command = (command_t)malloc(sizeof(struct comamnd));
-        current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output);
+        current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
         has_input = false;
         has_output = false;
-        // shoudl reset input, output to NULL here or indside make_simple_command
+        // shoudl reset input, output to NULL here or inside make_simple_command
       }
       if(stack_size > 0)
       {
@@ -424,17 +472,12 @@ make_command_stream (int (*get_next_byte) (void *),
       //newline can ONLY appear before '(' or ')'
 
       lineNumber ++;
-
-      if(comments)
-      {
-        comments = false;
-      }
       
       //end of line 
       if( !was_subshell)
       {
-        command_t new_simple_command = (command_t)malloc(sizeof(struct comamnd));
-        current_command = make_simple_command(curr, new_simple_command, has_input,has_output, input, output);
+        command_t new_simple_command = (command_t)malloc(sizeof(struct command));
+        current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
         has_input = false;
         has_output = false;
 
@@ -449,7 +492,6 @@ make_command_stream (int (*get_next_byte) (void *),
 
       if(prev == '\n')
       {
-        
           if(stack_size !=0)
           {
             fprintf(stderr, "%d: No RHS", lineNumber);
@@ -457,11 +499,14 @@ make_command_stream (int (*get_next_byte) (void *),
           }
        }
     }
-    else if(prev == '#' && curr == ' ')
-    {
-      comments = true;
-      //ignore up to but not including newline
-      // use you're way to deal with comments.. can't remember how you did that
+else if(curr == '#' && (prev == ' ' || prev == '\n' || prev =='\t')) 
+    {//check if prev_prev == ' ' or '\n' or '\t'
+      //ignore up to but not including newline or EOF
+      while(curr != '\n' || curr  != EOF)
+      {
+        curr = read_char(get_next_byte, get_next_byte_argument);
+      }
+      
     }
     else if(curr != ' ')
     {
@@ -497,12 +542,12 @@ make_command_stream (int (*get_next_byte) (void *),
   //if you free it how do you return it????
   //are we really need to free it? 
   // shouldn't some of them freed after read_command_stream read it?
-  free(current_stream);
+  
+  /*free(current_stream);
   free(current_command);
   free(command_stack);
-  free(new_stream);
+  free(new_stream); */
 
-  //free other malloc if necessary
 
   return root;
 
