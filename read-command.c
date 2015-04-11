@@ -297,9 +297,9 @@ make_command_stream (int (*get_next_byte) (void *),
          char* newword = (char*) malloc (sizeof(char)*nChars); //word length of that copied word...???
          strcpy(newword,word);
          
-          while(i >= 0) //delete word
+          while(i > 0) //delete word
          {
-          word[i] = '0';
+          word[i-1] = '0';
           i--;
          }
          
@@ -408,9 +408,9 @@ make_command_stream (int (*get_next_byte) (void *),
          char* newword = (char*) malloc (sizeof(char)*nChars); //word length of that copied word...???
          strcpy(newword,word);
          
-          while(j >= 0) //delete word
+          while(j > 0) //delete word
          {
-          word[j] = '0';
+          word[j-1] = '0';
           j--;
          }
          
@@ -428,6 +428,7 @@ make_command_stream (int (*get_next_byte) (void *),
         current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
         has_input = false;
         has_output = false;
+        nWords =0;
         // shoudl reset input, output to NULL here or inside make_simple_command
       }
       if(stack_size > 0)
@@ -523,9 +524,9 @@ make_command_stream (int (*get_next_byte) (void *),
          char* newword = (char*) malloc (sizeof(char)*nChars); //word length of that copied word...???
          strcpy(newword,word);
          
-          while(k >= 0) //delete word
+          while(k > 0) //delete word
          {
-          word[k] = '0';
+          word[k-1] = '0';
           k--;
          }
          
@@ -543,6 +544,7 @@ make_command_stream (int (*get_next_byte) (void *),
         current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
         has_input = false;
         has_output = false;
+        nWords = 0;
 
         while (stack_size >0)
         {
