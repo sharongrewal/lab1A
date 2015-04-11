@@ -312,6 +312,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	
 	current_stream->current_root_command = current_command;
 	printf("DDD \n");
+	free (temp);
 	free (command_stack);
 	printf("right before returning");
 	return root;
