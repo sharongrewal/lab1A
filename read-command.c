@@ -140,12 +140,13 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	char prev_prev =' '; //two characters before curr
 
 	//word holding data structures
-	char ** word_buffer= malloc(sizeof(char*)*wordsize); //contains the list of words in a line?
-	char * word= (char*) malloc(sizeof(char)*wordsize); //contains a word
 	int wordsize = 50; //max number of chars in a word
 	int nChars = 0; //number of chars
 	int nWords = 0; //number of words
-
+	
+	char ** word_buffer= malloc(sizeof(char*)*wordsize); //contains the list of words in a line?
+	char * word= (char*) malloc(sizeof(char)*wordsize); //contains a word
+	
 	
 	curr = read_char(get_next_byte, get_next_byte_argument);
 	if(curr == EOF)
