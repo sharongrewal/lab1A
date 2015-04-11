@@ -287,8 +287,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
         	 }
          	word_buffer[nWords] = newword;
          	nWords ++;
-         	fprintf(stderr, "%d:3", lineNumber);
-         	exit(1);
+         	printf("AAA");
+         	
         }
 	
 	/*
