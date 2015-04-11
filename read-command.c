@@ -121,6 +121,53 @@ int  compare_operator (enum command_type current_type, enum command_type stack )
 
 	return (current_opr - stack_opr);
 }
+void make_word_list (char** word, char* word_stream)
+{
+	int word_num = 0;
+	int buffer_num = 0;
+	unsigned int word_stream_num = 0;
+	int max_word = 25;
+	char* buffer = (char*) malloc (sizeof(char)*strlen(word_stream));
+	for(word_stream_num=0; word_stream_num<strlen(word_stream); word_stream_num++)
+	{
+		if (word_stream[word_stream_num] == ' ')
+		{
+			if (buffer_num != 0)
+			{
+				char* oneword = (char*) malloc (sizeof(char)*strlen(word_stream));
+				strcpy(oneword,buffer);
+				word[word_num] = oneword;
+				memset(buffer,0,sizeof(char)*strlen(word_stream));
+				word_num++;
+				buffer_num = 0;
+				if (word_num + 1 == max_word)
+				{
+					max_word = max_word * 2;
+					word = (char**) realloc (word,max_word);
+				}
+			}
+		}
+		else
+		{
+			buffer[buffer_num] = word_stream[word_stream_num];
+			buffer_num++;
+		}	
+	}
+	if (buffer_num != 0)
+	{
+		char* oneword = (char*) malloc (sizeof(char)*strlen(word_stream));
+		strcpy(oneword,buffer);
+		word[word_num] = oneword;
+		memset(buffer,0,sizeof(char)*strlen(word_stream));
+		word_num++;
+		buffer_num = 0;
+		if (word_num + 1 == max_word)
+		{
+			max_word = max_word * 2;
+			word = (char**) realloc (word,max_word);
+		}
+	}
+}
 
 
 command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_next_byte_argument)
@@ -143,11 +190,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	int wordsize = 50; //max number of chars in a word
 	int nChars = 0; //number of chars
 	int nWords = 0; //number of words
-	fprintf(stderr, "%d: why", lineNumber);
-        	exit(1);
-	char ** word_buffer;
-	word_buffer = malloc(sizeof(char*)*wordsize); //contains the list of words in a line?
-	char * word= (char*) malloc(sizeof(char)*wordsize); //contains a word
+	
+	char** word_buffer = (char **)malloc(sizeof(char*)*wordsize); //contains the list of words in a line?
+	char* word= (char*) malloc(sizeof(char)*wordsize); //contains a word
 	
 	
 	curr = read_char(get_next_byte, get_next_byte_argument);
@@ -262,7 +307,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	}
 
 	//when curr == 'EOF'
-	
+	/*
 	printf(word[0]);
          	
          	if(nWords == wordsize) //REALLOCATE!
@@ -274,10 +319,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
         	 
          	strcpy(word_buffer[nWords], word);
          	nWords ++;
-        printf(word_buffer[0]);
-         
+        */
 	printf("AAA\n");
-    		
+    	make_word_list (word_buffer, word);
 	printf("CCC \n");
 	  current_command -> u.word= word_buffer;
 	printf("CCC \n");
