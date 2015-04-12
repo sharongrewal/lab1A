@@ -955,10 +955,10 @@ command_t read_command_stream (command_stream_t s)
 	
 if(s == NULL)
     return NULL;
-  if(*(s->commands) != NULL)
+  if(*(s->current_root_command) != NULL)
   {
-    command_node_t stream = *(s->commands);
-    *(s->commands) = stream->next_command_stream;
+    command_stream_t stream = *(s->current_root_command);
+    *(s->current_root_command) = stream->next_command_stream;
 
     return stream->current_root_command;
   }
