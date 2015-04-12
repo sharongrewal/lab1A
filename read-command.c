@@ -786,14 +786,6 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			
 			}
 
-			if(prev == '\n')
-			{printf("%d \n",__LINE__);
-				if(stack_size !=0 || command_stack[stack_size-1]->type ==SIMPLE_COMMAND)
-				{printf("%d \n",__LINE__);
-					fprintf(stderr, "%d: No RHS \n", lineNumber);
-					exit(1);
-				}
-			}
 
 		}
 		else if (curr != ' ')
@@ -908,7 +900,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 	if(stack_size >0)
 	{
-		fprintf(stderr, "%d: stack is not empty at the end\n", lineNumber);
+		fprintf(stderr, "%d: dangling commands,,,stack is not empty at the end\n", lineNumber);
 		exit(1);  
 	}
 	if(current_command == NULL)
