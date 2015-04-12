@@ -187,7 +187,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 	command_stream_t root = NULL;
 	struct command_stream * current_stream;
-	current_stream = root;
+	
 
 	
 	enum command_type current_type = SIMPLE_COMMAND; //what is command_type? has it been declared?
@@ -775,7 +775,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		command_stream_t new_stream = (command_stream_t)malloc(sizeof(command_stream_t));
 		new_stream->current_root_command =current_command;
 		new_stream ->next_command_stream = NULL;
-
+		current_stream = new_stream;
+		
 		if(root == NULL)
 		{
 			root = new_stream;
