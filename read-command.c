@@ -56,7 +56,7 @@ command_t make_simple_command (command_t new_command,char* word_buffer[], bool h
 		words[c]= word_buffer[c];
 		printf(words[c]);
 	}
-		printf("\n *d \n",nWords);
+		printf("\n %d \n",nWords);
 		printf("11111\n");
 	new_command -> u.word = words;
 	
@@ -459,7 +459,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 }
 
 command_t read_command_stream (command_stream_t s)
-{	]
+{	
 	//command_t output = (command_t)malloc(sizeof(command_t));
 	command_t output = s -> current_root_command;
 	
