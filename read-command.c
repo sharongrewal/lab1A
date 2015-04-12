@@ -23,8 +23,11 @@ bool is_valid(char c)
 	else 
 		return false;
 }
-
-command_t make_simple_command (command_t new_command,char* word_buffer[], bool has_input, bool has_output, char* i, char* o, int nWords)
+void copy_word()
+{
+	
+}
+command_t make_simple_command (command_t new_command, char* word_buffer[], bool has_input, bool has_output, char* i, char* o, int nWords)
 { 
 	// words, input, output
 	//read from word_buffer
@@ -48,18 +51,9 @@ command_t make_simple_command (command_t new_command,char* word_buffer[], bool h
 	//current_command -> u.word = word_buffer;
 	// for loop?
 	//char * words[10]; 
-	char **words = (char**) malloc(20 * sizeof(char*));
-	int c;
-	printf("11111\n");
-	for(c =0; c < nWords; c++)
-	{
-		strcpy(words[c],word_buffer[c]);
-		//words[c]= word_buffer[c];
-		printf(words[c]);
-		printf("\n");
-	}
-		printf("\n %d \n",nWords);
-		printf("11111\n");
+	
+	//char **words = (char**) malloc(20 * sizeof(char*));
+	//copy_word(words,)
 	new_command -> u.word = words;
 	
 	return new_command;
@@ -333,7 +327,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				if(nWords >0)
 				{
 					command_t new_command = (command_t)malloc(sizeof(command_t));
-				current_command = make_simple_command(new_command,word_buffer, has_input,has_output, input, output, nWords);
+					char* temp [] = word_buffer;
+				current_command = make_simple_command(new_command,temp, has_input,has_output, input, output, nWords);
 				has_input = false;
 				has_output = false;
 				nWords = 0;
@@ -395,7 +390,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				{
 						printf("8888\n");
 						command_t new_command = (command_t)malloc(sizeof(command_t));
-				current_command = make_simple_command(new_command,word_buffer, has_input,has_output, input, output, nWords);
+						char* temp2 []= word_buffer;
+				current_command = make_simple_command(new_command,temp2, has_input,has_output, input, output, nWords);
 				has_input = false;
 				has_output = false;
 				nWords = 0;
