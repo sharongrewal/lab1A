@@ -260,7 +260,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				stack_size ++;
 
 				//
-				current_command->current_root_command = command_stack [stack_size-1]; //contain subshell command
+				current_command = command_stack [stack_size-1]; //contain subshell command
 				pop(command_stack, stack_size);
 				stack_size --;
 
