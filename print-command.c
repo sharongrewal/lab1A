@@ -28,17 +28,13 @@ command_indented_print (int indent, command_t c)
 
     case SIMPLE_COMMAND:
       {
-      	printf("it's print command2\n");
 	char **w = c->u.word;
 	
-	printf("it's print command3\n");
 	printf ("%*s%s", indent, "", *w);
 	
-	printf("it's print command4\n");
 	while (*++w)
 	{
 	  printf (" %s", *w);
-	  printf("it's print command5\n");
 	}
 	break;
       }
