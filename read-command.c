@@ -40,6 +40,7 @@ bool is_valid_op(char c)
 
 command_stream_t make_command_stream(int (*get_next_byte)(void*), void *get_next_byte_argument)
 {
+
 	int i = 0; //basic iterator for going through for loops
 	int lineNumber = 1; //lineNumber for error messages, lines start on 1 (not 0)
 	
@@ -140,6 +141,7 @@ command_stream_t make_command_stream(int (*get_next_byte)(void*), void *get_next
 			//SUBSHELL_COMMAND
 		}
 		
+	
 		if(prev == '|' && prev_prev != prev && curr != prev)
 		{
 			//PIPE_COMMAND
@@ -162,10 +164,17 @@ command_stream_t make_command_stream(int (*get_next_byte)(void*), void *get_next
 		curr = read_char(get_next_byte, get_next_byte_argument);
 	}
 	
-	
-	
-	
-	
-	
+	return 0;
 }
+
+command_t read_command_stream(command_stream_t s)
+{
+	return 0;
 }
+	
+	
+	
+	
+	
+	
+
