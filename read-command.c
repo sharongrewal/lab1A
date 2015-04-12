@@ -375,14 +375,15 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		curr = read_char(get_next_byte, get_next_byte_argument);
 	
 	}
-
+				char **temp2 = (char**) malloc(20 * sizeof(char*));
+						
 
 				if(nChars >0)
 				{
 					//copy word to word_buffer
 					char newword[10];
 					//strcpy(newword, word);
-					word_buffer[nWords] = newword;
+					temp2[nWords] = newword;
 					//strcpy (word_buffer[nWords],newword);
 					nWords ++;
 
@@ -392,6 +393,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						word[nChars-1] = NULL;
 						nChars--;
 					}
+					printf("3333\n");
 				
 				}
 				
@@ -399,9 +401,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				{
 						printf("8888\n");
 						command_t new_command = (command_t)malloc(sizeof(command_t));
-						printf("1111\n");
-						char **temp2 = (char**) malloc(20 * sizeof(char*));
-						printf("2222\n");
+						/*
 						int k;
 						for(k =0; k<nWords;k++)
 						{
@@ -410,6 +410,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 							printf("%s \n",temp2[k]);
 						}
 						printf("3333\n");
+						*/
 				current_command = make_simple_command(new_command,temp2, has_input,has_output, input, output, nWords);
 				has_input = false;
 				has_output = false;
