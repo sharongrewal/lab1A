@@ -954,10 +954,13 @@ command_t read_command_stream (command_stream_t s)
 {
 	command_t output = s -> current_root_command;
 	if (s -> next_command_stream == NULL)
-		memset(s,0,sizeof(command_stream_t));
-	else
 	{
-		memcpy(s,s->next_command_stream,sizeof(command_stream_t));
+		memset(s,0,sizeof(command_stream_t));
+	}
+	else
+	{	
+		s = s->next_command_stream;
+		//memcpy(s,s->next_command_stream,sizeof(command_stream_t));
 		//memset(s->next_command_stream,0,sizeof(struct command_stream));
 	}
 	
