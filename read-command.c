@@ -188,8 +188,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	input = NULL;
 	output = NULL;
 	
-	struct command_stream *head = NULL;
-	struct command_stream *current_stream = NULL; 
+	command_stream_t head = NULL;
+	command_stream_t current_stream = NULL; 
 
 	
 	enum command_type current_type = SIMPLE_COMMAND; //what is command_type? has it been declared?
@@ -222,7 +222,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			if(prev_prev =='\n' && prev =='\n')
 			{
 				//new command stream (new line)
-				struct command_stream *new_stream = (struct command_stream *)malloc(sizeof(command_stream_t));
+				command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
 				new_stream->current_root_command = current_command;
 				new_stream ->next_command_stream = NULL;
 				
@@ -914,7 +914,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	{
 		
 		//new command stream (new line)
-		struct command_stream *new_stream = (struct command_stream *)malloc(sizeof(command_stream_t));
+		command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
 		new_stream->current_root_command =current_command;
 		new_stream ->next_command_stream = NULL;
 	
@@ -952,8 +952,10 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 command_t read_command_stream (command_stream_t s)
 {	
-	if(s=s->next_command_stream){
-	return s->current_root_command;
-	}
-	return NULL;
+	command_t output = s -> current_command;
+	if (s -> next_stream == NULL)
+		memset(s,0,sizeof(struct command_stream));
+	else
+		memcpy(s,s->next_stream,sizeof(struct command_stream));
+	return output;
 }
