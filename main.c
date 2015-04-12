@@ -58,7 +58,8 @@ main (int argc, char **argv)
       if (print_tree)
 	{
 	  printf ("# %d\n", command_number++);
-	  printf ("Ihave problem here \n");
+	  printf (command);
+	  printf ("\n I have problem here \n");
 	  print_command (command);
 	  printf ("Nope, it;'s here \n");
 	}
