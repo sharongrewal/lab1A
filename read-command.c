@@ -99,7 +99,7 @@ command_t combine_complete_command (command_t stack, command_t curr_command)
 //stack of commands, stack_size starting from 0 to array size-1
 //pushing stack 
 // when calling push, stack_size should ++
-void push (command_t * curr_command, command_t* stack, int stack_size)
+void push (command_t  curr_command, command_t* stack, int stack_size)
 {
 	stack[stack_size] = curr_command;
 }
@@ -255,7 +255,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				// A must be already in simple_command when the program reached '\n'
 				current_type = SEQUENCE_COMMAND;
 				command_t new_command = (command_t)malloc(sizeof(command_t));
-				command_t temp = current_command
+				command_t temp = current_command;
 				current_command =  make_complete_command(new_command,';', temp);
 				push(current_command, command_stack, stack_size);
 				stack_size ++;
