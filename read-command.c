@@ -29,6 +29,7 @@ command_t make_simple_command (char* word_buffer[], command_t current_command, b
 	// words, input, output
 	//read from word_buffer
 	//clear buffer
+	current_command ->type = SIMPLE_COMMAND;
 	if(has_input)
 	{
 		current_command -> input = i; 
@@ -283,12 +284,15 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					}
 
 				}
-
+				if(nWords >0)
+				{
 				command_t new_simple_command = (command_t)malloc(sizeof(command_t));
 				current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
 				has_input = false;
 				has_output = false;
 				nWords = 0;
+				
+				}
 
 			}
 
@@ -341,13 +345,15 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				
 				}
 				
-/*
+				if(nWords >0)
+				{
 				command_t new_simple_command = (command_t)malloc(sizeof(command_t));
 				current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
 				has_input = false;
 				has_output = false;
 				nWords = 0;
-*/
+				}
+
 
 
 	if(subshell_level != 0)
