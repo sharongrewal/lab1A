@@ -324,7 +324,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 							word_buffer[k] = NULL;
 						}
 						printf("%d: curr :%c\n",__LINE__,curr);
-						current_command = &make_simple_command(new_command,words, input, output, nWords);
+						current_command = (struct command *)&make_simple_command(new_command,words, input, output, nWords);
 						printf("%d: curr :%c\n",__LINE__,curr);
 						input = NULL;
 						output = NULL;
@@ -345,7 +345,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 					
 				while(stack_size >0 && (compare_operator(current_type, command_stack[stack_size-1]->type) <= 0))
 				{
-					current_command = &combine_complete_command(command_stack[stack_size-1], *current_command);
+					current_command = (struct command *)&combine_complete_command(command_stack[stack_size-1], *current_command);
 					pop(command_stack, stack_size);
 					stack_size--;
 				}
@@ -353,7 +353,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 
 					//if it's end of line, you won't need to start a new command
 					command_t new_command = (command_t)malloc(sizeof(command_t));
-					current_command = &make_complete_command(new_command,curr, command_stack[stack_size-1]);
+					current_command = (struct command *)&make_complete_command(new_command,curr, command_stack[stack_size-1]);
 					push(*current_command, command_stack, stack_size-1);
 					//this push overwrites an entry; does not increase stack_size
 
@@ -363,7 +363,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 			{
 				//don't need to combine, just put the simple command into a complete command
 				command_t new_command = (command_t)malloc(sizeof(command_t));
-				current_command = &make_complete_command(new_command,curr, *current_command);
+				current_command =(struct command *) &make_complete_command(new_command,curr, *current_command);
 				push(*current_command, command_stack, stack_size);
 				stack_size++; 
 			}
@@ -415,7 +415,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 						words[k] = word_buffer[k];
 						word_buffer[k] = NULL;
 					}
-					current_command = &make_simple_command(new_command,words, input, output, nWords);
+					current_command =(struct command *) &make_simple_command(new_command,words, input, output, nWords);
 					
 					input = NULL;
 					output = NULL;
@@ -426,7 +426,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 
 				while (stack_size >0)
 				{printf("%d: curr :%c\n",__LINE__,curr);
-					current_command =&combine_complete_command(command_stack[stack_size-1], *current_command);
+					current_command =(struct command *)&combine_complete_command(command_stack[stack_size-1], *current_command);
 					pop(command_stack, stack_size);
 					stack_size--;
 				}
@@ -489,7 +489,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 			words[k]= word_buffer[k];
 			
 		}
-		current_command = &make_simple_command(new_command,words,  input, output, nWords);
+		current_command =(struct command *) &make_simple_command(new_command,words,  input, output, nWords);
 printf("%d: curr :%c\n",__LINE__,curr);
 		input = NULL;
 		output = NULL;
