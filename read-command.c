@@ -953,7 +953,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 command_t read_command_stream (command_stream_t s)
 {	
 	if(s=s->next_command_stream){
-	return s->current_root_stream;
+	return s->current_root_command;
 	}
 	return NULL;
 }
