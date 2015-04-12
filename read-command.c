@@ -184,7 +184,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	char* input = (char*) malloc(wordsize*sizeof(char)); //space for input storing 
 														 //needed for make_simple_command
 	char* output = (char*) malloc(wordsize*sizeof(char)); //space for output storing
-
+	input = NULL;
+	output = NULL;
 	command_stream_t root = NULL;
 	struct command_stream * current_stream;
 	
