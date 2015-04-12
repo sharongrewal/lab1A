@@ -24,8 +24,8 @@ bool is_valid(char c)
 		return false;
 }
 
-void make_simple_command (struct command* current,command_t new_command, char** words,  char* i, char* o, int nWords)
-{ 	printf("%d:  \n",__LINE__);
+command_t make_simple_command (command_t new_command, char** words,  char* i, char* o, int nWords)
+{ printf("%d: curr :%c\n",__LINE__,curr);
 	new_command ->type = SIMPLE_COMMAND;
 
 	if(i != NULL)
@@ -38,15 +38,15 @@ void make_simple_command (struct command* current,command_t new_command, char** 
 		new_command -> output = o; 
 	}
 
-printf("%d: curr \n",__LINE__);
+printf("%d: curr :%c\n",__LINE__,curr);
 	new_command->u.word = words;
-printf("%d: c\n",__LINE__);
-	current = new_command;
-	printf("%d: curr \n",__LINE__);
+printf("%d: curr :%c\n",__LINE__,curr);
+	return new_command;
+	printf("%d: curr :%c\n",__LINE__,curr);
 }
 
 
-void make_complete_command (struct command* current, command_t new_command,char curr, command_t stack)
+command_t make_complete_command ( command_t new_command,char curr, command_t stack)
 { 
 	// for complete commands
   	// type
@@ -63,7 +63,7 @@ void make_complete_command (struct command* current, command_t new_command,char 
         	new_command -> u.command[0] = stack;
         		break;
       	case '|':
-        	new_command -> type = PIPE_COMMAND;
+        	new_command -> type = OR_COMMAND;
         	new_command -> u.command[0] = stack;
         		break;
       	case '(':
@@ -73,10 +73,10 @@ void make_complete_command (struct command* current, command_t new_command,char 
 		        break;
     }
   
- current = new_command;
+return new_command;
 }
 
-void combine_complete_command (struct command* current,command_t stack, command_t curr_command)
+command_t combine_complete_command (command_t stack, command_t curr_command)
 { 
   	switch (stack->type)
     {
@@ -93,14 +93,14 @@ void combine_complete_command (struct command* current,command_t stack, command_
 				break;
     }
     
- 	current =  stack;
+ 	return  stack;
 }
 
 //stack for commands
 //stack of commands, stack_size starting from 0 to array size-1
 //pushing stack 
 // when calling push, stack_size should ++
-void push (command_t* curr_command, command_t* stack, int stack_size)
+void push (command_t curr_command, command_t* stack, int stack_size)
 {
 	stack[stack_size] = curr_command;
 }
@@ -324,7 +324,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 							word_buffer[k] = NULL;
 						}
 						printf("%d: curr :%c\n",__LINE__,curr);
-						make_simple_command(current_command,new_command,words, input, output, nWords);
+						current_commend = &make_simple_command(new_command,words, input, output, nWords);
 						printf("%d: curr :%c\n",__LINE__,curr);
 						input = NULL;
 						output = NULL;
@@ -345,7 +345,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 					
 				while(stack_size >0 && (compare_operator(current_type, command_stack[stack_size-1]->type) <= 0))
 				{
-					combine_complete_command(current_command,command_stack[stack_size-1], current_command);
+					current_command = &combine_complete_command(command_stack[stack_size-1], *current_command);
 					pop(command_stack, stack_size);
 					stack_size--;
 				}
@@ -353,8 +353,8 @@ printf("%d: curr :%c\n",__LINE__,curr);
 
 					//if it's end of line, you won't need to start a new command
 					command_t new_command = (command_t)malloc(sizeof(command_t));
-					make_complete_command(current_command,new_command,curr, command_stack[stack_size-1]);
-					push(current_command, command_stack, stack_size-1);
+					current_command = &make_complete_command(new_command,curr, command_stack[stack_size-1]);
+					push(*current_command, command_stack, stack_size-1);
 					//this push overwrites an entry; does not increase stack_size
 
 
@@ -363,8 +363,8 @@ printf("%d: curr :%c\n",__LINE__,curr);
 			{
 				//don't need to combine, just put the simple command into a complete command
 				command_t new_command = (command_t)malloc(sizeof(command_t));
-				make_complete_command(current_command,new_command,curr, current_command);
-				push(current_command, command_stack, stack_size);
+				current_command = &make_complete_command(new_command,curr, current_command);
+				push(*current_command, command_stack, stack_size);
 				stack_size++; 
 			}
 		}
@@ -415,7 +415,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 						words[k] = word_buffer[k];
 						word_buffer[k] = NULL;
 					}
-					make_simple_command(current_command,new_command,words, input, output, nWords);
+					current_command = &make_simple_command(new_command,words, input, output, nWords);
 					
 					input = NULL;
 					output = NULL;
@@ -426,7 +426,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 
 				while (stack_size >0)
 				{printf("%d: curr :%c\n",__LINE__,curr);
-					combine_complete_command(current_command,command_stack[stack_size-1], current_command);
+					current_command =&combine_complete_command(command_stack[stack_size-1], *current_command);
 					pop(command_stack, stack_size);
 					stack_size--;
 				}
