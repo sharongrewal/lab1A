@@ -806,7 +806,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		curr = read_char(get_next_byte, get_next_byte_argument);
 	
 	}
-
+	printf("%d: curr :%c\n",__LINE__,curr);
 	if( has_input )
 	{
 		if(nChars > wordsize)
@@ -847,9 +847,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		has_output = false;
 	}
 	else
-	{
+	{printf("%d: curr :%c\n",__LINE__,curr);
 		if(nChars >0)
-		{
+		{printf("%d: curr :%c\n",__LINE__,curr);
 			//copy word to word_buffer
 	
 			//strcpy(word_buffer[nWords], word);
@@ -857,7 +857,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			char* newword = (char*)malloc(20*sizeof(char));
 	
 			while(nChars > 0) //delete word
-			{
+			{printf("%d: curr :%c\n",__LINE__,curr);
 				newword[nChars-1]  = word[nChars -1];
 				word[nChars-1] = '\0';
 				nChars--;
@@ -865,16 +865,17 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	
 			word_buffer[nWords] = newword;
 			nWords ++;
+			printf("%d: curr :%c\n",__LINE__,curr);
 		}
 	
 	}
 
 	if(nWords >0)
-	{	
+	{	printf("%d: curr :%c\n",__LINE__,curr);
 		command_t new_command = (command_t)malloc(sizeof(command_t));
 
 		char **words = (char**) malloc(maxwords * sizeof(char*));
-
+printf("%d: curr :%c\n",__LINE__,curr);
 		int k;
 		for(k =0; k<nWords;k++)
 		{
@@ -882,7 +883,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			
 		}
 		current_command = make_simple_command(new_command,words,  input, output, nWords);
-
+printf("%d: curr :%c\n",__LINE__,curr);
 		input = NULL;
 		output = NULL;
 		nWords = 0;
@@ -910,16 +911,17 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 	//when curr == 'EOF'
 	if(current_command != NULL)
-	{
+	{printf("%d: curr :%c\n",__LINE__,curr);
 		
 		//new command stream (new line)
 		command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
 		new_stream->current_root_command =current_command;
 		new_stream ->next_command_stream = NULL;
-	
+	printf("%d: curr :%c\n",__LINE__,curr);
 		if(head == NULL)
 		{
 			head = new_stream;
+		printf("%d: curr :%c\n",__LINE__,curr);
 			current_stream = new_stream;
 
 		}
