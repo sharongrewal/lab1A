@@ -60,7 +60,7 @@ command_t make_simple_command (command_t new_command, char* word_buffer[], bool 
 	{
 		printf("%s \n",word_buffer[k]);
 		words[k]= word_buffer[k];
-		printf("%s \n",new_command ->u.word[k]);
+		printf("%s \n",words[k]);
 	}
 	//new_command -> u.word = word_buffer;
 	printf("090909 \n");
@@ -377,7 +377,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		curr = read_char(get_next_byte, get_next_byte_argument);
 	
 	}
-				char *temp2 [10];
+				char * temp2[10];
+				temp2[9] =NULL;
 						
 				if(nChars >0)
 				{
