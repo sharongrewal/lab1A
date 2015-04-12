@@ -279,14 +279,15 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				{
 					//copy word to word_buffer
 					char newword[10];
-					strcpy(newword, word);
+					//strcpy(newword, word);
 					word_buffer[nWords] = newword;
 					//strcpy (word_buffer[nWords],newword);
 					nWords ++;
 
 					while(nChars > 0) //delete word
 					{
-						word[nChars-1] = '0';
+						newword[nChars-1] = word[nChars-1];
+						word[nChars-1] = NULL;
 						nChars--;
 					}
 
@@ -314,14 +315,15 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				{
 					//copy word to word_buffer
 					char newword[10];
-					strcpy(newword, word);
+					//strcpy(newword, word);
 					word_buffer[nWords] = newword;
 					//strcpy (word_buffer[nWords],newword);
 					nWords ++;
 
 					while(nChars > 0) //delete word
 					{
-						word[nChars-1] = '0';
+						newword[nChars-1] = word[nChars-1];
+						word[nChars-1] = NULL;
 						nChars--;
 					}
 
@@ -373,13 +375,15 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				{
 					//copy word to word_buffer
 					char newword[10];
-					strcpy(newword, word);
+					//strcpy(newword, word);
 					word_buffer[nWords] = newword;
 					//strcpy (word_buffer[nWords],newword);
 					nWords ++;
 
 					while(nChars > 0) //delete word
 					{
+						newword[nChars-1] = word[nChars-1];
+						word[nChars-1] = NULL;
 						nChars--;
 					}
 				
