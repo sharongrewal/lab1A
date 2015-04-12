@@ -372,8 +372,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		}
 		else if( curr== ';' ||  curr == '&' ||curr == '|' ||curr ==')')
 		{
-			if( (curr ==';' && prev ==';') || (curr =='&' && (prev !='&' || prev_prev =='&'))
-			                 || (curr =='|' && (prev =='|' || prev_prev =='|'))) 
+			if( (curr ==';' && prev ==';') || (curr =='&' && prev =='&' && prev_prev =='&')
+			                 || (curr =='|' && prev =='|' && prev_prev =='|')) 
 			{
 				// ;; , &&&, |||, invalid operators
 
