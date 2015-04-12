@@ -183,7 +183,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 	char* input = (char*) malloc(wordsize*sizeof(char)); //space for input storing 
 														 //needed for make_simple_command
-	char* output = (char*) malloc(wordsize*sizeof(char)); //space for output storing
+	char* output; //space for output storing
 	input = NULL;
 	output = NULL;
 	command_stream_t root = NULL;
@@ -342,7 +342,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					//
 				}
 				
-				output = word;
+				 output = (char*) malloc(wordsize*sizeof(char))
+				 strcpy(output, word);
 				
 				while(nChars >= 0) //delete word
 				{
@@ -483,7 +484,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 							//
 						}
 						
-						output = word;
+						output = (char*) malloc(wordsize*sizeof(char))
+						 strcpy(output, word);
 						
 						while(nChars >= 0) //delete word
 						{
@@ -618,7 +620,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					//
 				}
 				
-				output = word;
+				output = (char*) malloc(wordsize*sizeof(char))
+				 strcpy(output, word);
 				
 				while(nChars >= 0) //delete word
 				{
@@ -833,7 +836,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			//
 		}
 		
-		output = word;
+		output = (char*) malloc(wordsize*sizeof(char))
+		strcpy(output, word);
 		
 		while(nChars >= 0) //delete word
 		{
