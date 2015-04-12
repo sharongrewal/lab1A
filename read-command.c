@@ -182,7 +182,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	//allocate memory for word_buffer and word
 	//word_buffer = (char**)malloc(sizeof(char*)*wordsize);
 	//word = (char*) malloc(sizeof(char)*wordsize);
-	printf("8888\n"");
+	printf("8888\n");
 	curr = read_char(get_next_byte, get_next_byte_argument);
 	if(curr == EOF)
 	{
@@ -220,7 +220,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 	while (curr != EOF)
 	{
-		printf("8888\n"");
+		printf("8888\n");
 
 		if(is_valid (curr))
 		{
@@ -322,9 +322,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			prev_prev = prev;
 			prev = curr;
 		}
-	printf("8888\n"");
+	printf("8888\n");
 		curr = read_char(get_next_byte, get_next_byte_argument);
-		printf("8888\n"");
+		printf("8888\n");
 	
 	}
 
