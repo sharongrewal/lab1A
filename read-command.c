@@ -377,7 +377,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				if(nChars >0)
 				{
 					//copy word to word_buffer
-					char newword[10];
+					char * newword = (char*) malloc(20*sizeof(char));
 					//strcpy(newword, word);
 					
 
