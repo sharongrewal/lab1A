@@ -953,20 +953,15 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 command_t read_command_stream (command_stream_t s)
 {
 	
-	if (s -> next_command_stream)
-	{
-		command_t output = s -> current_root_command;
-		s= s->next_command_stream;
-	//	memset(s,0,sizeof(command_stream_t));
-		return output;
-	}
-	else
-	{	
-	
-	//	memcpy(s,s->next_command_stream,sizeof(command_stream_t));
-		//memset(s->next_command_stream,0,sizeof(struct command_stream));
-	}
-	
-	//free(s);
-	return NULL;
+if(s == NULL)
+    return NULL;
+  if(*(s->commands) != NULL)
+  {
+    command_node_t stream = *(s->commands);
+    *(s->commands) = stream->next_command_stream;
+
+    return stream->current_root_command;
+  }
+  return NULL;
+
 }
