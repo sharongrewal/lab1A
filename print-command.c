@@ -9,15 +9,7 @@
 static void
 command_indented_print (int indent, command_t c)
 {
-	 printf("it's print command1\n");
-	 if(c->type == NULL)
-	 {
-	 	printf("can't find type");
-	 }
-	 else
-	 {
-	 	printf("no problem with c->type");
-	 }
+
   switch (c->type)
     {
     case AND_COMMAND:
