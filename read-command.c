@@ -56,6 +56,7 @@ command_t make_simple_command (command_t new_command,char* word_buffer[], bool h
 		words[c]= word_buffer[c];
 		printf(words[c]);
 	}
+		printf("\n *d \n",nWords);
 		printf("11111\n");
 	new_command -> u.word = words;
 	
@@ -437,12 +438,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		root = (command_stream_t)malloc(sizeof(command_stream_t));
 		root ->current_root_command = current_command;
 		root-> next_command_stream = NULL;
-		printf("Calling type\n");
-		if(root -> current_root_command ->type == SIMPLE_COMMAND)
-		{
-		printf("current_command is simple\n");
-		}
-		printf("FUCK \n");
+		
 	}
 
 	free (command_stack);
@@ -463,22 +459,21 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 }
 
 command_t read_command_stream (command_stream_t s)
-{	printf (" problem in read command stream function -1 \n");
+{	]
 	//command_t output = (command_t)malloc(sizeof(command_t));
 	command_t output = s -> current_root_command;
-	printf (" problem in read command stream function -2 \n");
+	
 	if (s -> next_command_stream == NULL)
 	{
 		memset(s,0,sizeof(command_stream_t));
-		printf (" problem in read command stream function -3 \n");
 	}
 	else
 	{
-		printf (" problem in read command stream function -4 \n");
+	
 		memcpy(s,s->next_command_stream,sizeof(command_stream_t));
 		//memset(s->next_command_stream,0,sizeof(struct command_stream));
 	}
-	printf (" problem in read command stream function -5 \n");
+	printf (" read command stream function - \n");
 	//free(s);
 	return output;
 }
