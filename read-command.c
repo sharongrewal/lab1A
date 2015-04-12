@@ -399,7 +399,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			{
 				//don't need to combine, just put the simple command into a complete command
 				command_t new_command = (command_t)malloc(sizeof(command_t));
-				make_complete_command(current_command,new_command,curr, current_command->current_root_command);
+				make_complete_command(current_command,new_command,curr, current_command);
 				push(current_command, command_stack, stack_size);
 				stack_size++; 
 			}
@@ -462,7 +462,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 				while (stack_size >0)
 				{printf("%d: curr :%c\n",__LINE__,curr);
-					combine_complete_command(current_command,command_stack[stack_size-1], current_command->current_root_command);
+					combine_complete_command(current_command,command_stack[stack_size-1], current_command);
 					pop(command_stack, stack_size);
 					stack_size--;
 				}
@@ -525,7 +525,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 			words[k]= word_buffer[k];
 			
 		}
-		current_command->current_root_command = make_simple_command(new_command,words,  input, output, nWords);
+		make_simple_command(current_command,new_command,words,  input, output, nWords);
 printf("%d: curr :%c\n",__LINE__,curr);
 		input = NULL;
 		output = NULL;
@@ -539,14 +539,14 @@ printf("%d: curr :%c\n",__LINE__,curr);
 		fprintf(stderr, "%d: dangling commands,,,stack is not empty at the end\n", lineNumber);
 		exit(1);  
 	}
-	if(current_command->current_root_command == NULL)
+	if(current_command == NULL)
 	{
 		fprintf(stderr, "%d:Nothing in the file\n", lineNumber);
 		exit(1);	
 	}
 
 	//when curr == 'EOF'
-	if(current_command ->current_root_command!= NULL)
+	if(current_command != NULL)
 	{printf("%d: curr :%c\n",__LINE__,curr);
 		
 		//new command stream (new line)
@@ -567,7 +567,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 			current_stream = new_stream;
 
 		}
-		current_command->current_root_command = NULL;
+		current_command = NULL;
 	}
 
 
