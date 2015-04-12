@@ -186,7 +186,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	char* output = (char*) malloc(wordsize*sizeof(char)); //space for output storing
 
 	command_stream_t root = NULL;
-	command_stream_t* current_stream = (char*) malloc (siezof(command_stream_t*));
+	command_stream_t* command_stack = (command_stream_t*)malloc(sizeof(command_stream_t));
 	current_stream = root;
 
 	
