@@ -291,7 +291,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					//strcpy (word_buffer[nWords],newword);
 					printf("%s, %s\n", word_buffer[nWords],newword);
 					nWords ++;
-					
+				}	
 
 
 			}
