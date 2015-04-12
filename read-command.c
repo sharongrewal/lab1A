@@ -27,7 +27,7 @@ void copy_word()
 {
 	
 }
-command_t make_simple_command (command_t new_command, char* word_buffer[], bool has_input, bool has_output, char* i, char* o, int nWords)
+command_t make_simple_command (command_t new_command, char** words, bool has_input, bool has_output, char* i, char* o, int nWords)
 { 
 	// words, input, output
 	//read from word_buffer
@@ -52,16 +52,7 @@ command_t make_simple_command (command_t new_command, char* word_buffer[], bool 
 	// for loop?
 	//char * words[10]; 
 	
-	char **words = (char**) malloc(20 * sizeof(char*));
-	//copy_word(words,)
-	printf("in make simple command \n");
-	int k;
-	for(k =0; k<nWords;k++)
-	{
-		printf("%s \n",word_buffer[k]);
-		words[k]= word_buffer[k];
-		printf("%s \n",words[k]);
-	}
+	
 	//new_command -> u.word = word_buffer;
 	printf("090909 \n");
 	new_command->u.word = words;
@@ -286,18 +277,22 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					//copy word to word_buffer
 					char newword[10];
 					//strcpy(newword, word);
-					word_buffer[nWords] = newword;
-					//strcpy (word_buffer[nWords],newword);
-					nWords ++;
+					
 
 					while(nChars > 0) //delete word
 					{
 						newword[nChars-1] = word[nChars-1];
 						word[nChars-1] = NULL;
 						nChars--;
+						printf("%c \n",newword[nChars]);
 					}
+						printf("3333\n");
+					word_buffer[nWords] = newword;
+					//strcpy (word_buffer[nWords],newword);
+					printf("%s, %s\n", word_buffer[nWords],newword);
+					nWords ++;
+					
 
-				}
 
 			}
 
@@ -315,8 +310,6 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			if( !was_subshell)
 			{
 
-				char * temp2[10];
-				temp2[9] =NULL;
 						
 				if(nChars >0)
 				{
@@ -333,20 +326,29 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						printf("%c \n",newword[nChars]);
 					}
 						printf("3333\n");
-					temp2[nWords] = newword;
+					word_buffer[nWords] = newword;
 					//strcpy (word_buffer[nWords],newword);
-					nWords ++;
-					printf("%s, %s\n", temp2[nWords],newword);
+					printf("%s, %s\n", word_buffer[nWords],newword);
 
+					nWords ++;
+					
 				}
 				//copy word to word_buffer
 				
 				if(nWords >0)
 				{
 					command_t new_command = (command_t)malloc(sizeof(command_t));
-					//char **temp = (char**) malloc(20 * sizeof(char*));
-					//temp = word_buffer;
-				current_command = make_simple_command(new_command,temp2, has_input,has_output, input, output, nWords);
+					char **words = (char**) malloc(20 * sizeof(char*));
+					//copy_word(words,)
+					printf("ABABA");
+					int k;
+					for(k =0; k<nWords;k++)
+					{
+						printf("%s \n",word_buffer[k]);
+						words[k]= word_buffer[k];
+						printf("%s \n",words[k]);
+					}
+				current_command = make_simple_command(new_command,words, has_input,has_output, input, output, nWords);
 				has_input = false;
 				has_output = false;
 				nWords = 0;
@@ -384,9 +386,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		curr = read_char(get_next_byte, get_next_byte_argument);
 	
 	}
-				char * temp2[10];
-				temp2[9] =NULL;
-						
+				
 				if(nChars >0)
 				{
 					//copy word to word_buffer
@@ -402,10 +402,11 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						printf("%c \n",newword[nChars]);
 					}
 						printf("3333\n");
-					temp2[nWords] = newword;
+					word_buffer[nWords] = newword;
 					//strcpy (word_buffer[nWords],newword);
+					printf("%s, %s\n", word_buffer[nWords],newword);
 					nWords ++;
-					printf("%s, %s\n", temp2[nWords],newword);
+					
 
 				}
 				
@@ -423,7 +424,17 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						}
 						printf("3333\n");
 						*/
-				current_command = make_simple_command(new_command,temp2, has_input,has_output, input, output, nWords);
+						char **words = (char**) malloc(20 * sizeof(char*));
+					//copy_word(words,)
+					printf("ABABA");
+					int k;
+					for(k =0; k<nWords;k++)
+					{
+						printf("%s \n",word_buffer[k]);
+						words[k]= word_buffer[k];
+						printf("%s \n",words[k]);
+					}
+				current_command = make_simple_command(new_command,words, has_input,has_output, input, output, nWords);
 				printf("simple command made\n");
 				has_input = false;
 				has_output = false;
