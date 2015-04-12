@@ -308,6 +308,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 
 			word[nChars] = curr;
+			printf("word[nChars]: %c, curr: %c \n",word[nChars],curr);
 			nChars++;
 			printf("3.output: %s, input: %s word:%s\n",output, input, word);
 
