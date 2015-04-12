@@ -27,7 +27,7 @@ void copy_word()
 {
 	
 }
-command_t make_simple_command (command_t new_command, char** word_buffer, bool has_input, bool has_output, char* i, char* o, int nWords)
+command_t make_simple_command (command_t new_command, char* word_buffer[], bool has_input, bool has_output, char* i, char* o, int nWords)
 { 
 	// words, input, output
 	//read from word_buffer
@@ -375,7 +375,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		curr = read_char(get_next_byte, get_next_byte_argument);
 	
 	}
-				char **temp2 = (char**) malloc(20 * sizeof(char*));
+				char *temp2 [] = {0};
 						
 
 				if(nChars >0)
@@ -383,9 +383,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					//copy word to word_buffer
 					char newword[10];
 					//strcpy(newword, word);
-					temp2[nWords] = newword;
-					//strcpy (word_buffer[nWords],newword);
-					nWords ++;
+					
 
 					while(nChars > 0) //delete word
 					{
@@ -394,6 +392,10 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						nChars--;
 					}
 					printf("3333\n");
+					temp2[nWords] = newword;
+					//strcpy (word_buffer[nWords],newword);
+					nWords ++;
+					printf("4444\n");
 				
 				}
 				
