@@ -427,6 +427,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			current_stream ->next_command_stream = new_stream;
 		}
 		*/
+		root = (command_stream_t)malloc(sizeof(command_stream_t));
 		root ->current_root_command = *current_command;
 		root-> next_command_stream = NULL;
 	}
