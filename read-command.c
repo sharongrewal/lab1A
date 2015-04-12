@@ -45,7 +45,7 @@ command_t make_simple_command (char* word_buffer[], command_t current_command, b
 	int c;
 	for(c =0; c < nWords; c++)
 	{
-		strcpy(words[c],word_buffer[c]);
+		*words[c]= *word_buffer[c];
 	}
 	
 	current_command -> u.word = words[0];
@@ -310,8 +310,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				if(nChars >0)
 				{
 					//copy word to word_buffer
-
-					strcpy(word_buffer[nWords], word);
+					char newword[10];
+					strcpy(newword, word);
+					word_buffer[nWords] = newword;
 					//strcpy (word_buffer[nWords],newword);
 					nWords ++;
 
