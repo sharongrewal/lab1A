@@ -341,7 +341,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					if( curr ==')')
 					{
 						current_command = combine_complete_command(current_command, command_stack[stack_size-1]);
-						push(current_command->current_root_command, command_stack, stack_size-1);
+						push(current_command, command_stack, stack_size-1);
 						subshell_level --;
 						was_subshell =true;
 					}
@@ -998,14 +998,14 @@ printf("%d: curr :%c\n",__LINE__,curr);
 		fprintf(stderr, "%d: dangling commands,,,stack is not empty at the end\n", lineNumber);
 		exit(1);  
 	}
-	if(current_command->current_root_command == NULL)
+	if(current_command == NULL)
 	{
 		fprintf(stderr, "%d:Nothing in the file\n", lineNumber);
 		exit(1);	
 	}
 
 	//when curr == 'EOF'
-	if(current_command ->current_root_command!= NULL)
+	if(current_command != NULL)
 	{printf("%d: curr :%c\n",__LINE__,curr);
 		
 		//new command stream (new line)
