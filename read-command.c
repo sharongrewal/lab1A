@@ -390,12 +390,13 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						newword[nChars-1] = word[nChars-1];
 						word[nChars-1] = NULL;
 						nChars--;
+						printf("%c \n",newword[nChars]);
 					}
 					printf("3333\n");
 					temp2[nWords] = newword;
 					//strcpy (word_buffer[nWords],newword);
 					nWords ++;
-					printf("%c, %c\n", temp2[nWords],newword);
+					printf("%s, %s\n", temp2[nWords],newword);
 				
 				}
 				
