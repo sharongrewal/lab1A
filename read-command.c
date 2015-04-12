@@ -194,7 +194,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	enum command_type current_type = SIMPLE_COMMAND; //what is command_type? has it been declared?
 printf("%d: curr :%c\n",__LINE__,curr);
 	//struct command * current_command = (struct command *) malloc (sizeof(struct command));
-	command_t * current_command = (command_t *) malloc (sizeof(command_t));
+	command_t * current_command;
 	printf("%d: curr :%c\n",__LINE__,curr);
 	//stack
 	int stack_size = 0;
