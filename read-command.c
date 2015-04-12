@@ -353,11 +353,11 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					//strcpy (word_buffer[nWords],newword);
 					char* newword = (char*)malloc(20*sizeof(char));
 
-					while(nChar > 0) //delete word
+					while(nChars > 0) //delete word
 					{
 						newword[nChars-1]  = word[nChars -1];
-						word[nChar-1] = '\0';
-						nChar--;
+						word[nChars-1] = '\0';
+						nChars--;
 					}
 
 					word_buffer[nWords] = newword;
@@ -454,11 +454,11 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					//strcpy (word_buffer[nWords],newword);
 					char* newword = (char*)malloc(20*sizeof(char));
 
-					while(nChar > 0) //delete word
+					while(nChasr > 0) //delete word
 					{
 						newword[nChars-1] = word [nChars-1];
-						word[nChar-1] = '\0';
-						nChar--;
+						word[nChars-1] = '\0';
+						nChars--;
 					}
 
 					word_buffer[nWords] = newword;
@@ -469,7 +469,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				if(nWords >0)
 				{
 					command_t new_command = (command_t)malloc(sizeof(command_t));
-					char **words = (char**) malloc (maxWords * sizeof(char*));
+					char **words = (char**) malloc (maxwords * sizeof(char*));
 					int k;
 					for(k =0; k<nWords;k++)
 					{
@@ -562,11 +562,11 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				//strcpy (word_buffer[nWords],newword);
 				char* newword = (char*)malloc(20*sizeof(char));
 
-				while(nChar > 0) //delete word
+				while(nChars > 0) //delete word
 				{
 					newword[nChars-1] = word [nChars-1];
-					word[nChar-1] = '\0';
-					nChar--;
+					word[nChars-1] = '\0';
+					nChars--;
 				}
 
 				word_buffer[nWords] = newword;
@@ -596,11 +596,11 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				//strcpy (word_buffer[nWords],newword);
 				char* newword = (char*)malloc(20*sizeof(char));
 
-				while(nChar > 0) //delete word
+				while(nChars > 0) //delete word
 				{
 					newword[nChars-1] = word [nChars-1];
-					word[nChar-1] = '\0';
-					nChar--;
+					word[nChars-1] = '\0';
+					nChars--;
 				}
 
 				word_buffer[nWords] = newword;
@@ -635,11 +635,11 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					//strcpy (word_buffer[nWords],newword);
 					char* newword = (char*)malloc(20*sizeof(char));
 
-					while(nChar > 0) //delete word
+					while(nChars > 0) //delete word
 					{
 						newword[nChars-1] = word [nChars-1];
-						word[nChar-1] = '\0';
-						nChar--;
+						word[nChars-1] = '\0';
+						nChars--;
 					}
 
 					word_buffer[nWords] = newword;
@@ -651,7 +651,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				if(nWords >0)
 				{
 					command_t new_command = (command_t)malloc(sizeof(command_t));
-					char **words = (char**) malloc (maxWords * sizeof(char*));
+					char **words = (char**) malloc (maxwords * sizeof(char*));
 					int k;
 					for(k =0; k<nWords;k++)
 					{
@@ -727,7 +727,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 		command_t new_command = (command_t)malloc(sizeof(command_t));
 
-		char **words = (char**) malloc(20 * sizeof(char*));
+		char **words = (char**) malloc(maxwords * sizeof(char*));
 
 		int k;
 		for(k =0; k<nWords;k++)
