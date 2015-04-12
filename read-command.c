@@ -480,7 +480,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		
 	}
 
-	free (command_stack);
+	//free (command_stack);
 	if( root == NULL)
 	{
 		fprintf (stderr, "root NULL\n");
@@ -492,7 +492,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		exit(1);
 	}
 
-	free(current_stream);
+	//free(current_stream);
 		printf("current_command to root---2\n");
 	return root;
 
