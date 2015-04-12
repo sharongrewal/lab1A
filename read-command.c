@@ -430,6 +430,12 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		root = (command_stream_t)malloc(sizeof(command_stream_t));
 		root ->current_root_command = *current_command;
 		root-> next_command_stream = NULL;
+		printf("Calling type\n");
+		if(*current_command ->type == SIMPLE_COMMAND)
+		{
+		printf("current_command is simple\n");
+		}
+		printf("FUCK \n");
 	}
 
 	free (command_stack);
