@@ -29,13 +29,7 @@ void copy_word()
 }
 command_t make_simple_command (command_t new_command, char** words, bool has_input, bool has_output, char* i, char* o, int nWords)
 { 
-	// words, input, output
-	//read from word_buffer
-	//clear buffer
-	//command_t* pointer = (command_t*)malloc(sizeof(command_t));
-	
-	//command_t new_command = (command_t)malloc(sizeof(command_t));
-	
+
 	new_command ->type = SIMPLE_COMMAND;
 	
 	if(has_input)
@@ -48,13 +42,7 @@ command_t make_simple_command (command_t new_command, char** words, bool has_inp
 		new_command -> output = o; 
 	}
 
-	//current_command -> u.word = word_buffer;
-	// for loop?
-	//char * words[10]; 
-	
-	
-	//new_command -> u.word = word_buffer;
-	printf("090909 \n");
+
 	new_command->u.word = words;
 	printf("finally... \n");
 	return new_command;
@@ -259,10 +247,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		if(is_valid (curr))
 		{
 			word[nChars]=curr;
-			printf("8888\n");
 			nChars++;  
-			printf("nChars = %d",nChars);
-			printf("\n");
+			printf("nChars = %d, %c \n",nChars,curr);
+
 			
 			
 
@@ -284,12 +271,12 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						newword[nChars-1] = word[nChars-1];
 						word[nChars-1] = NULL;
 						nChars--;
-						printf("%c \n",newword[nChars]);
+					
 					}
-						printf("3333\n");
+					
 					word_buffer[nWords] = newword;
 					//strcpy (word_buffer[nWords],newword);
-					printf("%s, %s\n", word_buffer[nWords],newword);
+					printf("%s, %s\n, nWords = %d", word_buffer[nWords],newword, nWords);
 					nWords ++;
 				}	
 
@@ -323,12 +310,12 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						newword[nChars-1] = word[nChars-1];
 						word[nChars-1] = NULL;
 						nChars--;
-						printf("%c \n",newword[nChars]);
+						
 					}
-						printf("3333\n");
+					
 					word_buffer[nWords] = newword;
 					//strcpy (word_buffer[nWords],newword);
-					printf("%s, %s\n", word_buffer[nWords],newword);
+					printf("%s, %s\n, nWords = %d", word_buffer[nWords],newword, nWords);
 
 					nWords ++;
 					
@@ -340,11 +327,11 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					command_t new_command = (command_t)malloc(sizeof(command_t));
 					char **words = (char**) malloc(20 * sizeof(char*));
 					//copy_word(words,)
-					printf("ABABA");
+					
 					int k;
 					for(k =0; k<nWords;k++)
 					{
-						printf("%s \n",word_buffer[k]);
+						
 						words[k]= word_buffer[k];
 						printf("%s \n",words[k]);
 					}
@@ -399,12 +386,12 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						newword[nChars-1] = word[nChars-1];
 						word[nChars-1] = NULL;
 						nChars--;
-						printf("%c \n",newword[nChars]);
+					
 					}
-						printf("3333\n");
+					
 					word_buffer[nWords] = newword;
 					//strcpy (word_buffer[nWords],newword);
-					printf("%s, %s\n", word_buffer[nWords],newword);
+					printf("%s, %s\n, nWords = %d", word_buffer[nWords],newword, nWords);
 					nWords ++;
 					
 
@@ -412,7 +399,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				
 				if(nWords >0)
 				{
-						printf("8888\n");
+						
 						command_t new_command = (command_t)malloc(sizeof(command_t));
 						/*
 						int k;
@@ -426,7 +413,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						*/
 						char **words = (char**) malloc(20 * sizeof(char*));
 					//copy_word(words,)
-					printf("ABABA");
+					
 					int k;
 					for(k =0; k<nWords;k++)
 					{
@@ -487,7 +474,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		root ->current_root_command = current_command;
 		
 		root-> next_command_stream = NULL;
-			printf("current_command to root---1\n");
+		
 		
 	}
 
@@ -503,8 +490,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		exit(1);
 	}
 
-	//free(current_stream);
-		printf("current_command to root---2\n");
+
 	return root;
 
 }
@@ -512,9 +498,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 command_t read_command_stream (command_stream_t s)
 {	
 	//command_t output = (command_t)malloc(sizeof(command_t));
-	printf (" read command stream function --1\n");
+	
 	command_t output = s -> current_root_command;
-	printf (" read command stream function --2\n");
+
 	if (s -> next_command_stream == NULL)
 	{
 		memset(s,0,sizeof(command_stream_t));
@@ -525,7 +511,7 @@ command_t read_command_stream (command_stream_t s)
 		memcpy(s,s->next_command_stream,sizeof(command_stream_t));
 		//memset(s->next_command_stream,0,sizeof(struct command_stream));
 	}
-	printf (" read command stream function - \n");
+
 	//free(s);
 	return output;
 }
