@@ -310,7 +310,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			word[nChars] = curr;
 
 			nChars++;
-			printf("%d: curr :%c\n",__LINE__,curr);
+			printf("%d: curr :%c, char: %d\n",__LINE__,curr,nChars);
 
 		}
 		else if( curr ==' ' && (is_valid (prev) || prev ==')'))
@@ -356,7 +356,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				has_output = false;
 			}
 			else
-			{
+			{printf("%d: curr :%c\n",__LINE__,curr);
 				if(nChars >0)
 				{
 					//copy word to word_buffer
@@ -374,6 +374,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 					word_buffer[nWords] = newword;
 					nWords ++;
+					printf("%d: word_buffer :%s, nWords :%d\n",__LINE__,word_buffer[nWords-1],nWords);
 				}
 
 			}
@@ -806,7 +807,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		curr = read_char(get_next_byte, get_next_byte_argument);
 	
 	}
-	printf("%d: curr :%c\n",__LINE__,curr);
+	printf("%d: nwords :%d\n",__LINE__,nWords);
 	if( has_input )
 	{
 		if(nChars > wordsize)
@@ -865,7 +866,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	
 			word_buffer[nWords] = newword;
 			nWords ++;
-			printf("%d: curr :%c\n",__LINE__,curr);
+			printf("%d: curr :%d\n",__LINE__,nWords);
 		}
 	
 	}
