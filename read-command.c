@@ -315,25 +315,32 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			if( !was_subshell)
 			{
 
-				
-				//copy word to word_buffer
+				char * temp2[10];
+				temp2[9] =NULL;
+						
 				if(nChars >0)
 				{
 					//copy word to word_buffer
 					char newword[10];
 					//strcpy(newword, word);
-					word_buffer[nWords] = newword;
-					//strcpy (word_buffer[nWords],newword);
-					nWords ++;
+					
 
 					while(nChars > 0) //delete word
 					{
 						newword[nChars-1] = word[nChars-1];
 						word[nChars-1] = NULL;
 						nChars--;
+						printf("%c \n",newword[nChars]);
 					}
+						printf("3333\n");
+					temp2[nWords] = newword;
+					//strcpy (word_buffer[nWords],newword);
+					nWords ++;
+					printf("%s, %s\n", temp2[nWords],newword);
 
 				}
+				//copy word to word_buffer
+				
 				if(nWords >0)
 				{
 					command_t new_command = (command_t)malloc(sizeof(command_t));
