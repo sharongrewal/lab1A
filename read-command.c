@@ -318,7 +318,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			//if white space after valid word
 
 			if( has_input )
-			{
+			{printf("%d: curr :%c\n",__LINE__,curr);
 				if(nChars > wordsize)
 				{
 					wordsize = nChars;
@@ -336,7 +336,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				has_input = false;
 			}
 			else if (has_output)
-			{
+			{printf("%d: curr :%c\n",__LINE__,curr);
 				if(nChars > wordsize)
 				{
 					wordsize = nChars;
@@ -599,7 +599,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 		}
 		else if (curr =='<')
-		{
+		{printf("%d: curr :%c\n",__LINE__,curr);
 			if(prev == '\n')
 			{
 				fprintf(stderr, "%d: Cannot start a new line '<'\n", lineNumber);
@@ -659,7 +659,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			}
 		}
 		else if (curr == '>')
-		{
+		{printf("%d: curr :%c\n",__LINE__,curr);
 			if(prev == '\n')
 			{
 				fprintf(stderr, "%d: Cannot start a new line '>'\n", lineNumber);
