@@ -309,7 +309,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 			word[nChars] = curr;
 			nChars++;
-			printf("3.output: %s, input: %s \n",output, input);
+			printf("3.output: %s, input: %s word:%s\n",output, input, word);
 
 
 		}
@@ -615,7 +615,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				exit(1);
 			}
 			has_input = true;
-			printf("1.output: %s, input: %s \n",output, input);
+			printf("1.output: %s, input: %s word:%s\n",output, input, word);
 			if (has_output)
 			{
 				if(nChars > wordsize)
@@ -634,7 +634,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					nChars--;
 				}
 				has_output = false;
-				printf("2.output: %s, input: %s \n",output, input);
+				printf("2.output: %s, input: %s word:%s\n",output, input, word);
 			}
 			else
 			{
@@ -826,6 +826,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		}
 	
 		input = (char*) malloc(wordsize*sizeof(char));
+		printf("word : %s \n",word);
 		strcpy(input, word);
 	
 		while(nChars >= 0) //delete word or set everything to ''
@@ -834,7 +835,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			nChars--;
 		}
 		has_input = false;
-		printf("output: %c, input: %c \n",output, input);
+		printf("output: %s, input: %s \n",output, input);
 	}
 	else if (has_output)
 	{
