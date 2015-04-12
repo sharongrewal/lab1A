@@ -52,7 +52,7 @@ command_t* make_simple_command (char* word_buffer[], bool has_input, bool has_ou
 	printf("11111\n");
 	for(c =0; c < nWords; c++)
 	{
-		*words[c]= *word_buffer[c];
+		words[c]= word_buffer[c];
 	}
 		printf("11111\n");
 	new_command -> u.word = words;
