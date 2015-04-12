@@ -9,7 +9,7 @@
 static void
 command_indented_print (int indent, command_t c)
 {
-	 print("it's print command1\n");
+	 printf("it's print command1\n");
   switch (c->type)
     {
     case AND_COMMAND:
@@ -28,17 +28,17 @@ command_indented_print (int indent, command_t c)
 
     case SIMPLE_COMMAND:
       {
-      	print("it's print command2\n");
+      	printf("it's print command2\n");
 	char **w = c->u.word;
 	
-	print("it's print command3\n");
+	printf("it's print command3\n");
 	printf ("%*s%s", indent, "", *w);
 	
-	print("it's print command4\n");
+	printf("it's print command4\n");
 	while (*++w)
 	{
 	  printf (" %s", *w);
-	  print("it's print command5\n");
+	  printf("it's print command5\n");
 	}
 	break;
       }
@@ -64,6 +64,6 @@ print_command (command_t c)
 {
 	
   command_indented_print (2, c);
-  print("it's print command\n");
+  printf("it's print command\n");
   putchar ('\n');
 }
