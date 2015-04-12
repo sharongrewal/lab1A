@@ -324,7 +324,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					input = (char*) realloc(input,wordsize);
 				}
 
-				strcpy(input,word);
+				input = word;
 
 				while(nChars >= 0) //delete word or set everything to ''
 				{
@@ -342,7 +342,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					//
 				}
 				
-				strcpy(output, word);
+				output = word;
 				
 				while(nChars >= 0) //delete word
 				{
@@ -465,7 +465,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 							input = (char*) realloc(input,wordsize);
 						}
 		
-						strcpy(input,word);
+						input = word;
 		
 						while(nChars >= 0) //delete word or set everything to ''
 						{
@@ -483,7 +483,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 							//
 						}
 						
-						strcpy(output, word);
+						output = word;
 						
 						while(nChars >= 0) //delete word
 						{
@@ -618,7 +618,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					//
 				}
 				
-				strcpy(output, word);
+				output = word;
 				
 				while(nChars >= 0) //delete word
 				{
@@ -677,7 +677,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					input = (char*) realloc(input,wordsize);
 				}
 
-				strcpy(input,word);
+				input = word;
 
 				while(nChars >= 0) //delete word or set everything to ''
 				{
@@ -815,7 +815,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			input = (char*) realloc(input,wordsize);
 		}
 	
-		strcpy(input,word);
+		input = word;
 	
 		while(nChars >= 0) //delete word or set everything to ''
 		{
@@ -833,7 +833,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			//
 		}
 		
-		strcpy(output, word);
+		output = word;
 		
 		while(nChars >= 0) //delete word
 		{
