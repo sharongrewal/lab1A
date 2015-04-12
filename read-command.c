@@ -24,17 +24,17 @@ bool is_valid(char c)
 		return false;
 }
 
-command_t* make_simple_command (char* word_buffer[], bool has_input, bool has_output, char* i, char* o, int nWords)
+command_t make_simple_command (command_t new_command,char* word_buffer[], bool has_input, bool has_output, char* i, char* o, int nWords)
 { 
 	// words, input, output
 	//read from word_buffer
 	//clear buffer
-	command_t* pointer = (command_t*)malloc(sizeof(command_t));
-	printf("11111\n");
-	command_t new_command = (command_t)malloc(sizeof(command_t));
-	printf("11111\n");
+	//command_t* pointer = (command_t*)malloc(sizeof(command_t));
+	
+	//command_t new_command = (command_t)malloc(sizeof(command_t));
+	
 	new_command ->type = SIMPLE_COMMAND;
-	printf("11111\n");
+	
 	if(has_input)
 	{
 		new_command -> input = i; 
@@ -56,10 +56,8 @@ command_t* make_simple_command (char* word_buffer[], bool has_input, bool has_ou
 	}
 		printf("11111\n");
 	new_command -> u.word = words;
-		printf("22222\n");
-	pointer = &new_command;
-		printf("333333\n");
-	return pointer;
+	
+	return new_command;
 }
 
 
@@ -217,7 +215,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	
 	enum command_type current_type = SIMPLE_COMMAND; //what is command_type? has it been declared?
 
-	command_t* current_command = NULL;
+	command_t current_command = NULL;
 
 	//stack
 	int stack_size = 0;
@@ -327,7 +325,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				}
 				if(nWords >0)
 				{
-				current_command = make_simple_command(word_buffer, has_input,has_output, input, output, nWords);
+					command_t new_command = (command_t)malloc(sizeof(command_t));
+				current_command = make_simple_command(new_command,word_buffer, has_input,has_output, input, output, nWords);
 				has_input = false;
 				has_output = false;
 				nWords = 0;
@@ -386,7 +385,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				if(nWords >0)
 				{
 						printf("8888\n");
-				current_command = make_simple_command(word_buffer, has_input,has_output, input, output, nWords);
+						command_t new_command = (command_t)malloc(sizeof(command_t));
+				current_command = make_simple_command(new_command,word_buffer, has_input,has_output, input, output, nWords);
 				has_input = false;
 				has_output = false;
 				nWords = 0;
@@ -433,7 +433,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		}
 		*/
 		root = (command_stream_t)malloc(sizeof(command_stream_t));
-		root ->current_root_command = *current_command;
+		root ->current_root_command = current_command;
 		root-> next_command_stream = NULL;
 		printf("Calling type\n");
 		if(root -> current_root_command ->type == SIMPLE_COMMAND)
