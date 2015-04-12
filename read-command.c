@@ -738,7 +738,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			{
 
 				if(nChars >0)
-				{
+				{printf("%d \n",__LINE__);
 					//copy word to word_buffer
 
 					//strcpy(word_buffer[nWords], word);
@@ -746,7 +746,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					char* newword = (char*)malloc(20*sizeof(char));
 
 					while(nChars > 0) //delete word
-					{
+					{printf("%d \n",__LINE__);
 						newword[nChars-1] = word [nChars-1];
 						word[nChars-1] = '\0';
 						nChars--;
@@ -754,12 +754,12 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 					word_buffer[nWords] = newword;
 					nWords ++;
-				printf("%d \n",__LINE__);
+				
 				}
 				
 
 				if(nWords >0 )
-				{
+				{printf("%d \n",__LINE__);
 					command_t new_command = (command_t)malloc(sizeof(command_t));
 					char **words = (char**) malloc (maxwords * sizeof(char*));
 					int k;
@@ -778,18 +778,18 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				}
 
 				while (stack_size >0)
-				{
+				{printf("%d \n",__LINE__);
 					current_command = combine_complete_command(command_stack[stack_size-1], current_command);
 					pop(command_stack, stack_size);
 					stack_size--;
 				}
-			printf("%d \n",__LINE__);
+			
 			}
 
 			if(prev == '\n')
-			{
+			{printf("%d \n",__LINE__);
 				if(stack_size !=0 || command_stack[stack_size-1]->type ==SIMPLE_COMMAND)
-				{
+				{printf("%d \n",__LINE__);
 					fprintf(stderr, "%d: No RHS \n", lineNumber);
 					exit(1);
 				}
