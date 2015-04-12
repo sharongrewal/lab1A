@@ -47,14 +47,16 @@ command_t make_simple_command (command_t new_command,char* word_buffer[], bool h
 
 	//current_command -> u.word = word_buffer;
 	// for loop?
-	char * words[10]; 
-	
+	//char * words[10]; 
+	char **words = (char**) malloc(nWords * sizeof(char*));
 	int c;
 	printf("11111\n");
 	for(c =0; c < nWords; c++)
 	{
-		words[c]= word_buffer[c];
+		strcpy(words[c],word_buffer[c]);
+		//words[c]= word_buffer[c];
 		printf(words[c]);
+		printf("\n");
 	}
 		printf("\n %d \n",nWords);
 		printf("11111\n");
