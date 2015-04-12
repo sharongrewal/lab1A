@@ -398,7 +398,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			else if(curr == '&' && prev == '&')
 			{
 				current_type = AND_COMMAND;
-				if(nWords == 0 && !was_subshell)
+				if(current_command ->type != SIMPLE_COMMAND)
 				{
 					fprintf(stderr, "%d: No LHS\n", lineNumber);
 					exit(1);
@@ -407,7 +407,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			else if(curr == '|' && prev != '|')
 			{
 				current_type = PIPE_COMMAND;
-				if(nWords == 0  && !was_subshell)
+				if(nWords == 0 && !was_subshell)
 				{
 					fprintf(stderr, "%d: No LHS\n", lineNumber);
 					exit(1);
@@ -416,7 +416,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			else if(curr == '|' && prev == '|')
 			{
 				current_type = OR_COMMAND;
-				if(nWords == 0 && (!was_subshell))
+				if(current_command ->type != SIMPLE_COMMAND)
 				{
 					fprintf(stderr, "%d: No LHS\n", lineNumber);
 					exit(1);
