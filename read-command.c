@@ -399,7 +399,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						{
 							printf("%s \n",word_buffer[k]);
 							strcpy(temp2[k],word_buffer[k]);
-							printf("%s \n",temp[k]);
+							printf("%s \n",temp2[k]);
 						}
 						printf("3333\n");
 				current_command = make_simple_command(new_command,temp2, has_input,has_output, input, output, nWords);
