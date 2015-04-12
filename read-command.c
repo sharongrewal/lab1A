@@ -114,6 +114,17 @@ command_stream_t make_command_stream(int (*get_next_byte)(void*), void *get_next
 		//retrieves simple commands and stores them into word
 		if(is_valid(curr))
 		{
+			if(nChars == wordsize) //must reallocate
+			{
+			 char * temp = (char*)realloc(word, wordsize + sizeof(char)*wordsize*2);
+			 if(temp == NULL)
+			 {
+			 	fprintf(stderr, "REALLOC FAILED");
+			 	exit(1);
+			 }
+			 word = temp;
+			 wordsize *= 2;
+			}
 			word[nChars] = curr;
 			nChars++;
 		}
