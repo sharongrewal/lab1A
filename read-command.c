@@ -777,6 +777,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		}
 		else
 		{
+			printf("root is not null");
 			current_stream -> next_command_stream = new_stream;
 			current_stream = current_stream->next_command_stream;
 		}
