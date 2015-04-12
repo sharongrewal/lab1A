@@ -25,7 +25,7 @@ bool is_valid(char c)
 }
 
 command_t make_simple_command (command_t new_command, char** words,  char* i, char* o, int nWords)
-{ printf("%d: curr :%c\n",__LINE__,curr);
+{ printf("%d: \n",__LINE__);
 	new_command ->type = SIMPLE_COMMAND;
 
 	if(i != NULL)
@@ -38,11 +38,11 @@ command_t make_simple_command (command_t new_command, char** words,  char* i, ch
 		new_command -> output = o; 
 	}
 
-printf("%d: curr :%c\n",__LINE__,curr);
+printf("%d: \n",__LINE__);
 	new_command->u.word = words;
-printf("%d: curr :%c\n",__LINE__,curr);
+printf("%d: \n",__LINE__);
 	return new_command;
-	printf("%d: curr :%c\n",__LINE__,curr);
+	printf("%d: cur\n",__LINE__);
 }
 
 
@@ -281,7 +281,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 				if( was_subshell && stack_size >0)
 				{printf("%d: curr :%c\n",__LINE__,curr);
 					//if just now was a sibshell. prev ==')'
-					current_command= command_stack [stack_size-1]; //contain subshell command
+					current_command= &command_stack [stack_size-1]; //contain subshell command
 					pop(command_stack, stack_size);
 					stack_size --;
 					was_subshell= false;
@@ -324,7 +324,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 							word_buffer[k] = NULL;
 						}
 						printf("%d: curr :%c\n",__LINE__,curr);
-						current_commend = &make_simple_command(new_command,words, input, output, nWords);
+						current_command = &make_simple_command(new_command,words, input, output, nWords);
 						printf("%d: curr :%c\n",__LINE__,curr);
 						input = NULL;
 						output = NULL;
@@ -363,7 +363,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 			{
 				//don't need to combine, just put the simple command into a complete command
 				command_t new_command = (command_t)malloc(sizeof(command_t));
-				current_command = &make_complete_command(new_command,curr, current_command);
+				current_command = &make_complete_command(new_command,curr, *current_command);
 				push(*current_command, command_stack, stack_size);
 				stack_size++; 
 			}
@@ -489,7 +489,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 			words[k]= word_buffer[k];
 			
 		}
-		make_simple_command(current_command,new_command,words,  input, output, nWords);
+		current_command = &make_simple_command(new_command,words,  input, output, nWords);
 printf("%d: curr :%c\n",__LINE__,curr);
 		input = NULL;
 		output = NULL;
@@ -515,7 +515,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 		
 		//new command stream (new line)
 		command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
-		new_stream->current_root_command =current_command;
+		new_stream->current_root_command =*current_command;
 		new_stream ->next_command_stream = NULL;
 	printf("%d: curr :%c\n",__LINE__,curr);
 		if(head == NULL)
