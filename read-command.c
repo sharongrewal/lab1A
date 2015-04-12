@@ -942,9 +942,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	}
 
 
-	if( root == NULL)
+	if( head == NULL)
 	{
-		fprintf (stderr, "root NULL\n");
+		fprintf (stderr, "head NULL\n");
 		exit(1);
 	}
 	
