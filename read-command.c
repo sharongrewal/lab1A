@@ -217,21 +217,23 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		if(is_valid (curr))
 		{
 			if(prev_prev =='\n' && prev =='\n')
-			{
+			{	printf("%d \n",__LINE__);
 				//new command stream (new line)
 				command_stream_t new_stream = (command_stream_t)malloc(sizeof(command_stream_t));
 				new_stream->current_root_command =current_command;
 				new_stream ->next_command_stream = NULL;
-				
+				printf("%d \n",__LINE__);
 				if(root == NULL)
 				{
 					root = new_stream;
 					current_stream = new_stream;
+					printf("%d \n",__LINE__);
 				}
 				else
 				{
 					current_stream -> next_command_stream = new_stream;
 					current_stream = current_stream->next_command_stream;
+					printf("%d \n",__LINE__);
 				}
 				current_command = NULL;
 			}
