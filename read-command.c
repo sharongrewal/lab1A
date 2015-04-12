@@ -51,7 +51,7 @@ command_t make_simple_command (char* word_buffer[], bool has_input, bool has_out
 	}
 	
 	new_command -> u.word = words;
-	return current_command;
+	return new_command;
 }
 
 
