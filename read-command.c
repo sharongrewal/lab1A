@@ -48,11 +48,13 @@ command_t make_simple_command (command_t new_command,char* word_buffer[], bool h
 	//current_command -> u.word = word_buffer;
 	// for loop?
 	char * words[10]; 
+	words[10] 
 	int c;
 	printf("11111\n");
 	for(c =0; c < nWords; c++)
 	{
 		words[c]= word_buffer[c];
+		printf(words[c]);
 	}
 		printf("11111\n");
 	new_command -> u.word = words;
