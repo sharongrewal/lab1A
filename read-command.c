@@ -470,12 +470,13 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			current_stream ->next_command_stream = new_stream;
 		}
 		*/
-		printf("current_command to root---1\n");
+	
 		root = (command_stream_t)malloc(sizeof(command_stream_t));
-		printf("current_command to root---2\n");
+	
 		root ->current_root_command = current_command;
-		printf("current_command to root---3\n");
+		
 		root-> next_command_stream = NULL;
+			printf("current_command to root---1\n");
 		
 	}
 
@@ -492,6 +493,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	}
 
 	free(current_stream);
+		printf("current_command to root---2\n");
 	return root;
 
 }
