@@ -182,7 +182,6 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 
 	char* input;//space for input storing 
-														 //needed for make_simple_command
 	char* output; //space for output storing
 	input = NULL;
 	output = NULL;
@@ -250,6 +249,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 			if (is_valid(prev_prev) && prev =='\n')
 			{
+			printf("%d: curr :%c\n",__LINE__,curr);
 				// A \n B == A ; B
 				// A must be already in simple_command when the program reached '\n'
 				current_type = SEQUENCE_COMMAND;
@@ -310,7 +310,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			word[nChars] = curr;
 
 			nChars++;
-
+			printf("%d: curr :%c\n",__LINE__,curr);
 
 		}
 		else if( curr ==' ' && (is_valid (prev) || prev ==')'))
@@ -611,7 +611,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			}
 			if(input != NULL)
 			{
-				fprintf(stderr, "%d: cannot have more than one '<' in a simple command", lineNumber);
+				fprintf(stderr, "%d: cannot have more than one '<' in a simple command\n", lineNumber);
 				exit(1);
 			}
 			has_input = true;
@@ -671,7 +671,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			}
 			if(output != NULL)
 			{
-				fprintf(stderr, "%d: cannot have more than one '>' in a simple command", lineNumber);
+				fprintf(stderr, "%d: cannot have more than one '>' in a simple command\n", lineNumber);
 				exit(1);
 			}
 			has_output = true;
@@ -720,7 +720,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		}
 
 		else if (curr == '\n')
-		{
+		{printf("%d: curr :%c\n",__LINE__,curr);
 			//newline can not appear after '<' or '>'
 			//newline can ONLY appear before '(' or ')'
 
@@ -735,9 +735,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			//end of line 
 			if( !was_subshell)
 			{
-
+			printf("%d: curr :%c\n",__LINE__,curr);
 				if(nChars >0)
-				{
+				{printf("%d: curr :%c\n",__LINE__,curr);
 					//copy word to word_buffer
 
 					//strcpy(word_buffer[nWords], word);
@@ -758,7 +758,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				
 
 				if(nWords >0 )
-				{
+				{printf("%d: curr :%c\n",__LINE__,curr);
 					command_t new_command = (command_t)malloc(sizeof(command_t));
 					char **words = (char**) malloc (maxwords * sizeof(char*));
 					int k;
@@ -769,15 +769,15 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					}
 					current_command = make_simple_command(new_command,words, input, output, nWords);
 					
-					input ==NULL;
-					output ==NULL;
+					input = NULL;
+					output = NULL;
 					nWords =0;
 					//word_buffer = NULL:
 					// shoudl reset input, output to NULL here or inside make_simple_command
 				}
 
 				while (stack_size >0)
-				{
+				{printf("%d: curr :%c\n",__LINE__,curr);
 					current_command = combine_complete_command(command_stack[stack_size-1], current_command);
 					pop(command_stack, stack_size);
 					stack_size--;
