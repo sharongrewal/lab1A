@@ -15,7 +15,7 @@ char read_char (int (*get_next_byte) (void *),
 }
 
 bool is_valid(char c) 
-	{ // check if it is a valid character for simple commands
+{ // check if it is a valid character for simple commands
 	// it does not include the eight special token for complete commands
 	if (isalnum(c) || c == '!' || c == '%' || c == '+' || c == ',' || c == '-' || c == '.' 
 					|| c =='/' || c == ':' || c == '@' || c == '^' || c == '_')
@@ -24,20 +24,21 @@ bool is_valid(char c)
 		return false;
 }
 
-command_t make_simple_command (char* word_buffer[], command_t current_command, bool has_input, bool has_output, char* i, char* o, int nWords)
+command_t make_simple_command (char* word_buffer[], bool has_input, bool has_output, char* i, char* o, int nWords)
 { 
 	// words, input, output
 	//read from word_buffer
 	//clear buffer
-	current_command ->type = SIMPLE_COMMAND;
+	command_t new_command = (command_t)malloc(sizeof(command_t));
+	new_command ->type = SIMPLE_COMMAND;
 	if(has_input)
 	{
-		current_command -> input = i; 
+		new_command -> input = i; 
 	}
 
 	if(has_output)
 	{
-		current_command -> output = o; 
+		new_command -> output = o; 
 	}
 
 	//current_command -> u.word = word_buffer;
@@ -49,7 +50,7 @@ command_t make_simple_command (char* word_buffer[], command_t current_command, b
 		*words[c]= *word_buffer[c];
 	}
 	
-	current_command -> u.word = words;
+	new_command -> u.word = words;
 	return current_command;
 }
 
@@ -181,11 +182,11 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	//allocate memory for word_buffer and word
 	//word_buffer = (char**)malloc(sizeof(char*)*wordsize);
 	//word = (char*) malloc(sizeof(char)*wordsize);
-
+	printf("8888\n"");
 	curr = read_char(get_next_byte, get_next_byte_argument);
 	if(curr == EOF)
 	{
-	  	fprintf(stderr, "%d: Nothing in the file", lineNumber);
+	  	fprintf(stderr, "%d: Nothing in the file \n", lineNumber);
         exit(1);
 
 	}    //FILE IS EMPTY
@@ -204,7 +205,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	
 	enum command_type current_type = SIMPLE_COMMAND; //what is command_type? has it been declared?
 
-	command_t current_command = (command_t)malloc(sizeof(command_t));
+	command_t* current_command;
 
 	//stack
 	int stack_size = 0;
@@ -219,6 +220,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 	while (curr != EOF)
 	{
+		printf("8888\n"");
 
 		if(is_valid (curr))
 		{
@@ -286,8 +288,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				}
 				if(nWords >0)
 				{
-				command_t new_simple_command = (command_t)malloc(sizeof(command_t));
-				current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
+				current_command = &make_simple_command(word_buffer, has_input,has_output, input, output, nWords);
 				has_input = false;
 				has_output = false;
 				nWords = 0;
@@ -321,8 +322,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			prev_prev = prev;
 			prev = curr;
 		}
-
+	printf("8888\n"");
 		curr = read_char(get_next_byte, get_next_byte_argument);
+		printf("8888\n"");
 	
 	}
 
@@ -347,8 +349,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				
 				if(nWords >0)
 				{
-				command_t new_simple_command = (command_t)malloc(sizeof(command_t));
-				current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
+				current_command = &make_simple_command(word_buffer, has_input,has_output, input, output, nWords);
 				has_input = false;
 				has_output = false;
 				nWords = 0;
