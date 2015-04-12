@@ -229,7 +229,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				}
 				else
 				{
-					current_stream -> next_command_stream = new_stream;
+					*current_stream -> next_command_stream = new_stream;
 					current_stream = new_stream;
 				}
 				current_command = NULL;
@@ -777,7 +777,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		}
 		else
 		{
-			current_stream -> next_command_stream = new_stream;
+			*current_stream -> next_command_stream = new_stream;
 			current_stream = new_stream;
 		}
 		current_command = NULL;	
