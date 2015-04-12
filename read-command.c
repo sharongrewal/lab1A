@@ -385,8 +385,6 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					char newword[10];
 					//strcpy(newword, word);
 					
-					printf("%s\n",newword);
-					printf("%s\n", temp2[nWords]);
 
 					while(nChars > 0) //delete word
 					{
