@@ -524,9 +524,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 							words[k] = word_buffer[k];
 							word_buffer[k] = NULL;
 						}
-						current_command = make_simple_command(new_command,words,has_input,has_output, input, output, nWords);
-						has_input = false;
-						has_output = false;
+						current_command = make_simple_command(new_command,words, input, output, nWords);
+						input = NULL;
+						output = NULL;
 						nWords =0;
 						//word_buffer = NULL:
 						// shoudl reset input, output to NULL here or inside make_simple_command
