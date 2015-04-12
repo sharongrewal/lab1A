@@ -41,7 +41,7 @@ command_t make_simple_command (command_t new_command, char** words, bool has_inp
 
 
 	new_command->u.word = words;
-	printf(words);
+	printf("%s",words[0]);
 	printf("sigh...");
 	printf(new_command->u.word);
 	return new_command;
@@ -268,14 +268,14 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					{
 						newword[nChars-1] = word[nChars-1];
 						word[nChars-1] = NULL;
-						printf("%c, %c, nChars = %d", newword[nChars-1],word[nChars-1],nChars);
+						printf("2:%c, %c, nChars = %d \n", newword[nChars-1],word[nChars-1],nChars);
 						nChars--;
 					
 					}
 					
 					word_buffer[nWords] = newword;
 					//strcpy (word_buffer[nWords],newword);
-					printf("%s, %s\n, nChars = %d", word_buffer[nWords],newword, nChars);
+					printf("3:%s, %s, nChars = %d \n", word_buffer[nWords],newword, nChars);
 					nWords ++;
 				}	
 
@@ -308,14 +308,14 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					{	
 						newword[nChars-1] = word[nChars-1];
 						word[nChars-1] = NULL;
-						printf("%c, %c, nChars = %d", newword[nChars-1],word[nChars-1],nChars);
+						printf("4:%c, %c, nChars = %d \n", newword[nChars-1],word[nChars-1],nChars);
 						nChars--;
 						
 					}
 					
 					word_buffer[nWords] = newword;
 					//strcpy (word_buffer[nWords],newword);
-					printf("%s, %s\n, nChars = %d \n", word_buffer[nWords],newword, nChars);
+					printf("5:%s, %s, nChars = %d \n", word_buffer[nWords],newword, nChars);
 
 					nWords ++;
 					
@@ -333,7 +333,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					{
 						
 						words[k]= word_buffer[k];
-						printf("%s, nWords= %d \n",words[k],nWords);
+						printf("6: %s, nWords= %d \n",words[k],nWords);
 					}
 				current_command = make_simple_command(new_command,words, has_input,has_output, input, output, nWords);
 				has_input = false;
