@@ -50,6 +50,7 @@ command_indented_print (int indent, command_t c)
       break;
 
     default:
+	 printf("going to abort in print_command\n");
       abort ();
     }
 
