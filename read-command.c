@@ -952,10 +952,10 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 command_t read_command_stream (command_stream_t s)
 {	
-	command_t output = s -> current_command;
-	if (s -> next_stream == NULL)
+	command_t output = s -> current_root_command;
+	if (s -> next_command_stream == NULL)
 		memset(s,0,sizeof(struct command_stream));
 	else
-		memcpy(s,s->next_stream,sizeof(struct command_stream));
+		memcpy(s,s->next_command_stream,sizeof(struct command_stream));
 	return output;
 }
