@@ -24,16 +24,16 @@ bool is_valid(char c)
 		return false;
 }
 
-command_t make_simple_command (command_t new_command, char** words, bool has_input, bool has_output, char* i, char* o, int nWords)
+command_t make_simple_command (command_t new_command, char** words,  char* i, char* o, int nWords)
 { 
 	new_command ->type = SIMPLE_COMMAND;
 
-	if(has_input)
+	if(i != NULL)
 	{
 		new_command -> input = i; 
 	}
 
-	if(has_output)
+	if(o != NULL)
 	{
 		new_command -> output = o; 
 	}
@@ -330,6 +330,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					word[nChars] = '\0';
 					nChars--;
 				}
+				has_input = false;
 			}
 			else if (has_output)
 			{
@@ -347,6 +348,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					word[nChars] = '\0';
 					nChars--;
 				}
+				has_output = false;
 			}
 			else
 			{
@@ -454,26 +456,64 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					//if there's input and output assign them too.
 					//copy last word to word_buffer
 	
-					if(nChars >0)
+					if( has_input )
 					{
-						//copy word to word_buffer
-	
-						//strcpy(word_buffer[nWords], word);
-						//strcpy (word_buffer[nWords],newword);
-						char* newword = (char*)malloc(20*sizeof(char));
-	
-						while(nChars > 0) //delete word
+						if(nChars > wordsize)
 						{
-							newword[nChars-1] = word [nChars-1];
-							word[nChars-1] = '\0';
+							wordsize = nChars;
+							input = (char*) realloc(input,wordsize);
+						}
+		
+						strcpy(input,word);
+		
+						while(nChars >= 0) //delete word or set everything to ''
+						{
+							word[nChars] = '\0';
 							nChars--;
 						}
-	
-						word_buffer[nWords] = newword;
-						nWords ++;
-	
+						has_input = false;
 					}
-	
+					else if (has_output)
+					{
+						if(nChars > wordsize)
+						{
+							wordsize = nChars;
+							output = (char*) realloc(output,wordsize);
+							//
+						}
+						
+						strcpy(output, word);
+						
+						while(nChars >= 0) //delete word
+						{
+							word[nChars] = '\0';
+							nChars--;
+						}
+						has_output = false;
+					}
+					else
+					{
+						if(nChars >0)
+						{
+							//copy word to word_buffer
+		
+							//strcpy(word_buffer[nWords], word);
+							//strcpy (word_buffer[nWords],newword);
+							char* newword = (char*)malloc(20*sizeof(char));
+		
+							while(nChars > 0) //delete word
+							{
+								newword[nChars-1]  = word[nChars -1];
+								word[nChars-1] = '\0';
+								nChars--;
+							}
+		
+							word_buffer[nWords] = newword;
+							nWords ++;
+						}
+		
+					}
+		
 					if(nWords >0)
 					{
 						command_t new_command = (command_t)malloc(sizeof(command_t));
@@ -562,25 +602,50 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				fprintf(stderr, "%d: '<', input must have a output\n", lineNumber);
 				exit(1);
 			}
-			has_input = true;
-
-			if(nChars >0)
+			if(output != NULL)
 			{
-				//copy word to word_buffer
-
-				//strcpy(word_buffer[nWords], word);
-				//strcpy (word_buffer[nWords],newword);
-				char* newword = (char*)malloc(20*sizeof(char));
-
-				while(nChars > 0) //delete word
+				fprintf(stderr, "%d: cannot have more than one '<' in a simple command", lineNumber);
+				exit(1);
+			}
+			has_input = true;
+			if (has_output)
+			{
+				if(nChars > wordsize)
 				{
-					newword[nChars-1] = word [nChars-1];
-					word[nChars-1] = '\0';
+					wordsize = nChars;
+					output = (char*) realloc(output,wordsize);
+					//
+				}
+				
+				strcpy(output, word);
+				
+				while(nChars >= 0) //delete word
+				{
+					word[nChars] = '\0';
 					nChars--;
 				}
+				has_output = false;
+			}
+			else
+			{
+				if(nChars >0)
+				{
+					//copy word to word_buffer
 
-				word_buffer[nWords] = newword;
-				nWords ++;
+					//strcpy(word_buffer[nWords], word);
+					//strcpy (word_buffer[nWords],newword);
+					char* newword = (char*)malloc(20*sizeof(char));
+
+					while(nChars > 0) //delete word
+					{
+						newword[nChars-1]  = word[nChars -1];
+						word[nChars-1] = '\0';
+						nChars--;
+					}
+
+					word_buffer[nWords] = newword;
+					nWords ++;
+				}
 
 			}
 		}
@@ -596,25 +661,50 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				fprintf(stderr, "%d: '>', input must have a output\n", lineNumber);
 				exit(1);
 			}
+			if(input != NULL)
+			{
+				fprintf(stderr, "%d: cannot have more than one '>' in a simple command", lineNumber);
+				exit(1);
+			}
 			has_output = true;
 
-			if(nChars >0)
+			if( has_input )
 			{
-				//copy word to word_buffer
-
-				//strcpy(word_buffer[nWords], word);
-				//strcpy (word_buffer[nWords],newword);
-				char* newword = (char*)malloc(20*sizeof(char));
-
-				while(nChars > 0) //delete word
+				if(nChars > wordsize)
 				{
-					newword[nChars-1] = word [nChars-1];
-					word[nChars-1] = '\0';
-					nChars--;
+					wordsize = nChars;
+					input = (char*) realloc(input,wordsize);
 				}
 
-				word_buffer[nWords] = newword;
-				nWords ++;
+				strcpy(input,word);
+
+				while(nChars >= 0) //delete word or set everything to ''
+				{
+					word[nChars] = '\0';
+					nChars--;
+				}
+				has_input = false;
+			}
+			else
+			{
+				if(nChars >0)
+				{
+					//copy word to word_buffer
+
+					//strcpy(word_buffer[nWords], word);
+					//strcpy (word_buffer[nWords],newword);
+					char* newword = (char*)malloc(20*sizeof(char));
+
+					while(nChars > 0) //delete word
+					{
+						newword[nChars-1]  = word[nChars -1];
+						word[nChars-1] = '\0';
+						nChars--;
+					}
+
+					word_buffer[nWords] = newword;
+					nWords ++;
+				}
 
 			}
 
@@ -668,9 +758,10 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						words[k] = word_buffer[k];
 						word_buffer[k] = NULL;
 					}
-					current_command = make_simple_command(new_command,words,has_input,has_output, input, output, nWords);
-					has_input = false;
-					has_output = false;
+					current_command = make_simple_command(new_command,words, input, output, nWords);
+					
+					input ==NULL;
+					output ==NULL;
 					nWords =0;
 					//word_buffer = NULL:
 					// shoudl reset input, output to NULL here or inside make_simple_command
@@ -745,10 +836,10 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			words[k]= word_buffer[k];
 			
 		}
-		current_command = make_simple_command(new_command,words, has_input,has_output, input, output, nWords);
+		current_command = make_simple_command(new_command,words,  input, output, nWords);
 
-		has_input = false;
-		has_output = false;
+		input = NULL;
+		output = NULL;
 		nWords = 0;
 	}
 
