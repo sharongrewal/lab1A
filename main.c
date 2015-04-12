@@ -48,22 +48,22 @@ main (int argc, char **argv)
   FILE *script_stream = fopen (script_name, "r");
   if (! script_stream)
     error (1, errno, "%s: cannot open", script_name);
-    printf("MAIN--3\n");
+
   command_stream_t command_stream =
     make_command_stream (get_next_byte, script_stream);
-printf("MAIN--3\n");
+
   command_t last_command = NULL;
   command_t command;
-  printf (" didn't go to while loop in main yet \n");
+
   while ((command = read_command_stream (command_stream)))
     {
-    	printf ("inside while loop\n");
+
       if (print_tree)
 	{
 	  printf ("# %d\n", command_number++);
-	  printf ("\n I have problem here \n");
+
 	  print_command (command);
-	  printf ("Nope, it;'s here \n");
+
 	}
       else
 	{
