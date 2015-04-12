@@ -603,7 +603,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				fprintf(stderr, "%d: '<', input must have a output\n", lineNumber);
 				exit(1);
 			}
-			if(output != NULL)
+			if(input != NULL)
 			{
 				fprintf(stderr, "%d: cannot have more than one '<' in a simple command", lineNumber);
 				exit(1);
@@ -662,7 +662,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				fprintf(stderr, "%d: '>', input must have a output\n", lineNumber);
 				exit(1);
 			}
-			if(input != NULL)
+			if(output != NULL)
 			{
 				fprintf(stderr, "%d: cannot have more than one '>' in a simple command", lineNumber);
 				exit(1);
@@ -807,21 +807,62 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	
 	}
 
-	if(nChars >0)
+	if( has_input )
 	{
-		//copy word to word_buffer
-		char* newword = (char*)malloc(20*sizeof(char));
-		while(nChars > 0) 
+		if(nChars > wordsize)
 		{
-			newword[nChars-1] = word[nChars-1];
-			word[nChars-1] = NULL;
+			wordsize = nChars;
+			input = (char*) realloc(input,wordsize);
+		}
+	
+		strcpy(input,word);
+	
+		while(nChars >= 0) //delete word or set everything to ''
+		{
+			word[nChars] = '\0';
 			nChars--;
 		}
-
-		word_buffer[nWords] = newword;
-		nWords ++;
-
-
+		has_input = false;
+	}
+	else if (has_output)
+	{
+		if(nChars > wordsize)
+		{
+			wordsize = nChars;
+			output = (char*) realloc(output,wordsize);
+			//
+		}
+		
+		strcpy(output, word);
+		
+		while(nChars >= 0) //delete word
+		{
+			word[nChars] = '\0';
+			nChars--;
+		}
+		has_output = false;
+	}
+	else
+	{
+		if(nChars >0)
+		{
+			//copy word to word_buffer
+	
+			//strcpy(word_buffer[nWords], word);
+			//strcpy (word_buffer[nWords],newword);
+			char* newword = (char*)malloc(20*sizeof(char));
+	
+			while(nChars > 0) //delete word
+			{
+				newword[nChars-1]  = word[nChars -1];
+				word[nChars-1] = '\0';
+				nChars--;
+			}
+	
+			word_buffer[nWords] = newword;
+			nWords ++;
+		}
+	
 	}
 
 	if(nWords >0)
