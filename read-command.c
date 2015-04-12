@@ -521,7 +521,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		
 					}
 		
-					if(nWords >0)
+					if(nWords >0 || input != NULL ||output !=NULL)
 					{
 						command_t new_command = (command_t)malloc(sizeof(command_t));
 						char **words = (char**) malloc (maxwords * sizeof(char*));
@@ -757,7 +757,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				}
 				
 
-				if(nWords >0)
+				if(nWords >0 || input != NULL ||output !=NULL)
 				{
 					command_t new_command = (command_t)malloc(sizeof(command_t));
 					char **words = (char**) malloc (maxwords * sizeof(char*));
@@ -875,7 +875,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	
 	}
 
-	if(nWords >0)
+	if(nWords >0 || input != NULL ||output !=NULL)
 	{
 
 		command_t new_command = (command_t)malloc(sizeof(command_t));
