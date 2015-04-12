@@ -29,9 +29,12 @@ command_t* make_simple_command (char* word_buffer[], bool has_input, bool has_ou
 	// words, input, output
 	//read from word_buffer
 	//clear buffer
-	command_t * pointer = (command_t*)malloc(sizeof(command_t*));
+	command_t* pointer = (command_t*)malloc(sizeof(command_t));
+	printf("11111\n");
 	command_t new_command = (command_t)malloc(sizeof(command_t));
+	printf("11111\n");
 	new_command ->type = SIMPLE_COMMAND;
+	printf("11111\n");
 	if(has_input)
 	{
 		new_command -> input = i; 
@@ -46,6 +49,7 @@ command_t* make_simple_command (char* word_buffer[], bool has_input, bool has_ou
 	// for loop?
 	char * words[10]; 
 	int c;
+	printf("11111\n");
 	for(c =0; c < nWords; c++)
 	{
 		*words[c]= *word_buffer[c];
