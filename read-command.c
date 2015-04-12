@@ -99,7 +99,7 @@ command_t combine_complete_command (command_t stack, command_t curr_command)
 //stack of commands, stack_size starting from 0 to array size-1
 //pushing stack 
 // when calling push, stack_size should ++
-void push (command_t curr_command, command_t* stack, int stack_size)
+void push (command_t * curr_command, command_t* stack, int stack_size)
 {
 	stack[stack_size] = curr_command;
 }
@@ -222,7 +222,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			{
 				//new command stream (new line)
 				command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
-				new_stream->current_root_command = current_command->current_root_command;
+				new_stream->current_root_command = current_command;
 				new_stream ->next_command_stream = NULL;
 				
 				if(head == NULL)
@@ -237,7 +237,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					current_stream = new_stream;
 					
 				}
-				current_command ->current_root_command= NULL;
+				current_command = NULL;
 			}
 
 			
@@ -301,7 +301,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				{
 					//don't need to combine, just put the simple command into a complete command
 					command_t new_command = (command_t)malloc(sizeof(command_t));
-					current_commandd = make_complete_command(new_command,curr, current_command);
+					current_command = make_complete_command(new_command,curr, current_command);
 					push(current_command, command_stack, stack_size);
 					stack_size++; 
 				}
