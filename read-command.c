@@ -192,8 +192,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	
 	enum command_type current_type = SIMPLE_COMMAND; //what is command_type? has it been declared?
 
-	struct command * current_command = (struct command *) malloc (sizeof(struct command));
-
+	//struct command * current_command = (struct command *) malloc (sizeof(struct command));
+	command_stream_t current_command = NULL;
+	
 	//stack
 	int stack_size = 0;
 	int max_stack_size = 501;
@@ -221,7 +222,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			{
 				//new command stream (new line)
 				command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
-				new_stream->current_root_command = current_command;
+				new_stream->current_root_command = current_command->current_root_command;
 				new_stream ->next_command_stream = NULL;
 				
 				if(head == NULL)
@@ -236,7 +237,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					current_stream = new_stream;
 					
 				}
-				current_command = NULL;
+				current_command ->current_root_command= NULL;
 			}
 
 			
@@ -254,12 +255,12 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				// A must be already in simple_command when the program reached '\n'
 				current_type = SEQUENCE_COMMAND;
 				command_t new_command = (command_t)malloc(sizeof(command_t));
-				current_command = make_complete_command(new_command,';', current_command);
-				push(current_command, command_stack, stack_size);
+				current_command->current_root_command = make_complete_command(new_command,';', current_command->current_root_command);
+				push(current_command->current_root_command, command_stack, stack_size);
 				stack_size ++;
 
 				//
-				current_command = command_stack [stack_size-1]; //contain subshell command
+				current_command->current_root_command = command_stack [stack_size-1]; //contain subshell command
 				pop(command_stack, stack_size);
 				stack_size --;
 
@@ -274,15 +275,15 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						
 					while(stack_size >0 && (compare_operator(current_type, command_stack[stack_size-1]->type) <= 0))
 					{
-						current_command = combine_complete_command(command_stack[stack_size-1], current_command);
+						current_command->current_root_command = combine_complete_command(command_stack[stack_size-1], current_command->current_root_command);
 						pop(command_stack, stack_size);
 						stack_size--;
 					}
 
 					if( curr ==')')
 					{
-						current_command = combine_complete_command(current_command, command_stack[stack_size-1]);
-						push(current_command, command_stack, stack_size-1);
+						current_command->current_root_command = combine_complete_command(current_command->current_root_command, command_stack[stack_size-1]);
+						push(current_command->current_root_command, command_stack, stack_size-1);
 						subshell_level --;
 						was_subshell =true;
 					}
@@ -290,8 +291,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					{
 						//if it's end of line, you won't need to start a new command
 						command_t new_command = (command_t)malloc(sizeof(command_t));
-						current_command = make_complete_command(new_command,curr, command_stack[stack_size-1]);
-						push(current_command, command_stack, stack_size-1);
+						current_command->current_root_command = make_complete_command(new_command,curr, command_stack[stack_size-1]);
+						push(current_command->current_root_command, command_stack, stack_size-1);
 						//this push overwrites an entry; does not increase stack_size
 					}
 
@@ -300,8 +301,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				{
 					//don't need to combine, just put the simple command into a complete command
 					command_t new_command = (command_t)malloc(sizeof(command_t));
-					current_command = make_complete_command(new_command,curr, current_command);
-					push(current_command, command_stack, stack_size);
+					current_command->current_root_command = make_complete_command(new_command,curr, current_command->current_root_command);
+					push(current_command->current_root_command, command_stack, stack_size);
 					stack_size++; 
 				}
 			}
@@ -312,12 +313,12 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				// A must be already in simple_command when the program reached '\n'
 				current_type = PIPE_COMMAND;
 				command_t new_command = (command_t)malloc(sizeof(command_t));
-				current_command = make_complete_command(new_command,'|', current_command);
-				push(current_command, command_stack, stack_size);
+				current_command ->current_root_command= make_complete_command(new_command,'|', current_command->current_root_command);
+				push(current_command->current_root_command, command_stack, stack_size);
 				stack_size ++;
 
 				//
-				current_command = command_stack [stack_size-1]; //contain subshell command
+				current_command->current_root_command = command_stack [stack_size-1]; //contain subshell command
 				pop(command_stack, stack_size);
 				stack_size --;
 
@@ -332,15 +333,15 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						
 					while(stack_size >0 && (compare_operator(current_type, command_stack[stack_size-1]->type) <= 0))
 					{
-						current_command = combine_complete_command(command_stack[stack_size-1], current_command);
+						current_command ->current_root_command= combine_complete_command(command_stack[stack_size-1], current_command->current_root_command);
 						pop(command_stack, stack_size);
 						stack_size--;
 					}
 
 					if( curr ==')')
 					{
-						current_command = combine_complete_command(current_command, command_stack[stack_size-1]);
-						push(current_command, command_stack, stack_size-1);
+						current_command ->current_root_command= combine_complete_command(current_command->current_root_command, command_stack[stack_size-1]);
+						push(current_command->current_root_command, command_stack, stack_size-1);
 						subshell_level --;
 						was_subshell =true;
 					}
@@ -348,8 +349,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					{
 						//if it's end of line, you won't need to start a new command
 						command_t new_command = (command_t)malloc(sizeof(command_t));
-						current_command = make_complete_command(new_command,curr, command_stack[stack_size-1]);
-						push(current_command, command_stack, stack_size-1);
+						current_command->current_root_command = make_complete_command(new_command,curr, command_stack[stack_size-1]);
+						push(current_command->current_root_command, command_stack, stack_size-1);
 						//this push overwrites an entry; does not increase stack_size
 					}
 
@@ -358,8 +359,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				{
 					//don't need to combine, just put the simple command into a complete command
 					command_t new_command = (command_t)malloc(sizeof(command_t));
-					current_command = make_complete_command(new_command,curr, current_command);
-					push(current_command, command_stack, stack_size);
+					current_command->current_root_command = make_complete_command(new_command,curr, current_command->current_root_command);
+					push(current_command->current_root_command, command_stack, stack_size);
 					stack_size++; 
 				}
 			}
@@ -497,7 +498,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				if( was_subshell && stack_size >0)
 				{
 					//if just now was a sibshell. prev ==')'
-					current_command = command_stack [stack_size-1]; //contain subshell command
+					current_command->current_root_command = command_stack [stack_size-1]; //contain subshell command
 					pop(command_stack, stack_size);
 					stack_size --;
 					was_subshell= false;
@@ -579,7 +580,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 							words[k] = word_buffer[k];
 							word_buffer[k] = NULL;
 						}
-						current_command = make_simple_command(new_command,words, input, output, nWords);
+						current_command ->current_root_command= make_simple_command(new_command,words, input, output, nWords);
 						input = NULL;
 						output = NULL;
 						nWords =0;
@@ -599,15 +600,15 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					
 				while(stack_size >0 && (compare_operator(current_type, command_stack[stack_size-1]->type) <= 0))
 				{
-					current_command = combine_complete_command(command_stack[stack_size-1], current_command);
+					current_command ->current_root_command= combine_complete_command(command_stack[stack_size-1], current_command->current_root_command);
 					pop(command_stack, stack_size);
 					stack_size--;
 				}
 
 				if( curr ==')')
 				{
-					current_command = combine_complete_command(current_command, command_stack[stack_size-1]);
-					push(current_command, command_stack, stack_size-1);
+					current_command->current_root_command = combine_complete_command(current_command->current_root_command, command_stack[stack_size-1]);
+					push(current_command->current_root_command, command_stack, stack_size-1);
 					subshell_level --;
 					was_subshell =true;
 				}
@@ -615,8 +616,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				{
 					//if it's end of line, you won't need to start a new command
 					command_t new_command = (command_t)malloc(sizeof(command_t));
-					current_command = make_complete_command(new_command,curr, command_stack[stack_size-1]);
-					push(current_command, command_stack, stack_size-1);
+					current_command->current_root_command = make_complete_command(new_command,curr, command_stack[stack_size-1]);
+					push(current_command->current_root_command, command_stack, stack_size-1);
 					//this push overwrites an entry; does not increase stack_size
 				}
 
@@ -625,8 +626,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			{
 				//don't need to combine, just put the simple command into a complete command
 				command_t new_command = (command_t)malloc(sizeof(command_t));
-				current_command = make_complete_command(new_command,curr, current_command);
-				push(current_command, command_stack, stack_size);
+				current_command->current_root_command = make_complete_command(new_command,curr, current_command->current_root_command);
+				push(current_command->current_root_command, command_stack, stack_size);
 				stack_size++; 
 			}
 		}
@@ -640,8 +641,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			}
 			subshell_level ++;
 			command_t new_command = (command_t)malloc(sizeof(command_t));
-			current_command = make_complete_command(new_command,curr, current_command);
-			push (current_command, command_stack, stack_size);
+			current_command ->current_root_command= make_complete_command(new_command,curr, current_command->current_root_command);
+			push (current_command->current_root_command, command_stack, stack_size);
 			stack_size ++;
 
 		}
@@ -859,7 +860,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						words[k] = word_buffer[k];
 						word_buffer[k] = NULL;
 					}
-					current_command = make_simple_command(new_command,words, input, output, nWords);
+					current_command->current_root_command = make_simple_command(new_command,words, input, output, nWords);
 					
 					input = NULL;
 					output = NULL;
@@ -870,7 +871,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 				while (stack_size >0)
 				{printf("%d: curr :%c\n",__LINE__,curr);
-					current_command = combine_complete_command(command_stack[stack_size-1], current_command);
+					current_command->current_root_command = combine_complete_command(command_stack[stack_size-1], current_command->current_root_command);
 					pop(command_stack, stack_size);
 					stack_size--;
 				}
@@ -976,7 +977,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 			words[k]= word_buffer[k];
 			
 		}
-		current_command = make_simple_command(new_command,words,  input, output, nWords);
+		current_command->current_root_command = make_simple_command(new_command,words,  input, output, nWords);
 printf("%d: curr :%c\n",__LINE__,curr);
 		input = NULL;
 		output = NULL;
@@ -997,19 +998,19 @@ printf("%d: curr :%c\n",__LINE__,curr);
 		fprintf(stderr, "%d: dangling commands,,,stack is not empty at the end\n", lineNumber);
 		exit(1);  
 	}
-	if(current_command == NULL)
+	if(current_command->current_root_command == NULL)
 	{
 		fprintf(stderr, "%d:Nothing in the file\n", lineNumber);
 		exit(1);	
 	}
 
 	//when curr == 'EOF'
-	if(current_command != NULL)
+	if(current_command ->current_root_command!= NULL)
 	{printf("%d: curr :%c\n",__LINE__,curr);
 		
 		//new command stream (new line)
 		command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
-		new_stream->current_root_command =current_command;
+		new_stream->current_root_command =current_command->current_root_command;
 		new_stream ->next_command_stream = NULL;
 	printf("%d: curr :%c\n",__LINE__,curr);
 		if(head == NULL)
@@ -1025,7 +1026,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 			current_stream = new_stream;
 
 		}
-		current_command = NULL;
+		current_command->current_root_command = NULL;
 	}
 
 
