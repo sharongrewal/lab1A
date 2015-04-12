@@ -790,11 +790,12 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		fprintf (stderr, "root NULL\n");
 		exit(1);
 	}
-	if( current_stream == NULL)
-	{
-		fprintf (stderr, "current stream NULL \n");
-		exit(1);
-	}
+	
+	//if( current_stream == NULL)
+//	{
+	//	fprintf (stderr, "current stream NULL \n");
+	//	exit(1);
+//	}
 
 	return root;
 
