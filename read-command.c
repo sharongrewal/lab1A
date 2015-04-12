@@ -54,7 +54,7 @@ command_t make_simple_command (command_t new_command, char* word_buffer[], bool 
 	
 	//char **words = (char**) malloc(20 * sizeof(char*));
 	//copy_word(words,)
-	new_command -> u.word = words;
+	new_command -> u.word = word_buffer;
 	
 	return new_command;
 }
@@ -327,7 +327,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				if(nWords >0)
 				{
 					command_t new_command = (command_t)malloc(sizeof(command_t));
-					char* temp [] = word_buffer;
+					char* temp [10] = word_buffer;
 				current_command = make_simple_command(new_command,temp, has_input,has_output, input, output, nWords);
 				has_input = false;
 				has_output = false;
@@ -390,7 +390,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				{
 						printf("8888\n");
 						command_t new_command = (command_t)malloc(sizeof(command_t));
-						char* temp2 []= word_buffer;
+						char* temp2 [10]= word_buffer;
 				current_command = make_simple_command(new_command,temp2, has_input,has_output, input, output, nWords);
 				has_input = false;
 				has_output = false;
