@@ -208,7 +208,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	}
 
 	while (curr != EOF)
-	{printf("%d \n",__LINE__);
+	{
 		if (curr == '#' && (prev == ' ' || prev == '\n' || prev =='\t'))
 		{
 			while(curr != '\n' || curr  != EOF)
@@ -216,8 +216,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				curr = read_char(get_next_byte, get_next_byte_argument);
 			}
 		}
+		printf("%d \n",__LINE__);
 		if(is_valid (curr))
-		{ printf("%d \n",__LINE__);
+		{ printf("%d: curr is %c \n",__LINE__,curr);
 			if(prev_prev =='\n' && prev =='\n')
 			{	printf("%d \n",__LINE__);
 				//new command stream (new line)
@@ -720,7 +721,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		}
 
 		else if (curr == '\n')
-		{
+		{printf("%d \n",__LINE__);
 			//newline can not appear after '<' or '>'
 			//newline can ONLY appear before '(' or ')'
 
@@ -753,11 +754,11 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 					word_buffer[nWords] = newword;
 					nWords ++;
-
+				printf("%d \n",__LINE__);
 				}
 				
 
-				if(nWords >0 || input != NULL ||output !=NULL)
+				if(nWords >0 )
 				{
 					command_t new_command = (command_t)malloc(sizeof(command_t));
 					char **words = (char**) malloc (maxwords * sizeof(char*));
@@ -782,7 +783,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					pop(command_stack, stack_size);
 					stack_size--;
 				}
-
+			printf("%d \n",__LINE__);
 			}
 
 			if(prev == '\n')
