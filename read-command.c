@@ -25,7 +25,7 @@ bool is_valid(char c)
 }
 
 void make_simple_command (struct command* current,command_t new_command, char** words,  char* i, char* o, int nWords)
-{ 
+{ printf("%d: curr :%c\n",__LINE__,curr);
 	new_command ->type = SIMPLE_COMMAND;
 
 	if(i != NULL)
@@ -38,10 +38,11 @@ void make_simple_command (struct command* current,command_t new_command, char** 
 		new_command -> output = o; 
 	}
 
-
+printf("%d: curr :%c\n",__LINE__,curr);
 	new_command->u.word = words;
-
+printf("%d: curr :%c\n",__LINE__,curr);
 	current = new_command;
+	printf("%d: curr :%c\n",__LINE__,curr);
 }
 
 
@@ -191,10 +192,10 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 	
 	enum command_type current_type = SIMPLE_COMMAND; //what is command_type? has it been declared?
-
+printf("%d: curr :%c\n",__LINE__,curr);
 	//struct command * current_command = (struct command *) malloc (sizeof(struct command));
 	struct command * current_command = NULL;
-	
+	printf("%d: curr :%c\n",__LINE__,curr);
 	//stack
 	int stack_size = 0;
 	int max_stack_size = 501;
@@ -210,7 +211,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	{
 	
 		if(is_valid (curr))
-		{ 
+		{ printf("%d: curr :%c\n",__LINE__,curr);
 		
 			if (prev =='&' && is_valid (prev_prev) )
 			{
@@ -228,46 +229,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		{printf("%d: curr :%c\n",__LINE__,curr);
 			//if white space after valid word
 
-			if( has_input )
-			{printf("%d: curr :%c\n",__LINE__,curr);
-				if(nChars > wordsize)
-				{
-					wordsize = nChars;
-					input = (char*) realloc(input,wordsize);
-				}
-
-				input = (char*) malloc(wordsize*sizeof(char));
-				 strcpy(input, word);
-
-				while(nChars > 0) //delete word or set everything to ''
-				{
-					word[nChars-1] = '\0';
-					nChars--;
-				}
-				has_input = false;
-			}
-			else if (has_output)
-			{printf("%d: curr :%c\n",__LINE__,curr);
-				if(nChars > wordsize)
-				{
-					wordsize = nChars;
-					output = (char*) realloc(output,wordsize);
-					//
-				}
-				
-				 output = (char*) malloc(wordsize*sizeof(char));
-				 strcpy(output, word);
-				
-				
-				while(nChars > 0) //delete word
-				{
-					word[nChars-1] = '\0';
-					nChars--;
-				}
-				has_output = false;
-			}
-			else
-			{printf("%d: curr :%c\n",__LINE__,curr);
+			printf("%d: curr :%c\n",__LINE__,curr);
 				if(nChars >0)
 				{
 					//copy word to word_buffer
@@ -288,7 +250,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					printf("%d: word_buffer :%s, nWords :%d\n",__LINE__,word_buffer[nWords-1],nWords);
 				}
 
-			}
+			
 
 
 		}
@@ -317,7 +279,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 	
 				if( was_subshell && stack_size >0)
-				{
+				{printf("%d: curr :%c\n",__LINE__,curr);
 					//if just now was a sibshell. prev ==')'
 					current_command= command_stack [stack_size-1]; //contain subshell command
 					pop(command_stack, stack_size);
@@ -325,7 +287,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					was_subshell= false;
 				}
 				else
-				{
+				{printf("%d: curr :%c\n",__LINE__,curr);
 					// make simple command when you reached  '&&' '|' '||' ')'
 					// add everything in word buffer into simple command
 					//if there's input and output assign them too.
@@ -352,7 +314,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 		
 					if(nWords >0)
-					{
+					{printf("%d: curr :%c\n",__LINE__,curr);
 						command_t new_command = (command_t)malloc(sizeof(command_t));
 						char **words = (char**) malloc (maxwords * sizeof(char*));
 						int k;
@@ -361,7 +323,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 							words[k] = word_buffer[k];
 							word_buffer[k] = NULL;
 						}
+						printf("%d: curr :%c\n",__LINE__,curr);
 						make_simple_command(current_command,new_command,words, input, output, nWords);
+						printf("%d: curr :%c\n",__LINE__,curr);
 						input = NULL;
 						output = NULL;
 						nWords =0;
