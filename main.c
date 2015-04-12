@@ -53,8 +53,10 @@ main (int argc, char **argv)
 
   command_t last_command = NULL;
   command_t command;
+  printf (" didn't go to while loop in main yet \n");
   while ((command = read_command_stream (command_stream)))
     {
+    	printf ("inside while loop\n");
       if (print_tree)
 	{
 	  printf ("# %d\n", command_number++);
