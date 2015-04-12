@@ -25,7 +25,7 @@ bool is_valid(char c)
 }
 
 void make_simple_command (struct command* current,command_t new_command, char** words,  char* i, char* o, int nWords)
-{ printf("%d: curr :%c\n",__LINE__,curr);
+{ 	printf("%d:  \n",__LINE__);
 	new_command ->type = SIMPLE_COMMAND;
 
 	if(i != NULL)
@@ -38,11 +38,11 @@ void make_simple_command (struct command* current,command_t new_command, char** 
 		new_command -> output = o; 
 	}
 
-printf("%d: curr :%c\n",__LINE__,curr);
+printf("%d: curr \n",__LINE__);
 	new_command->u.word = words;
-printf("%d: curr :%c\n",__LINE__,curr);
+printf("%d: c\n",__LINE__);
 	current = new_command;
-	printf("%d: curr :%c\n",__LINE__,curr);
+	printf("%d: curr \n",__LINE__);
 }
 
 
