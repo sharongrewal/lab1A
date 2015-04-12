@@ -209,7 +209,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	{
 		if (curr == '#' && (prev == ' ' || prev == '\n' || prev =='\t'))
 		{
-			while(curr != '\n' || curr  != EOF)
+			while(curr != '\n' && curr  != EOF)
 			{
 				curr = read_char(get_next_byte, get_next_byte_argument);
 			}
