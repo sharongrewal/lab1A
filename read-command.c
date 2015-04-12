@@ -27,7 +27,7 @@ void copy_word()
 {
 	
 }
-command_t make_simple_command (command_t new_command, char* word_buffer[], bool has_input, bool has_output, char* i, char* o, int nWords)
+command_t make_simple_command (command_t new_command, char** word_buffer, bool has_input, bool has_output, char* i, char* o, int nWords)
 { 
 	// words, input, output
 	//read from word_buffer
@@ -54,7 +54,15 @@ command_t make_simple_command (command_t new_command, char* word_buffer[], bool 
 	
 	//char **words = (char**) malloc(20 * sizeof(char*));
 	//copy_word(words,)
-	new_command -> u.word = word_buffer;
+	printf("in make simple command \n");
+	int k;
+	for(k =0; k<nWords;k++)
+	{
+		printf("%s \n",word_buffer[k]);
+		new_command ->u.word[k]= word_buffer[k];
+		printf("%s \n",temp2[k]);
+	}
+	//new_command -> u.word = word_buffer;
 	
 	return new_command;
 }
