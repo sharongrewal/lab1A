@@ -24,11 +24,12 @@ bool is_valid(char c)
 		return false;
 }
 
-command_t make_simple_command (char* word_buffer[], bool has_input, bool has_output, char* i, char* o, int nWords)
+command_t* make_simple_command (char* word_buffer[], bool has_input, bool has_output, char* i, char* o, int nWords)
 { 
 	// words, input, output
 	//read from word_buffer
 	//clear buffer
+	command_t * pointer;
 	command_t new_command = (command_t)malloc(sizeof(command_t));
 	new_command ->type = SIMPLE_COMMAND;
 	if(has_input)
@@ -51,7 +52,8 @@ command_t make_simple_command (char* word_buffer[], bool has_input, bool has_out
 	}
 	
 	new_command -> u.word = words;
-	return new_command;
+	pointer = &new_command;
+	return pointer;
 }
 
 
@@ -431,7 +433,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		root ->current_root_command = *current_command;
 		root-> next_command_stream = NULL;
 		printf("Calling type\n");
-		if(*current_command ->type == SIMPLE_COMMAND)
+		if(root -> current_root_command ->type == SIMPLE_COMMAND)
 		{
 		printf("current_command is simple\n");
 		}
