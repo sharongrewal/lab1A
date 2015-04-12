@@ -321,11 +321,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	
 	}
 
-	//at the EOF
-	if( !was_subshell)
-			{
 
-				
 				if(nChars >0)
 				{
 					//copy word to word_buffer
@@ -339,27 +335,19 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					{
 						word[nChars-1] = '0';
 						nChars--;
+						printf("nChars = %d \n",nChars);
 					}
-
+				
 				}
 				
-
+/*
 				command_t new_simple_command = (command_t)malloc(sizeof(command_t));
 				current_command = make_simple_command(word_buffer, new_simple_command, has_input,has_output, input, output, nWords);
 				has_input = false;
 				has_output = false;
 				nWords = 0;
+*/
 
-			}
-
-			if(prev == '\n')
-			{
-				if(stack_size !=0)
-				{
-					fprintf(stderr, "%d: No RHS", lineNumber);
-					exit(1);
-				}
-			}
 
 	if(subshell_level != 0)
 	{
