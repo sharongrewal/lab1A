@@ -314,7 +314,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 		}
 		else if( curr ==' ' && (is_valid (prev) || prev ==')'))
-		{
+		{printf("%d: curr :%c\n",__LINE__,curr);
 			//if white space after valid word
 
 			if( has_input )
@@ -848,7 +848,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		has_output = false;
 	}
 	else
-	{printf("%d: curr :%c\n",__LINE__,curr);
+	{printf("%d: nChar :%d\n",__LINE__,nChars);
 		if(nChars >0)
 		{printf("%d: curr :%c\n",__LINE__,curr);
 			//copy word to word_buffer
