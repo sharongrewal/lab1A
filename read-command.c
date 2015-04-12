@@ -424,6 +424,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						printf("3333\n");
 						*/
 				current_command = make_simple_command(new_command,temp2, has_input,has_output, input, output, nWords);
+				printf("simple command made\n");
 				has_input = false;
 				has_output = false;
 				nWords = 0;
