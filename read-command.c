@@ -173,7 +173,10 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	int wordsize = 50; //max number of chars in a word
 	int nChars = 0; //number of chars
 	int nWords = 0; //number of words
-
+	
+	word_buffer[9] =NULL;
+	word[9] = NULL;
+	
 	//allocate memory for word_buffer and word
 	//word_buffer = (char**)malloc(sizeof(char*)*wordsize);
 	//word = (char*) malloc(sizeof(char)*wordsize);
@@ -664,7 +667,12 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 
 	free (command_stack);
-
+	if( root == NULL)
+	{
+		fprintf (stderr, "NO COMMAND\n");
+		exit(1);
+	}
+	free(current_stream);
 	return root;
 
 }
