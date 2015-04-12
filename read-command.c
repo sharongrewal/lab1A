@@ -221,8 +221,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			if(prev_prev =='\n' && prev =='\n')
 			{	printf("%d \n",__LINE__);
 				//new command stream (new line)
-				command_stream_t *new_stream = (struct command_stream *)malloc(sizeof(command_stream_t));
-				new_stream->current_root_command =current_command;
+				struct command_stream *new_stream = (struct command_stream *)malloc(sizeof(command_stream_t));
+				new_stream->current_root_command = current_command;
 				new_stream ->next_command_stream = NULL;
 				printf("%d \n",__LINE__);
 				if(head == NULL)
@@ -922,7 +922,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	{
 		printf("%d \n",__LINE__);
 		//new command stream (new line)
-		command_stream_t *new_stream = (struct command_stream *)malloc(sizeof(command_stream_t));
+		struct command_stream *new_stream = (struct command_stream *)malloc(sizeof(command_stream_t));
 		new_stream->current_root_command =current_command;
 		new_stream ->next_command_stream = NULL;
 		printf("%d \n",__LINE__);
