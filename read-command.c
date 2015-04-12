@@ -288,7 +288,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				}
 				if(nWords >0)
 				{
-				current_command = &make_simple_command(word_buffer, has_input,has_output, input, output, nWords);
+				current_command = make_simple_command(word_buffer, has_input,has_output, input, output, nWords);
 				has_input = false;
 				has_output = false;
 				nWords = 0;
@@ -349,7 +349,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				
 				if(nWords >0)
 				{
-				current_command = &make_simple_command(word_buffer, has_input,has_output, input, output, nWords);
+				current_command = make_simple_command(word_buffer, has_input,has_output, input, output, nWords);
 				has_input = false;
 				has_output = false;
 				nWords = 0;
@@ -378,7 +378,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	//when curr == 'EOF'
 	//when curr == 'EOF'
 	//
-	current_stream->next_command_stream -> current_root_command = current_command;
+	current_stream->next_command_stream -> current_root_command = *current_command;
 
 
 
