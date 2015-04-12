@@ -255,7 +255,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				// A must be already in simple_command when the program reached '\n'
 				current_type = SEQUENCE_COMMAND;
 				command_t new_command = (command_t)malloc(sizeof(command_t));
-				command_t temp = current_command
+				command_t temp = current_command;
 				current_command =  make_complete_command(new_command,';', temp);
 				push(current_command, command_stack, stack_size);
 				stack_size ++;
