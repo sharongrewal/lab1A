@@ -193,7 +193,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	enum command_type current_type = SIMPLE_COMMAND; //what is command_type? has it been declared?
 
 	//struct command * current_command = (struct command *) malloc (sizeof(struct command));
-	command_t current_command = NULL;
+	struct commadn * current_command = NULL;
 	
 	//stack
 	int stack_size = 0;
@@ -305,7 +305,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			if(( curr == ';') || (curr == '&' && prev == '&')||(curr == '|' && prev == '|')||(curr ==')'))
 			{
 
-				else if(curr == '&' && prev == '&')
+				if(curr == '&' && prev == '&')
 				{
 					current_type = AND_COMMAND;
 					if(nWords == 0 && !was_subshell)
