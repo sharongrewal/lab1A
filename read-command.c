@@ -29,7 +29,7 @@ command_t* make_simple_command (char* word_buffer[], bool has_input, bool has_ou
 	// words, input, output
 	//read from word_buffer
 	//clear buffer
-	command_t * pointer;
+	command_t * pointer = (command_t*)malloc(sizeof(command_t*));
 	command_t new_command = (command_t)malloc(sizeof(command_t));
 	new_command ->type = SIMPLE_COMMAND;
 	if(has_input)
@@ -50,9 +50,11 @@ command_t* make_simple_command (char* word_buffer[], bool has_input, bool has_ou
 	{
 		*words[c]= *word_buffer[c];
 	}
-	
+		printf("11111\n");
 	new_command -> u.word = words;
+		printf("22222\n");
 	pointer = &new_command;
+		printf("333333\n");
 	return pointer;
 }
 
@@ -356,9 +358,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			prev_prev = prev;
 			prev = curr;
 		}
-		printf("8888\n");
 		curr = read_char(get_next_byte, get_next_byte_argument);
-		printf("end of while loop, next curr is :,%c \n",curr);
 	
 	}
 
@@ -374,15 +374,14 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 					while(nChars > 0) //delete word
 					{
-						word[nChars-1] = '0';
 						nChars--;
-						printf("nChars = %d \n",nChars);
 					}
 				
 				}
 				
 				if(nWords >0)
 				{
+						printf("8888\n");
 				current_command = make_simple_command(word_buffer, has_input,has_output, input, output, nWords);
 				has_input = false;
 				has_output = false;
