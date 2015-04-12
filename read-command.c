@@ -196,17 +196,20 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 														 //needed for make_simple_command
 	char* output = (char*) malloc(wordsize*sizeof(char)); //space for output storing
 
-	command_stream_t root = (command_stream_t)malloc(sizeof(command_stream_t));
-	command_stream_t current_stream = (command_stream_t)malloc(sizeof(command_stream_t));
+	//command_stream_t root = (command_stream_t)malloc(sizeof(command_stream_t));
+//	command_stream_t current_stream = (command_stream_t)malloc(sizeof(command_stream_t));
 	
-	root ->next_command_stream = NULL;
-	root -> current_root_command -> type = NULL;
-	current_stream-> next_command_stream = root; 
-
+	//root ->next_command_stream = NULL;
+	//root -> current_root_command -> type = NULL;
+	//current_stream-> next_command_stream = root; 
+	
+	command_stream_t root =NULL;
+	command_stream_t current_stream = (command_stream_t)malloc (sizeof(command_stream_t));
+	current_stream -> next_command_stream = root;
 	
 	enum command_type current_type = SIMPLE_COMMAND; //what is command_type? has it been declared?
 
-	command_t* current_command;
+	command_t* current_command = NULL;
 
 	//stack
 	int stack_size = 0;
@@ -221,7 +224,31 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 	while (curr != EOF)
 	{
-		
+		if(is_valid(curr) || curr =='(')
+		{
+			if(prev_prev =='\n' && prev =='\n')
+			{	/*
+				//new command stream (new line)
+				command_stream_t new_stream = (command_stream_t)malloc(sizeof(command_stream_t));
+				current_stream->next_command_stream ->current_root_command = *current_command;
+				current_stream->next_command_stream ->next_command_stream = new_stream;
+				current_stream->next_command_stream = new_stream;
+				*/
+				command_stream_t new_stream = (command_stream_t)malloc(sizeof(command_stream_t));
+				new_stream ->current_root_command = *current_command;
+				new_stream -> next_command_stream = NULL;
+				if(root == NULL)
+				{
+					root = new_stream;
+				}
+				else
+				{
+					current_stream ->next_command_stream = new_stream;
+				}
+				current_command = NULL;
+				
+			}
+		}
 
 		if(is_valid (curr))
 		{
@@ -231,6 +258,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			nChars++;  
 			printf("nChars = %d",nChars);
 			printf("\n");
+			
+			
 
 
 		}
@@ -382,9 +411,21 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	//when curr == 'EOF'
 	//when curr == 'EOF'
 	//
-	current_stream->next_command_stream -> current_root_command = *current_command;
-
-
+	//current_stream->next_command_stream -> current_root_command = *current_command;
+	if(curren_command != NULL)
+	{
+		command_stream_t new_stream = (command_stream_t)malloc(sizeof(command_stream_t));
+		new_stream ->current_root_command = *current_command;
+		new_stream -> next_command_stream = NULL;
+		if(root == NULL)
+		{
+			root = new_stream;
+		}
+		else
+		{
+			current_stream ->next_command_stream = new_stream;
+		}
+	}
 
 	free (command_stack);
 	if( root == NULL)
@@ -397,11 +438,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		fprintf (stderr, "current stream NULL \n");
 		exit(1);
 	}
-	if( root ->current_root_command ->type ==NULL)
-	{
-		fprintf(stderr, "%d:Nothing in the file", lineNumber);
-		exit(1);
-	}
+
 	free(current_stream);
 	return root;
 
