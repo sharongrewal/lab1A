@@ -200,6 +200,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	command_stream_t current_stream = (command_stream_t)malloc(sizeof(command_stream_t));
 	
 	root ->next_command_stream = NULL;
+	root -> current_root_command -> type = NULL;
 	current_stream-> next_command_stream = root; 
 
 	
@@ -228,7 +229,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			word[nChars]=curr;
 			printf("8888\n");
 			nChars++;  
-			printf(nChars);
+			printf("nChars = %d",nChars);
 			printf("\n");
 
 
@@ -316,6 +317,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			fprintf(stderr, "%d: Invalid Syntax", lineNumber);
 			exit(1);
 		}
+		
 
 		if( curr != ' ')
 		{
@@ -324,9 +326,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			prev_prev = prev;
 			prev = curr;
 		}
-	printf("8888\n");
-		curr = read_char(get_next_byte, get_next_byte_argument);
 		printf("8888\n");
+		curr = read_char(get_next_byte, get_next_byte_argument);
+		printf("end of while loop, next curr is :,%c \n",curr);
 	
 	}
 
@@ -393,6 +395,11 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	if( current_stream == NULL)
 	{
 		fprintf (stderr, "current stream NULL \n");
+		exit(1);
+	}
+	if( root ->current_root_command ->type ==NULL)
+	{
+		fprintf(stderr, "%d:Nothing in the file", lineNumber);
 		exit(1);
 	}
 	free(current_stream);
