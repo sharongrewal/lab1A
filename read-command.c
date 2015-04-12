@@ -24,7 +24,7 @@ bool is_valid(char c)
 		return false;
 }
 
-void make_simple_command (command_t* current,command_t new_command, char** words,  char* i, char* o, int nWords)
+void make_simple_command (struct command* current,command_t new_command, char** words,  char* i, char* o, int nWords)
 { 
 	new_command ->type = SIMPLE_COMMAND;
 
@@ -45,7 +45,7 @@ void make_simple_command (command_t* current,command_t new_command, char** words
 }
 
 
-void make_complete_command (command_t* current, command_t new_command,char curr, command_t stack)
+void make_complete_command (struct command* current, command_t new_command,char curr, command_t stack)
 { 
 	// for complete commands
   	// type
@@ -75,7 +75,7 @@ void make_complete_command (command_t* current, command_t new_command,char curr,
  current = new_command;
 }
 
-void combine_complete_command (command_t* current,command_t stack, command_t curr_command)
+void combine_complete_command (struct command* current,command_t stack, command_t curr_command)
 { 
   	switch (stack->type)
     {
@@ -193,7 +193,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	enum command_type current_type = SIMPLE_COMMAND; //what is command_type? has it been declared?
 
 	//struct command * current_command = (struct command *) malloc (sizeof(struct command));
-	struct commadn * current_command = NULL;
+	struct command * current_command = NULL;
 	
 	//stack
 	int stack_size = 0;
