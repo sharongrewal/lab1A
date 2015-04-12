@@ -23,10 +23,7 @@ bool is_valid(char c)
 	else 
 		return false;
 }
-void copy_word()
-{
-	
-}
+
 command_t make_simple_command (command_t new_command, char** words, bool has_input, bool has_output, char* i, char* o, int nWords)
 { 
 
@@ -44,7 +41,9 @@ command_t make_simple_command (command_t new_command, char** words, bool has_inp
 
 
 	new_command->u.word = words;
-	printf("finally... \n");
+	printf(words);
+	printf("sigh...");
+	printf(new_command->u.word);
 	return new_command;
 }
 
@@ -248,7 +247,6 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		{
 			word[nChars]=curr;
 			nChars++;  
-			printf("nChars = %d, %c \n",nChars,curr);
 
 			
 			
@@ -270,13 +268,14 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					{
 						newword[nChars-1] = word[nChars-1];
 						word[nChars-1] = NULL;
+						printf("%c, %c, nChars = %d", newword[nChars-1],word[nChars-1],nChars);
 						nChars--;
 					
 					}
 					
 					word_buffer[nWords] = newword;
 					//strcpy (word_buffer[nWords],newword);
-					printf("%s, %s\n, nWords = %d", word_buffer[nWords],newword, nWords);
+					printf("%s, %s\n, nChars = %d", word_buffer[nWords],newword, nChars);
 					nWords ++;
 				}	
 
@@ -306,16 +305,17 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					
 
 					while(nChars > 0) //delete word
-					{
+					{	
 						newword[nChars-1] = word[nChars-1];
 						word[nChars-1] = NULL;
+						printf("%c, %c, nChars = %d", newword[nChars-1],word[nChars-1],nChars);
 						nChars--;
 						
 					}
 					
 					word_buffer[nWords] = newword;
 					//strcpy (word_buffer[nWords],newword);
-					printf("%s, %s\n, nWords = %d", word_buffer[nWords],newword, nWords);
+					printf("%s, %s\n, nChars = %d \n", word_buffer[nWords],newword, nChars);
 
 					nWords ++;
 					
@@ -333,7 +333,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					{
 						
 						words[k]= word_buffer[k];
-						printf("%s \n",words[k]);
+						printf("%s, nWords= %d \n",words[k],nWords);
 					}
 				current_command = make_simple_command(new_command,words, has_input,has_output, input, output, nWords);
 				has_input = false;
@@ -430,22 +430,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 
 
-	if(subshell_level != 0)
-	{
-		// if number of '(' and ')' are different.. at the end
-		fprintf(stderr, "%d: Number of '(' and ')' are different", lineNumber);
-		exit(1);
-	}
-
-	if(stack_size >0)
-	{
-		fprintf(stderr, "%d: stack is not empty at the end", lineNumber);
-		exit(1);  
-	}
-
 	if(current_command == NULL)
 	{
-		fprintf(stderr, "%d:Nothing in the file", lineNumber);
+		fprintf(stderr, "%d:Nothing in the file\n", lineNumber);
 		exit(1);	
 	}
 	//when curr == 'EOF'
@@ -454,20 +441,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	//current_stream->next_command_stream -> current_root_command = *current_command;
 	if(current_command != NULL)
 	{
-		/*
-		printf("right before end of file\n");
-		command_stream_t new_stream = (command_stream_t)malloc(sizeof(command_stream_t));
-		new_stream ->current_root_command = *current_command;
-		new_stream -> next_command_stream = NULL;
-		if(root == NULL)
-		{
-			root = new_stream;
-		}
-		else
-		{
-			current_stream ->next_command_stream = new_stream;
-		}
-		*/
+
 	
 		root = (command_stream_t)malloc(sizeof(command_stream_t));
 	
