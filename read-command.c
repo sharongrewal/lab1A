@@ -363,8 +363,14 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		exit(1);  
 	}
 
+	if(current_command == NULL)
+	{
+		fprintf(stderr, "%d:Nothing in the file", lineNumber);
+		exit(1);	
+	}
 	//when curr == 'EOF'
 	//when curr == 'EOF'
+	//
 	current_stream->next_command_stream -> current_root_command = current_command;
 
 
@@ -372,12 +378,12 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	free (command_stack);
 	if( root == NULL)
 	{
-		fprintf (stderr, "NO COMMAND\n");
+		fprintf (stderr, "root NULL\n");
 		exit(1);
 	}
 	if( current_stream == NULL)
 	{
-		fprintf (stderr, "NO COMMAND\n");
+		fprintf (stderr, "current stream NULL \n");
 		exit(1);
 	}
 	free(current_stream);
