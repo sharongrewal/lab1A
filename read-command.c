@@ -329,9 +329,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				input = (char*) malloc(wordsize*sizeof(char));
 				 strcpy(input, word);
 
-				while(nChars >= 0) //delete word or set everything to ''
+				while(nChars > 0) //delete word or set everything to ''
 				{
-					word[nChars] = '\0';
+					word[nChars-1] = '\0';
 					nChars--;
 				}
 				has_input = false;
@@ -349,9 +349,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				 strcpy(output, word);
 				
 				
-				while(nChars >= 0) //delete word
+				while(nChars > 0) //delete word
 				{
-					word[nChars] = '\0';
+					word[nChars-1] = '\0';
 					nChars--;
 				}
 				has_output = false;
@@ -473,9 +473,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						input = (char*) malloc(wordsize*sizeof(char));
 						 strcpy(input, word);
 		
-						while(nChars >= 0) //delete word or set everything to ''
+						while(nChars > 0) //delete word or set everything to ''
 						{
-							word[nChars] = '\0';
+							word[nChars-1] = '\0';
 							nChars--;
 						}
 						has_input = false;
@@ -492,9 +492,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						output = (char*) malloc(wordsize*sizeof(char));
 						strcpy(output, word);
 						
-						while(nChars >= 0) //delete word
+						while(nChars > 0) //delete word
 						{
-							word[nChars] = '\0';
+							word[nChars-1] = '\0';
 							nChars--;
 						}
 						has_output = false;
@@ -629,9 +629,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				output = (char*) malloc(wordsize*sizeof(char));
 				strcpy(output, word);
 				
-				while(nChars >= 0) //delete word
+				while(nChars > 0) //delete word
 				{
-					word[nChars] = '\0';
+					word[nChars-1] = '\0';
 					nChars--;
 				}
 				has_output = false;
@@ -690,9 +690,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				input = (char*) malloc(wordsize*sizeof(char));
 				 strcpy(input, word);
 
-				while(nChars >= 0) //delete word or set everything to ''
+				while(nChars > 0) //delete word or set everything to ''
 				{
-					word[nChars] = '\0';
+					word[nChars-1] = '\0';
 					nChars--;
 				}
 				has_input = false;
@@ -830,9 +830,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		printf("word : %s \n",word);
 		strcpy(input, word);
 	
-		while(nChars >= 0) //delete word or set everything to ''
+		while(nChars > 0) //delete word or set everything to ''
 		{
-			word[nChars] = '\0';
+			word[nChars-1] = '\0';
 			nChars--;
 		}
 		has_input = false;
@@ -850,9 +850,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		output = (char*) malloc(wordsize*sizeof(char));
 		strcpy(output, word);
 		
-		while(nChars >= 0) //delete word
+		while(nChars > 0) //delete word
 		{
-			word[nChars] = '\0';
+			word[nChars-1] = '\0';
 			nChars--;
 		}
 		has_output = false;
