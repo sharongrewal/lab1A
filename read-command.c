@@ -396,7 +396,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						printf("%c \n",newword[nChars]);
 					}
 				
-				
+					printf("%s, %s\n", temp2[nWords],newword);
+
 				}
 				
 				if(nWords >0)
