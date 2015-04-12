@@ -187,9 +187,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	char* output; //space for output storing
 	input = NULL;
 	output = NULL;
-	command_stream_t root = NULL;
-	struct command_stream * current_stream;
 	
+	struct command_stream *head = NULL;
+	struct command_stream *current_stream = NULL; 
 
 	
 	enum command_type current_type = SIMPLE_COMMAND; //what is command_type? has it been declared?
@@ -221,20 +221,20 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			if(prev_prev =='\n' && prev =='\n')
 			{	printf("%d \n",__LINE__);
 				//new command stream (new line)
-				command_stream_t new_stream = (command_stream_t)malloc(sizeof(command_stream_t));
+				command_stream_t *new_stream = (struct command_stream *)malloc(sizeof(command_stream_t));
 				new_stream->current_root_command =current_command;
 				new_stream ->next_command_stream = NULL;
 				printf("%d \n",__LINE__);
-				if(root == NULL)
+				if(head == NULL)
 				{
-					root = new_stream;
+					head = new_stream;
 					current_stream = new_stream;
 					printf("%d \n",__LINE__);
 				}
 				else
 				{
-					current_stream -> next_command_stream = new_stream;
-					current_stream = current_stream->next_command_stream;
+					current_stream ->next_command_stream = new_stream;
+					current_stream = new_stream;
 					printf("%d \n",__LINE__);
 				}
 				current_command = NULL;
@@ -308,9 +308,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 
 			word[nChars] = curr;
-			printf("word[nChars]: %c, curr: %c \n",word[nChars],curr);
+
 			nChars++;
-			printf("3.output: %s, input: %s word:%s\n",output, input, word);
 
 
 		}
@@ -616,7 +615,6 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				exit(1);
 			}
 			has_input = true;
-			printf("1.output: %s, input: %s word:%s\n",output, input, word);
 			if (has_output)
 			{
 				if(nChars > wordsize)
@@ -635,7 +633,6 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					nChars--;
 				}
 				has_output = false;
-				printf("2.output: %s, input: %s word:%s\n",output, input, word);
 			}
 			else
 			{
@@ -827,7 +824,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		}
 	
 		input = (char*) malloc(wordsize*sizeof(char));
-		printf("word : %s \n",word);
+		
 		strcpy(input, word);
 	
 		while(nChars > 0) //delete word or set everything to ''
@@ -836,7 +833,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			nChars--;
 		}
 		has_input = false;
-		printf("output: %s, input: %s \n",output, input);
+
 	}
 	else if (has_output)
 	{
@@ -923,24 +920,25 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	//when curr == 'EOF'
 	if(current_command != NULL)
 	{
-		command_stream_t new_stream = (command_stream_t)malloc(sizeof(command_stream_t));
+		printf("%d \n",__LINE__);
+		//new command stream (new line)
+		command_stream_t *new_stream = (struct command_stream *)malloc(sizeof(command_stream_t));
 		new_stream->current_root_command =current_command;
 		new_stream ->next_command_stream = NULL;
-	
-		
-		if(root == NULL)
+		printf("%d \n",__LINE__);
+		if(head == NULL)
 		{
-			root = new_stream;
+			head = new_stream;
 			current_stream = new_stream;
-				
+			printf("%d \n",__LINE__);
 		}
 		else
 		{
-			printf("root is not null");
-			current_stream -> next_command_stream = new_stream;
-			current_stream = current_stream->next_command_stream;
+			current_stream ->next_command_stream = new_stream;
+			current_stream = new_stream;
+			printf("%d \n",__LINE__);
 		}
-		current_command = NULL;	
+		current_command = NULL;
 	}
 
 
