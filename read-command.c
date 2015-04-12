@@ -391,8 +391,17 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				{
 						printf("8888\n");
 						command_t new_command = (command_t)malloc(sizeof(command_t));
+						printf("1111\n");
 						char **temp2 = (char**) malloc(20 * sizeof(char*));
-						temp2 = word_buffer;
+						printf("2222\n");
+						int k;
+						for(k =0; k<nWords;k++)
+						{
+							printf("%s \n",word_buffer[k]);
+							strcpy(temp2[k],word_buffer[k]);
+							printf("%s \n",temp[k]);
+						}
+						printf("3333\n");
 				current_command = make_simple_command(new_command,temp2, has_input,has_output, input, output, nWords);
 				has_input = false;
 				has_output = false;
