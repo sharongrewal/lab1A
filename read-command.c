@@ -208,7 +208,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	}
 
 	while (curr != EOF)
-	{
+	{printf("%d \n",__LINE__);
 		if (curr == '#' && (prev == ' ' || prev == '\n' || prev =='\t'))
 		{
 			while(curr != '\n' || curr  != EOF)
@@ -217,7 +217,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			}
 		}
 		if(is_valid (curr))
-		{
+		{ printf("%d \n",__LINE__);
 			if(prev_prev =='\n' && prev =='\n')
 			{	printf("%d \n",__LINE__);
 				//new command stream (new line)
@@ -879,7 +879,6 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 	if(nWords >0)
 	{	
-		printf("output: %s, input: %s \n",output, input);
 		command_t new_command = (command_t)malloc(sizeof(command_t));
 
 		char **words = (char**) malloc(maxwords * sizeof(char*));
