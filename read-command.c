@@ -454,7 +454,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					//strcpy (word_buffer[nWords],newword);
 					char* newword = (char*)malloc(20*sizeof(char));
 
-					while(nChasr > 0) //delete word
+					while(nChars > 0) //delete word
 					{
 						newword[nChars-1] = word [nChars-1];
 						word[nChars-1] = '\0';
