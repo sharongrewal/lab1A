@@ -225,7 +225,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		if(is_valid (curr))
 		{
 			printf("8888\n");
-			strcpy(word[nChars],curr)
+			strcpy(word[nChars],curr);
 			printf("8888\n");
 				word[nChars]=curr;
 				printf("8888\n");
