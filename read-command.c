@@ -60,7 +60,7 @@ command_t make_simple_command (command_t new_command, char** word_buffer, bool h
 	{
 		printf("%s \n",word_buffer[k]);
 		new_command ->u.word[k]= word_buffer[k];
-		printf("%s \n",temp2[k]);
+		printf("%s \n",new_command ->u.word[k]);
 	}
 	//new_command -> u.word = word_buffer;
 	
