@@ -216,27 +216,27 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				curr = read_char(get_next_byte, get_next_byte_argument);
 			}
 		}
-		printf("%d \n",__LINE__);
+	
 		if(is_valid (curr))
-		{ printf("%d: curr is %c \n",__LINE__,curr);
+		{ 
 			if(prev_prev =='\n' && prev =='\n')
-			{	printf("%d \n",__LINE__);
+			{
 				//new command stream (new line)
 				struct command_stream *new_stream = (struct command_stream *)malloc(sizeof(command_stream_t));
 				new_stream->current_root_command = current_command;
 				new_stream ->next_command_stream = NULL;
-				printf("%d \n",__LINE__);
+				
 				if(head == NULL)
 				{
 					head = new_stream;
 					current_stream = new_stream;
-					printf("%d \n",__LINE__);
+				
 				}
 				else
 				{
 					current_stream ->next_command_stream = new_stream;
 					current_stream = new_stream;
-					printf("%d \n",__LINE__);
+					
 				}
 				current_command = NULL;
 			}
@@ -721,7 +721,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		}
 
 		else if (curr == '\n')
-		{printf("%d \n",__LINE__);
+		{
 			//newline can not appear after '<' or '>'
 			//newline can ONLY appear before '(' or ')'
 
@@ -738,7 +738,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			{
 
 				if(nChars >0)
-				{printf("%d \n",__LINE__);
+				{
 					//copy word to word_buffer
 
 					//strcpy(word_buffer[nWords], word);
@@ -746,7 +746,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					char* newword = (char*)malloc(20*sizeof(char));
 
 					while(nChars > 0) //delete word
-					{printf("%d \n",__LINE__);
+					{
 						newword[nChars-1] = word [nChars-1];
 						word[nChars-1] = '\0';
 						nChars--;
@@ -759,7 +759,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				
 
 				if(nWords >0 )
-				{printf("%d \n",__LINE__);
+				{
 					command_t new_command = (command_t)malloc(sizeof(command_t));
 					char **words = (char**) malloc (maxwords * sizeof(char*));
 					int k;
@@ -778,7 +778,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				}
 
 				while (stack_size >0)
-				{printf("%d \n",__LINE__);
+				{
 					current_command = combine_complete_command(command_stack[stack_size-1], current_command);
 					pop(command_stack, stack_size);
 					stack_size--;
@@ -912,23 +912,23 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	//when curr == 'EOF'
 	if(current_command != NULL)
 	{
-		printf("%d \n",__LINE__);
+		
 		//new command stream (new line)
 		struct command_stream *new_stream = (struct command_stream *)malloc(sizeof(command_stream_t));
 		new_stream->current_root_command =current_command;
 		new_stream ->next_command_stream = NULL;
-		printf("%d \n",__LINE__);
+	
 		if(head == NULL)
 		{
 			head = new_stream;
 			current_stream = new_stream;
-			printf("%d \n",__LINE__);
+
 		}
 		else
 		{
 			current_stream ->next_command_stream = new_stream;
 			current_stream = new_stream;
-			printf("%d \n",__LINE__);
+
 		}
 		current_command = NULL;
 	}
@@ -951,7 +951,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 }
 
 command_t read_command_stream (command_stream_t s)
-{
-	
-return NULL;
+{	
+	if(s=s->next_command_stream){
+	return s->current_root_stream;
+	}
+	return NULL;
 }
