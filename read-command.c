@@ -186,7 +186,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	char* output = (char*) malloc(wordsize*sizeof(char)); //space for output storing
 
 	command_stream_t root = NULL;
-	command_stream_t current_stream = root;
+	command_stream_t* current_stream = (char*) malloc (siezof(command_stream_t*));
+	current_stream = root;
 
 	
 	enum command_type current_type = SIMPLE_COMMAND; //what is command_type? has it been declared?
@@ -229,6 +230,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				else
 				{
 					current_stream -> next_command_stream = new_stream;
+					current_stream = new_stream;
 				}
 				current_command = NULL;
 			}
@@ -776,6 +778,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		else
 		{
 			current_stream -> next_command_stream = new_stream;
+			current_stream = new_stream;
 		}
 		current_command = NULL;	
 	}
