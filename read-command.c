@@ -914,6 +914,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		}
 	
 	}
+	
+				
 
 	if(nWords >0)
 	{	printf("%d: curr :%c\n",__LINE__,curr);
