@@ -309,7 +309,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 			word[nChars] = curr;
 			nChars++;
-
+			printf("3.output: %s, input: %s \n",output, input);
 
 
 		}
@@ -615,6 +615,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				exit(1);
 			}
 			has_input = true;
+			printf("1.output: %s, input: %s \n",output, input);
 			if (has_output)
 			{
 				if(nChars > wordsize)
@@ -633,6 +634,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					nChars--;
 				}
 				has_output = false;
+				printf("2.output: %s, input: %s \n",output, input);
 			}
 			else
 			{
@@ -852,7 +854,6 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			nChars--;
 		}
 		has_output = false;
-		printf("output: %c, input: %c \n",output, input);
 	}
 	else
 	{
@@ -877,9 +878,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	
 	}
 
-	if(nWords >0 || input != NULL ||output !=NULL)
+	if(nWords >0)
 	{	
-		printf("output: %c, input: %c \n",output, input);
+		printf("output: %s, input: %s \n",output, input);
 		command_t new_command = (command_t)malloc(sizeof(command_t));
 
 		char **words = (char**) malloc(maxwords * sizeof(char*));
