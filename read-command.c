@@ -392,17 +392,22 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 }
 
 command_t read_command_stream (command_stream_t s)
-{
+{	printf (" problem in read command stream function -1 \n");
 	//command_t output = (command_t)malloc(sizeof(command_t));
 	command_t output = s -> current_root_command;
+	printf (" problem in read command stream function -2 \n");
 	if (s -> next_command_stream == NULL)
+	{
 		memset(s,0,sizeof(command_stream_t));
+		printf (" problem in read command stream function -3 \n");
+	}
 	else
 	{
+		printf (" problem in read command stream function -4 \n");
 		memcpy(s,s->next_command_stream,sizeof(command_stream_t));
 		//memset(s->next_command_stream,0,sizeof(struct command_stream));
 	}
-	
+	printf (" problem in read command stream function -5 \n");
 	//free(s);
 	return output;
 }
