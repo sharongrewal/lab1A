@@ -375,15 +375,18 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		curr = read_char(get_next_byte, get_next_byte_argument);
 	
 	}
-				char *temp2 [] = {0};
+				char *temp2 [10];
 						
-
 				if(nChars >0)
 				{
 					//copy word to word_buffer
 					char newword[10];
 					//strcpy(newword, word);
-					
+						printf("3333\n");
+					temp2[nWords] = newword;
+					//strcpy (word_buffer[nWords],newword);
+					nWords ++;
+					printf("%s, %s\n", temp2[nWords],newword);
 
 					while(nChars > 0) //delete word
 					{
@@ -392,11 +395,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						nChars--;
 						printf("%c \n",newword[nChars]);
 					}
-					printf("3333\n");
-					strcpy(temp2[nWords],newword);
-					//strcpy (word_buffer[nWords],newword);
-					nWords ++;
-					printf("%s, %s\n", temp2[nWords],newword);
+				
 				
 				}
 				
