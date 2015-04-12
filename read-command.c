@@ -171,7 +171,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 	//word holding data structures
 	char * word_buffer[10]; //contains the list of words in a line?
-	char  word [10]; //contains a word
+	char  word [] = "0123456789"; //contains a word
 	int wordsize = 50; //max number of chars in a word
 	int nChars = 0; //number of chars
 	int nWords = 0; //number of words
@@ -225,13 +225,11 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		if(is_valid (curr))
 		{
 			printf("8888\n");
-			strcpy(word[nChars],curr);
+			word[nChars]=curr;
 			printf("8888\n");
-				word[nChars]=curr;
-				printf("8888\n");
-				nChars++;  
-				printf(nChars);
-				printf("\n");
+			nChars++;  
+			printf(nChars);
+			printf("\n");
 
 
 		}
