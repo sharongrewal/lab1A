@@ -613,8 +613,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				
 				//copy word to word_buffer
 
-					strcpy(word_buffer[nWords], word);
+					//strcpy(word_buffer[nWords], word);
 					//strcpy (word_buffer[nWords],newword);
+					*word_buffer[nWords] = *word;
 					nWords ++;
 
 					while(nChars > 0) //delete word
@@ -629,13 +630,13 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				has_input = false;
 				has_output = false;
 				nWords = 0;
-
+/*
 				while (stack_size >0)
 				{
 					current_command = combine_complete_command(command_stack[stack_size-1], current_command);
 					pop(command_stack, stack_size);
 					stack_size--;
-				}
+				} */
 
 			}
 
