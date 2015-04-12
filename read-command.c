@@ -52,18 +52,20 @@ command_t make_simple_command (command_t new_command, char* word_buffer[], bool 
 	// for loop?
 	//char * words[10]; 
 	
-	//char **words = (char**) malloc(20 * sizeof(char*));
+	char **words = (char**) malloc(20 * sizeof(char*));
 	//copy_word(words,)
 	printf("in make simple command \n");
 	int k;
 	for(k =0; k<nWords;k++)
 	{
 		printf("%s \n",word_buffer[k]);
-		new_command ->u.word[k]= word_buffer[k];
+		words[k]= word_buffer[k];
 		printf("%s \n",new_command ->u.word[k]);
 	}
 	//new_command -> u.word = word_buffer;
-	
+	printf("090909 \n");
+	new_command->u.word = words;
+	printf("finally... \n");
 	return new_command;
 }
 
@@ -382,10 +384,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					//copy word to word_buffer
 					char newword[10];
 					//strcpy(newword, word);
-						printf("3333\n");
-					temp2[nWords] = newword;
-					//strcpy (word_buffer[nWords],newword);
-					nWords ++;
+					
 					printf("%s, %s\n", temp2[nWords],newword);
 
 					while(nChars > 0) //delete word
@@ -395,7 +394,10 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						nChars--;
 						printf("%c \n",newword[nChars]);
 					}
-				
+						printf("3333\n");
+					temp2[nWords] = newword;
+					//strcpy (word_buffer[nWords],newword);
+					nWords ++;
 					printf("%s, %s\n", temp2[nWords],newword);
 
 				}
