@@ -221,31 +221,34 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		if(is_valid (curr))
 		{ 
 			if(prev_prev =='\n' && prev =='\n')
-			{	printf("%d: you met a valid curr after two consecutive new line\n",__LINE__);
+			{	printf("%d: you met a valid curr after two consecutive new line, curr:% \n",__LINE__, curr);
 		
 				//new command stream (new line)
-				if(stack_size ==0)
-				{printf("%d: stack size is 0, should make a new command_Stream\n",__LINE__);
-		
-					command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
-					new_stream->current_root_command = current_command;
-					new_stream ->next_command_stream = NULL;
-					
-					if(head == NULL)
-					{printf("%d: head was null, making first command stream\n",__LINE__);
-		
-						head = new_stream;
-						current_stream = new_stream;
-					
-					}
-					else
-					{printf("%d:head was not null, making more than one commadn stream\n",__LINE__);
-		
-						current_stream ->next_command_stream = new_stream;
-						current_stream = new_stream;
+				if(current_command != NULL)
+				{printf("%d: current_command not null, need to put that in a stream\n",__LINE__);
+					if(stack_size ==0)
+					{printf("%d: stack size is 0, should make a new command_Stream\n",__LINE__);
+			
+						command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
+						new_stream->current_root_command = current_command;
+						new_stream ->next_command_stream = NULL;
 						
+						if(head == NULL)
+						{printf("%d: head was null, making first command stream\n",__LINE__);
+			
+							head = new_stream;
+							current_stream = new_stream;
+						
+						}
+						else
+						{printf("%d:head was not null, making more than one commadn stream\n",__LINE__);
+			
+							current_stream ->next_command_stream = new_stream;
+							current_stream = new_stream;
+							
+						}
+						current_command = NULL;
 					}
-					current_command = NULL;
 				}
 			}
 
@@ -1057,7 +1060,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 		}
 		else
-		{	printf("%d: head not NULL, you are making more than one command string\n",__LINE__);
+		{	printf("%d: head not NULL, you are making more than one command stream\n",__LINE__);
 			
 			current_stream ->next_command_stream = new_stream;
 			current_stream = new_stream;
