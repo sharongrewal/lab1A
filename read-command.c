@@ -1,3 +1,8 @@
+
+ branch: sg  lab1a/read-command.c
+@sharongrewalsharongrewal 2 minutes ago Update read-command.c
+1 contributor
+RawBlameHistory     1057 lines (885 sloc)  25.818 kb
 // UCLA CS 111 LAB1a read-command.c
 #include "command.h"
 #include "command-internals.h"
@@ -184,14 +189,14 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	input = NULL;
 	output = NULL;
 	
-	command_stream_t head = (command_stream_t)malloc(sizeof(struct command_stream));
-	command_stream_t current_stream = (command_stream_t)malloc(sizeof(struct command_stream));
+	command_stream_t head = NULL;
+	command_stream_t current_stream = NULL; 
 
 	
 	enum command_type current_type = SIMPLE_COMMAND; //what is command_type? has it been declared?
 
 	//struct command * current_command = (struct command *) malloc (sizeof(struct command));
-	command_stream_t current_command = (command_stream_t)malloc(sizeof(struct command_stream));
+	command_stream_t current_command = NULL;
 	
 	//stack
 	int stack_size = 0;
@@ -223,16 +228,16 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				  new_stream->current_root_command = current_command->current_root_command;
 				new_stream ->next_command_stream = NULL;
 				
-				if(head->current_root_command == NULL)
+				if(head == NULL)
 				{
-					head->current_root_command = new_stream->current_root_command;
+					head = new_stream;
 					current_stream = new_stream;
 				
 				}
 				else
 				{
 					current_stream ->next_command_stream = new_stream;
-					current_stream->current_root_command = new_stream->current_root_command;
+					current_stream = new_stream;
 					
 				}
 				
@@ -1012,24 +1017,24 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		new_stream->current_root_command =current_command->current_root_command;
 		new_stream ->next_command_stream = NULL;
 	
-		if(head->current_root_command == NULL)
+		if(head == NULL)
 		{
-			head->current_root_command = new_stream->current_root_command;
+			head = new_stream;
 		
-			current_stream->current_root_command = new_stream->current_root_command;
+			current_stream = new_stream;
 
 		}
 		else
 		{
 			current_stream ->next_command_stream = new_stream;
-			current_stream->current_root_command = new_stream->current_root_command;
+			current_stream = new_stream;
 
 		}
 		current_command->current_root_command = NULL;
 	}
 
 
-	if( head->current_root_command == NULL)
+	if( head == NULL)
 	{
 		fprintf (stderr, "head NULL\n");
 		exit(1);
