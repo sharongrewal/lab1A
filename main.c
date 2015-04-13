@@ -53,7 +53,6 @@ main (int argc, char **argv)
     make_command_stream (get_next_byte, script_stream);
   command_t last_command = NULL;
   command_t command;
-printf("%d: prblem in print_command ",__LINE__);
   while ((command = read_command_stream (command_stream)))
     {
 	printf("%d: MAIN, in while loop ",__LINE__);
