@@ -389,14 +389,6 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			nChars++;
 		
 		}
-		else if (!is_valid(curr)&& curr != ' ' &&  curr != '\n' && curr != '\t' && curr !='(')
-		{
-			if(prev =='\n')
-			{
-					fprintf(stderr, "%d: cannot start a new line with a operator \n", lineNumber);
-					exit(1);
-			}
-		}
 		else if( curr ==' ' && (is_valid (prev) || prev ==')'))
 		{
 			//if white space after valid word
@@ -973,7 +965,14 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			fprintf(stderr, "%d: Invalid Syntax\n", lineNumber);
 			exit(1);
 		}
-
+		if (!is_valid(curr)&& curr != ' ' &&  curr != '\n' && curr != '\t' && curr !='(')
+		{
+			if(prev =='\n')
+			{
+					fprintf(stderr, "%d: cannot start a new line with a operator \n", lineNumber);
+					exit(1);
+			}
+		}
 		if( curr != ' ')
 		{
 			// only store the char that is not a ' ' 
