@@ -271,14 +271,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				// A \n B == A ; B
 				// A must be already in simple_command when the program reached '\n'
 				current_type = SEQUENCE_COMMAND;
-				command_t new_command = (command_t)malloc(sizeof(command_t));
-				command_t temp =  make_complete_command(new_command,';', current_command);
-				push(temp, command_stack, stack_size);
-				stack_size ++;
-				current_command = command_stack [stack_size-1]; //contain subshell command
-				pop(command_stack, stack_size);
-				stack_size --;
-
+				
 				if( was_subshell && stack_size >0)
 				{
 					was_subshell= false;
@@ -289,8 +282,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					//combining LHS!!!
 						
 					while(stack_size >0 && (compare_operator(current_type, command_stack[stack_size-1]->type) <= 0))
-					{
-						command_t temp = combine_complete_command(command_stack[stack_size-1], current_command);
+					{	
+						command_t temp  = combine_complete_command(command_stack[stack_size-1], current_command);
 						pop(command_stack, stack_size);
 						stack_size--;
 						push(temp, command_stack, stack_size);
@@ -301,7 +294,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					}
 
 					if( curr ==')')
-					{	command_t temp  = combine_complete_command(current_command, command_stack[stack_size-1]);
+					{
+						command_t temp = combine_complete_command(current_command, command_stack[stack_size-1]);
 						push(temp, command_stack, stack_size-1);
 						subshell_level --;
 						was_subshell =true;
@@ -310,7 +304,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					{
 						//if it's end of line, you won't need to start a new command
 						command_t new_command = (command_t)malloc(sizeof(command_t));
-						command_t temp= make_complete_command(new_command,curr, command_stack[stack_size-1]);
+						command_t temp= make_complete_command(new_command,'|', command_stack[stack_size-1]);
 						push(temp, command_stack, stack_size-1);
 						//this push overwrites an entry; does not increase stack_size
 					}
@@ -320,10 +314,14 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				{
 					//don't need to combine, just put the simple command into a complete command
 					command_t new_command = (command_t)malloc(sizeof(command_t));
-					command_t temp = make_complete_command(new_command,curr, current_command);
+					command_t temp= make_complete_command(new_command,'|', current_command);
 					push(temp, command_stack, stack_size);
 					stack_size++; 
+
 				}
+				current_command = command_stack [stack_size-1]; //contain subshell command
+				pop(command_stack, stack_size);
+				stack_size --;
 			}
 			else if(is_valid(prev_prev) && prev =='|')
 			{
@@ -428,15 +426,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	
 				
 				current_type = PIPE_COMMAND;
-				command_t new_command = (command_t)malloc(sizeof(command_t));
-				command_t temp = make_complete_command(new_command,'|', current_command);
-				push(temp, command_stack, stack_size);
-				stack_size ++;
-
-				current_command = command_stack [stack_size-1]; //contain subshell command
-				pop(command_stack, stack_size);
-				stack_size --;
-
+				
 				if( was_subshell && stack_size >0)
 				{
 					was_subshell= false;
@@ -469,7 +459,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					{
 						//if it's end of line, you won't need to start a new command
 						command_t new_command = (command_t)malloc(sizeof(command_t));
-						command_t temp= make_complete_command(new_command,curr, command_stack[stack_size-1]);
+						command_t temp= make_complete_command(new_command,'|', command_stack[stack_size-1]);
 						push(temp, command_stack, stack_size-1);
 						//this push overwrites an entry; does not increase stack_size
 					}
@@ -479,10 +469,14 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				{
 					//don't need to combine, just put the simple command into a complete command
 					command_t new_command = (command_t)malloc(sizeof(command_t));
-					command_t temp= make_complete_command(new_command,curr, current_command);
+					command_t temp= make_complete_command(new_command,'|', current_command);
 					push(temp, command_stack, stack_size);
 					stack_size++; 
+
 				}
+				current_command = command_stack [stack_size-1]; //contain subshell command
+				pop(command_stack, stack_size);
+				stack_size --;
 			}
 
 			word[nChars] = curr;
