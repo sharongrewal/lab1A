@@ -907,7 +907,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 
 		}
-		else if (curr != ' ')
+		else if (curr != ' ' && curr != '&' && curr != '|')
 		{
 			//anything invalid 
 			//it's here just in case.. something is missing
