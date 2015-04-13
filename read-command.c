@@ -1174,7 +1174,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	if(head->current_root_command ->u.command[0]->type == SIMPLE_COMMAND)
 	{
 		printf("%d:u.command[0] of root command is simple \n",__LINE__);
-		printf("%s",head->current_root_command ->u.command[0]->u.word[0]);
+		//printf("%s",head->current_root_command ->u.command[0]->u.word[0]);
 	}
 	return head;
 
