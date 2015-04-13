@@ -195,7 +195,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 	//struct command * current_command = (struct command *) malloc (sizeof(struct command));
 	command_t current_command = NULL;
-	command_t* cstack = (command*)malloc (sizeof(command_t)*2);
+	command_t* cstack = (command_t*)malloc (sizeof(command_t)*2);
 	int cstack_size=0;
 	//stack
 	int stack_size = 0;
@@ -322,9 +322,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					command_t temp = make_complete_command(new_command,curr, cstack[0]);
 					push(temp, command_stack, stack_size);
 					stack_size++; 
-					command_t new_command = (command_t)malloc(sizeof(command_t));
-				
-				
+		
 				}
 			}
 			else if(is_valid(prev_prev) && prev =='|')
