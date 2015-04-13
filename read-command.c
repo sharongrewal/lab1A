@@ -174,6 +174,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	word = (char*) malloc (sizeof(char)*wordsize);
 	
 	curr = read_char(get_next_byte, get_next_byte_argument);
+	printf("%d: read first curr: %c\n",__LINE__,curr);
 	if(curr == EOF)
 	{
 	  	fprintf(stderr, "%d: Nothing in the file \n", lineNumber);
@@ -193,7 +194,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	enum command_type current_type = SIMPLE_COMMAND; //what is command_type? has it been declared?
 
 	//struct command * current_command = (struct command *) malloc (sizeof(struct command));
-	command_t current_command;
+	command_t current_command = NULL;
 	
 	//stack
 	int stack_size = 0;
@@ -221,7 +222,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		if(is_valid (curr))
 		{ 
 			if(prev_prev =='\n' && prev =='\n')
-			{	printf("%d: you met a valid curr after two consecutive new line, curr:% \n",__LINE__, curr);
+			{	printf("%d: you met a valid curr after two consecutive new line, curr:%c \n",__LINE__, curr);
 		
 				//new command stream (new line)
 				if(current_command != NULL)
@@ -262,6 +263,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 			if (is_valid(prev_prev) && prev =='\n')
 			{printf("%d: you met the CASE A '\n' B, changing to sequence command\n",__LINE__);
+			printf("%d: making a complete command\n",__LINE__);
 		
 				// A \n B == A ; B
 				// A must be already in simple_command when the program reached '\n'
@@ -302,7 +304,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						was_subshell =true;
 					}
 					else 
-					{
+					{printf("%d: making a complete command\n",__LINE__);
 						//if it's end of line, you won't need to start a new command
 						command_t new_command = (command_t)malloc(sizeof(command_t));
 						command_t temp= make_complete_command(new_command,curr, command_stack[stack_size-1]);
@@ -312,7 +314,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 				}
 				else
-				{
+				{printf("%d: stack >0, making a complete command\n",__LINE__);
 					//don't need to combine, just put the simple command into a complete command
 					command_t new_command = (command_t)malloc(sizeof(command_t));
 					command_t temp = make_complete_command(new_command,curr, current_command);
@@ -365,7 +367,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						was_subshell =true;
 					}
 					else 
-					{
+					{printf("%d: making a complete command\n",__LINE__);
 						//if it's end of line, you won't need to start a new command
 						command_t new_command = (command_t)malloc(sizeof(command_t));
 						command_t temp= make_complete_command(new_command,curr, command_stack[stack_size-1]);
@@ -375,7 +377,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 				}
 				else
-				{
+				{printf("%d:stacksize>0, making a complete command\n",__LINE__);
 					//don't need to combine, just put the simple command into a complete command
 					command_t new_command = (command_t)malloc(sizeof(command_t));
 					command_t temp= make_complete_command(new_command,curr, current_command);
@@ -589,8 +591,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		
 					}
 		
-					if(nWords >0 || input != NULL ||output !=NULL)
-					{
+					if(nWords >0)
+					{printf("%d: nWords: %d, making a simple command\n",__LINE__, nWords);
 						command_t new_command = (command_t)malloc(sizeof(command_t));
 						char **words = (char**) malloc (maxwords * sizeof(char*));
 						int k;
@@ -637,7 +639,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					was_subshell =true;
 				}
 				else 
-				{
+				{printf("%d: making a complete command\n",__LINE__);
 					//if it's end of line, you won't need to start a new command
 					command_t new_command = (command_t)malloc(sizeof(command_t));
 					command_t temp = make_complete_command(new_command,curr, command_stack[stack_size-1]);
@@ -647,7 +649,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 			}
 			else
-			{
+			{printf("%d: stack size>0,making a complete command\n",__LINE__);
 				//don't need to combine, just put the simple command into a complete command
 				command_t new_command = (command_t)malloc(sizeof(command_t));
 				command_t temp = make_complete_command(new_command,curr, current_command);
@@ -656,7 +658,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			}
 		}
 		else if(curr == '(')
-		{
+		{ printf("%d: making a complete command for subshell\n",__LINE__);
 			if( curr =='(' && prev =='(') 
 			{
 				// '(('
@@ -875,7 +877,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				
 
 				if(nWords >0 )
-				{printf("%d: curr :%c\n",__LINE__,curr);
+				{printf("%d: nWords: %d, making a simple command\n",__LINE__, nWords);
 					command_t new_command = (command_t)malloc(sizeof(command_t));
 					char **words = (char**) malloc (maxwords * sizeof(char*));
 					int k;
