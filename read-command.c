@@ -566,7 +566,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				fprintf(stderr, "%d: invalid operator, ex) ;; , &&&, |||\n", lineNumber);
 				exit(1);
 			}
-			f(nChars>0)
+			if(nChars>0)
 			{ 
 				if( has_input )
 				{	
