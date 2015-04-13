@@ -1,4 +1,3 @@
-
 // UCLA CS 111 LAB1a read-command.c
 #include "command.h"
 #include "command-internals.h"
@@ -1055,3 +1054,4 @@ command_t read_command_stream (command_stream_t s)
 		memcpy(s,s->next_command_stream,sizeof(struct command_stream));
 	return output;
 }
+
