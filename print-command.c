@@ -16,11 +16,15 @@ command_indented_print (int indent, command_t c)
     case SEQUENCE_COMMAND:
     case OR_COMMAND:
     case PIPE_COMMAND:
-      {
+      { 
+      	printf("%d: prblem in print_command ",__LINE__);
 	command_indented_print (indent + 2 * (c->u.command[0]->type != c->type),
 				c->u.command[0]);
+	printf("%d: prblem in print_command ",__LINE__);
 	static char const command_label[][3] = { "&&", ";", "||", "|" };
+	printf("%d: prblem in print_command ",__LINE__);
 	printf (" \\\n%*s%s\n", indent, "", command_label[c->type]);
+	printf("%d: prblem in print_command ",__LINE__);
 	command_indented_print (indent + 2 * (c->u.command[1]->type != c->type),
 				c->u.command[1]);
 	break;
@@ -28,6 +32,7 @@ command_indented_print (int indent, command_t c)
 
     case SIMPLE_COMMAND:
       {
+      	printf("%d: prblem in print_command ",__LINE__);
 	char **w = c->u.word;
 	
 	printf ("%*s%s", indent, "", *w);
@@ -58,7 +63,6 @@ command_indented_print (int indent, command_t c)
 void
 print_command (command_t c)
 {
-	
   command_indented_print (2, c);
   putchar ('\n');
 }
