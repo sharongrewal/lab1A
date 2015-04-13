@@ -970,7 +970,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			fprintf(stderr, "%d: Invalid Syntax\n", lineNumber);
 			exit(1);
 		}
-		if (!is_valid(curr)&& curr != ' ' &&  curr != '\n' && curr != '\t' && curr !='(')
+		if (!is_valid(curr)&& curr != ' ' &&  curr != '\n' && curr != '\t' && curr !='(' && curr !='#')
 		{
 			if(prev =='\n')
 			{
