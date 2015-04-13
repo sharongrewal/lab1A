@@ -322,7 +322,11 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			else if(is_valid(prev_prev) && prev =='|')
 			{
 			// did you make a simple command yet??
-				
+				if(prev_prev =='\n')
+				{
+					fprintf(stderr, "%d: cannot start a new line with '|'\n", lineNumber);
+					exit(1);
+				}
 				// A \n B == A ; B
 				// A must be already in simple_command when the program reached '\n'
 				current_type = PIPE_COMMAND;
