@@ -221,25 +221,32 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		if(is_valid (curr))
 		{ 
 			if(prev_prev =='\n' && prev =='\n')
-			{
+			{	printf("%d: you met a valid curr after two consecutive new line\n",__LINE__);
+		
 				//new command stream (new line)
-				command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
-				new_stream->current_root_command = current_command;
-				new_stream ->next_command_stream = NULL;
-				
-				if(head == NULL)
-				{
-					head = new_stream;
-					current_stream = new_stream;
-				
-				}
-				else
-				{
-					current_stream ->next_command_stream = new_stream;
-					current_stream = new_stream;
+				if(stack_size ==0)
+				{printf("%d: stack size is 0, should make a new command_Stream\n",__LINE__);
+		
+					command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
+					new_stream->current_root_command = current_command;
+					new_stream ->next_command_stream = NULL;
 					
+					if(head == NULL)
+					{printf("%d: head was null, making first command stream\n",__LINE__);
+		
+						head = new_stream;
+						current_stream = new_stream;
+					
+					}
+					else
+					{printf("%d:head was not null, making more than one commadn stream\n",__LINE__);
+		
+						current_stream ->next_command_stream = new_stream;
+						current_stream = new_stream;
+						
+					}
+					current_command = NULL;
 				}
-				current_command = NULL;
 			}
 
 			
@@ -251,7 +258,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			}
 
 			if (is_valid(prev_prev) && prev =='\n')
-			{
+			{printf("%d: you met the CASE A '\n' B, changing to sequence command\n",__LINE__);
+		
 				// A \n B == A ; B
 				// A must be already in simple_command when the program reached '\n'
 				current_type = SEQUENCE_COMMAND;
@@ -310,7 +318,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				}
 			}
 			else if(is_valid(prev_prev) && prev =='|')
-			{
+			{printf("%d: it's pipe command, make a new pipe complete command and put it in stack\n",__LINE__);
+			// did you make a simple command yet??
 				printf("%d: curr :%c\n",__LINE__,curr);
 				// A \n B == A ; B
 				// A must be already in simple_command when the program reached '\n'
@@ -379,11 +388,11 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 		}
 		else if( curr ==' ' && (is_valid (prev) || prev ==')'))
-		{printf("%d: curr :%c\n",__LINE__,curr);
+		{printf("%d: curr :%c, met a space and it was valid before, so put owrd in word_buffer \n",__LINE__,curr);
 			//if white space after valid word
 
 			if( has_input )
-			{printf("%d: curr :%c\n",__LINE__,curr);
+			{printf("%d: has input\n",__LINE__);
 				if(nChars > wordsize)
 				{
 					wordsize = nChars;
@@ -401,7 +410,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				has_input = false;
 			}
 			else if (has_output)
-			{printf("%d: curr :%c\n",__LINE__,curr);
+			{printf("%d: has output\n",__LINE__);
 				if(nChars > wordsize)
 				{
 					wordsize = nChars;
@@ -421,13 +430,10 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				has_output = false;
 			}
 			else
-			{printf("%d: curr :%c\n",__LINE__,curr);
+			{printf("%d: curr :%c, copying to word buffer\n",__LINE__,curr);
 				if(nChars >0)
 				{
-					//copy word to word_buffer
-
-					//strcpy(word_buffer[nWords], word);
-					//strcpy (word_buffer[nWords],newword);
+				
 					char* newword = (char*)malloc(20*sizeof(char));
 
 					while(nChars > 0) //delete word
@@ -464,6 +470,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			}
 			if(( curr == ';') || (curr == '&' && prev == '&')||(curr == '|' && prev == '|')||(curr ==')'))
 			{
+				printf("%d: you met operator, need to make copmlete command\n",__LINE__);
+		
 				if(curr == ';')
 				{
 					current_type = SEQUENCE_COMMAND;
@@ -474,7 +482,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					}
 				}
 				else if(curr == '&' && prev == '&')
-				{
+				{printf("%d: you met AND COMMAND, nWords = %d\n",__LINE__,nWords);
+		
 					current_type = AND_COMMAND;
 					if(nWords == 0 && !was_subshell)
 					{
