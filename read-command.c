@@ -170,7 +170,6 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	//word_buffer = (char**)malloc(sizeof(char*)*wordsize);
 	//word = (char*) malloc(sizeof(char)*wordsize);
 	word_buffer[9] =NULL;
-	word[9] = NULL;
 	word = (char*) malloc (sizeof(char)*wordsize);
 	
 	curr = read_char(get_next_byte, get_next_byte_argument);
@@ -931,10 +930,10 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	
 	}
 	
-	printf("%d: met EOF\n",__LINE__,nWords);
+	printf("%d: met EOF\n",__LINE__);
 	if( has_input )
 	{
-	printf("%d: met EOF, has input\n",__LINE__,nWords);
+	printf("%d: met EOF, has input\n",__LINE__);
 
 		if(nChars > wordsize)
 		{
@@ -955,7 +954,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 	}
 	else if (has_output)
-	{printf("%d: met EOF, has output",__LINE__,nWords);
+	{printf("%d: met EOF, has output",__LINE__);
 		if(nChars > wordsize)
 		{
 			wordsize = nChars;
@@ -974,7 +973,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		has_output = false;
 	}
 	else
-	{printf("%d: met EOF, need to make last simple command \n",__LINE__,nWords);
+	{printf("%d: met EOF, need to make last simple command \n",__LINE__);
 		if(nChars >0)
 		{printf("%d: nChars:%d, you still have characters in word_\n",__LINE__,nChars);
 			//copy word to word_buffer
