@@ -473,8 +473,68 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				fprintf(stderr, "%d: Cannot start a new line with operator\n", lineNumber);
 				exit(1);
 			}
-
-				printf("%d: you met operator, need to make copmlete command\n",__LINE__);
+			if(nChars>0)
+			{ printf("%d: your nChars>0 need to put that in word buffer and make simple command, nChars: %d, nWords:%d \n",__LINE__,curr, nChars, nWords);
+				if( has_input )
+				{printf("%d: has input\n",__LINE__);
+					if(nChars > wordsize)
+					{
+						wordsize = nChars;
+						input = (char*) realloc(input,wordsize);
+					}
+	
+					input = (char*) malloc(wordsize*sizeof(char));
+					 strcpy(input, word);
+	
+					while(nChars > 0) //delete word or set everything to ''
+					{
+						word[nChars-1] = '\0';
+						nChars--;
+					}
+					has_input = false;
+				}
+				else if (has_output)
+				{printf("%d: has output\n",__LINE__);
+					if(nChars > wordsize)
+					{
+						wordsize = nChars;
+						output = (char*) realloc(output,wordsize);
+	
+					}
+					
+					 output = (char*) malloc(wordsize*sizeof(char));
+					 strcpy(output, word);
+					
+					
+					while(nChars > 0) //delete word
+					{
+						word[nChars-1] = '\0';
+						nChars--;
+					}
+					has_output = false;
+				}
+				else
+				{printf("%d: curr :%c, copying to word buffer\n",__LINE__,curr);
+					if(nChars >0)
+					{
+					
+						char* newword = (char*)malloc(20*sizeof(char));
+	
+						while(nChars > 0) //delete word
+						{
+							newword[nChars-1]  = word[nChars -1];
+							word[nChars-1] = '\0';
+							nChars--;
+						}
+	
+						word_buffer[nWords] = newword;
+						nWords ++;
+						printf("%d: word_buffer :%s, nWords :%d\n",__LINE__,word_buffer[nWords-1],nWords);
+					}
+	
+				}
+			}
+			printf("%d: you met operator, need to make copmlete command\n",__LINE__);
 	
 			if(curr == ';')
 			{ printf("%d: you met SEQUENCE COMMAND, nWords = %d\n",__LINE__,nWords);
