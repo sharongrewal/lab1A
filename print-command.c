@@ -9,9 +9,9 @@
 static void
 command_indented_print (int indent, command_t c)
 {
-
+printf("%d: prblem in print_command, c->type ",__LINE__);
   switch (c->type)
-    {
+    { printf("%d: c->type read",__LINE__);
     case AND_COMMAND:
     case SEQUENCE_COMMAND:
     case OR_COMMAND:
