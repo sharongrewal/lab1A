@@ -1030,7 +1030,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	}
 
 
-	if( head->current_root_comand == NULL)
+	if( head->current_root_command == NULL)
 	{
 		fprintf (stderr, "head NULL\n");
 		exit(1);
