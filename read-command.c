@@ -1157,7 +1157,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		fprintf (stderr, "current stream NULL \n");
 		exit(1);
 	}
-	if (head ->current_root_command ->type == AND_COMMAND && head->next_command_strea == NULL)
+	if (head ->current_root_command ->type == AND_COMMAND && head->next_command_stream == NULL)
 			{
 			printf("%d: root command of head commadn type is AND \n",__LINE__);
 			printf("%d: root command  is the last stream \n",__LINE__);
