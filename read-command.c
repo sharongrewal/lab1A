@@ -964,6 +964,10 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						word_buffer[k] = NULL;
 					}
 					cstack[0]= make_simple_command(new_command,words, input, output);
+					if(command_stack[stack_size-1]->u.command[0]->type == SIMPLE_COMMAND )
+				{
+					printf("%d:top stack is simple command\n",__LINE__);
+				}
 					cstack_size = 1;
 					input = NULL;
 					output = NULL;
