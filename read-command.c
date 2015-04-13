@@ -60,6 +60,7 @@ command_t make_complete_command (command_t new_command,char curr, command_t stac
       	case '&':
         	new_command -> type = AND_COMMAND;
         	new_command -> u.command[0] = stack;
+        	printf("%d: making AND COMMAND\n",__LINE__);
         		break;
       	case '|':
         	new_command -> type = OR_COMMAND;
@@ -707,8 +708,16 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			else
 			{printf("%d: stack size=0,making a complete command\n",__LINE__);
 				//don't need to combine, just put the simple command into a complete command
+				if(current_command->type ==SIMPLE_COMMAND)
+				{
+					printf("%d: current type is simple command, going to combine that to and command\n",__LINE__);
+				}
 				command_t new_command = (command_t)malloc(sizeof(command_t));
 				command_t temp = make_complete_command(new_command,curr, current_command);
+				if(temp->u.command[0]->type == SIMPLE_COMMAND )
+				{
+					printf("%d: TEMP U.COMMADN is simple command\n",__LINE__);
+				}
 				push(temp, command_stack, stack_size);
 				stack_size++; 
 			}
