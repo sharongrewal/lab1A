@@ -199,7 +199,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	
 	command_t* cstack = (command_t*)malloc (sizeof(command_t)*max_stack_size);
 	int cstack_size=0;
-	int cstack_p;
+	int cstack_p=-1;
 	//stack
 	int stack_size = 0;
 	command_t* command_stack = (command_t*)malloc(sizeof(command_t)*max_stack_size);
@@ -252,6 +252,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 							
 						}
 						cstack_size = 0;
+						cstack_p =-1;
 					}
 				}
 			}
@@ -1187,6 +1188,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 		}
 		cstack_size = 0;
+		cstack_p = -1;
 	}
 
 
