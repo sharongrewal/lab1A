@@ -1171,7 +1171,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			printf("%d: root command of head commadn type is AND \n",__LINE__);
 			printf("%d: root command  is the last stream \n",__LINE__);
 			}
-	if(head->current_root_command ->u.command[0]->type == SIMPLE_COMMAND)
+	command_t temp = head->current_root_command ->u.command[0];
+	printf("%d: temp.....\n",__LINE__);
+	if(temp->type == SIMPLE_COMMAND)
 	{
 		printf("%d:u.command[0] of root command is simple \n",__LINE__);
 		//printf("%s",head->current_root_command ->u.command[0]->u.word[0]);
