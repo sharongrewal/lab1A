@@ -1162,13 +1162,20 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			printf("%d: root command of head commadn type is AND \n",__LINE__);
 			printf("%d: root command  is the last stream \n",__LINE__);
 			}
+	if(head->current_root_command ->u.command[0]->type == SIMPLE_COMMAND)
+	{
+		printf("%d:u.command[0] of root command is simple \n",__LINE__);
+		printf("%s",head->current_root_command ->u.command[0]->u.word[0])
+	}
 	return head;
 
 }
 
 command_t read_command_stream (command_stream_t s)
 {	
+	printf("%d: inside read_command_stream\n",__LINE__);
 	command_t output = s -> current_root_command;
+	printf("%d: got root command\n",__LINE__);
 	if (s -> next_command_stream == NULL)
 		memset(s,0,sizeof(struct command_stream));
 	else
