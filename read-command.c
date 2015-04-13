@@ -851,7 +851,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		}
 
 		else if (curr == '\n')
-		{printf("%d: curr :%c\n",__LINE__,curr);
+		{printf("%d: curr is new line. \n",__LINE__);
 			//newline can not appear after '<' or '>'
 			//newline can ONLY appear before '(' or ')'
 
@@ -865,11 +865,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 			//end of line 
 			if( !was_subshell)
-			{
-			printf("%d: curr :%c\n",__LINE__,curr);
-			printf("%d: nwords :%d\n",__LINE__,nWords);
+			{ printf("%d: nWords: %d.end of new line if it was not a subshell, make simple command. \n",__LINE__,nWords);
 				if( has_input )
-				{
+				{printf("%d: has input",__LINE__);
 					if(nChars > wordsize)
 					{
 						wordsize = nChars;
@@ -889,7 +887,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			
 				}
 				else if (has_output)
-				{
+				{printf("%d: has output",__LINE__);
 					if(nChars > wordsize)
 					{
 						wordsize = nChars;
@@ -908,9 +906,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					has_output = false;
 				}
 				else
-				{printf("%d: nChar :%d\n",__LINE__,nChars);
+				{printf("%d: making new simple command nChar :%d\n",__LINE__,nChars);
 					if(nChars >0)
-					{printf("%d: curr :%c\n",__LINE__,curr);
+					{printf("%d: word dto buffer\n",__LINE__);
 						//copy word to word_buffer
 				
 						//strcpy(word_buffer[nWords], word);
@@ -918,7 +916,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						char* newword = (char*)malloc(20*sizeof(char));
 				
 						while(nChars > 0) //delete word
-						{printf("%d: curr :%c\n",__LINE__,curr);
+						{
 							newword[nChars-1]  = word[nChars -1];
 							word[nChars-1] = '\0';
 							nChars--;
@@ -926,7 +924,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				
 						word_buffer[nWords] = newword;
 						nWords ++;
-						printf("%d: curr :%d\n",__LINE__,nWords);
+						printf("%d: nWords :%d\n",__LINE__,nWords);
 					}
 				
 				}
@@ -952,7 +950,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				}
 
 				while (stack_size >0)
-				{printf("%d: curr :%c\n",__LINE__,curr);
+				{printf("%d:stack size >0 need to combine commands stacksize: %d\n",__LINE__,stack_size);
 					command_t temp  = combine_complete_command(command_stack[stack_size-1], current_command);
 					pop(command_stack, stack_size);
 					stack_size--;
@@ -1030,7 +1028,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		has_output = false;
 	}
 	else
-	{printf("%d: met EOF, need to make last simple command \n",__LINE__);
+	{printf("%d: met EOF, need to put word into word buffer if nChar>0 nChar: %d, nWords:%d \n",__LINE__, nChars, nWords);
 		if(nChars >0)
 		{printf("%d: nChars:%d, you still have characters in word_\n",__LINE__,nChars);
 			//copy word to word_buffer
@@ -1051,6 +1049,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			nWords ++;
 			printf("%d: word copied: nWords :%d\n",__LINE__,nWords);
 		}
+		
 	
 	}
 	
@@ -1104,8 +1103,17 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	//when curr == 'EOF'
 	if(current_command != NULL)
 	{
-		printf("%d: You still have current_command left. Thsi current_command is the root command \n",__LINE__);
-		
+		printf("%d: You still have current_command left. Thsi current_command is the root command if stack >0 need to combine \n",__LINE__);
+		while(stack_size >0 && (compare_operator(current_type, command_stack[stack_size-1]->type) <= 0))
+		{
+			command_t temp = combine_complete_command(command_stack[stack_size-1], current_command);
+			pop(command_stack, stack_size);
+			stack_size--;
+			push(temp, command_stack, stack_size);
+			stack_size ++;
+			current_command = command_stack [stack_size-1]; //contain subshell command				pop(command_stack, stack_size);
+			stack_size --;
+		}
 		//new command stream (new line)
 		command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
 		new_stream->current_root_command =current_command;
