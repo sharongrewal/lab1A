@@ -1,5 +1,4 @@
-
-// UCLA CS 111 LAB1a read-command.c
+/ UCLA CS 111 LAB1a read-command.c
 #include "command.h"
 #include "command-internals.h"
 
@@ -61,7 +60,6 @@ command_t make_complete_command (command_t new_command,char curr, command_t stac
       	case '&':
         	new_command -> type = AND_COMMAND;
         	new_command -> u.command[0] = stack;
-   
         		break;
       	case '|':
         	new_command -> type = OR_COMMAND;
@@ -106,7 +104,8 @@ void push (command_t  curr_command, command_t* stack, int stack_size)
 	stack[stack_size] = curr_command;
 }
 
-//popping stack//after calling pop, stack_size should --
+//popping stack
+//after calling pop, stack_size should --
 void pop (command_t* stack, int stack_size)
 {
 	if(stack_size != 0) //don't pop an empty stack
@@ -214,25 +213,28 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			{
 				curr = read_char(get_next_byte, get_next_byte_argument);
 			}
-	
+		
 		
 		}
 			
 		if(is_valid (curr))
 		{ 
 			if(prev_prev =='\n' && prev =='\n')
-			{
+			{	
+		
 				//new command stream (new line)
 				if(current_command != NULL)
 				{
-				       if(stack_size ==0)
+					if(stack_size ==0)
 					{
+			
 						command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
 						new_stream->current_root_command = current_command;
 						new_stream ->next_command_stream = NULL;
 						
 						if(head == NULL)
 						{
+			
 							head = new_stream;
 							current_stream = new_stream;
 						
@@ -309,7 +311,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 				}
 				else
-				 {
+				{
 					//don't need to combine, just put the simple command into a complete command
 					command_t new_command = (command_t)malloc(sizeof(command_t));
 					command_t temp = make_complete_command(new_command,curr, current_command);
@@ -320,7 +322,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			else if(is_valid(prev_prev) && prev =='|')
 			{
 			// did you make a simple command yet??
-		
+				
 				// A \n B == A ; B
 				// A must be already in simple_command when the program reached '\n'
 				current_type = PIPE_COMMAND;
@@ -373,7 +375,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				}
 				else
 				{
-			       	//don't need to combine, just put the simple command into a complete command
+					//don't need to combine, just put the simple command into a complete command
 					command_t new_command = (command_t)malloc(sizeof(command_t));
 					command_t temp= make_complete_command(new_command,curr, current_command);
 					push(temp, command_stack, stack_size);
@@ -384,7 +386,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			word[nChars] = curr;
 
 			nChars++;
-		       
+		
 		}
 		else if( curr ==' ' && (is_valid (prev) || prev ==')'))
 		{
@@ -409,7 +411,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				has_input = false;
 			}
 			else if (has_output)
-			  {
+			{
 				if(nChars > wordsize)
 				{
 					wordsize = nChars;
@@ -429,7 +431,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				has_output = false;
 			}
 			else
-			  {
+			{
 				if(nChars >0)
 				{
 				
@@ -444,7 +446,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 					word_buffer[nWords] = newword;
 					nWords ++;
-				
+					
 				}
 
 			}
@@ -453,7 +455,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		}
 		else if( curr== ';' ||  (prev == '&' &&curr == '&' )||(prev == '|' && curr == '|') ||curr ==')')
 		{
-			;
+			
 			if( (curr ==';' && prev ==';') || (curr =='&' && prev =='&' && prev_prev =='&')
 			                 || (curr =='|' && prev =='|' && prev_prev =='|')) 
 			{
@@ -471,7 +473,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			if(nChars>0)
 			{ 
 				if( has_input )
-				{
+				{	
 					if(nChars > wordsize)
 					{
 						wordsize = nChars;
@@ -524,13 +526,14 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	
 						word_buffer[nWords] = newword;
 						nWords ++;
-					
+						
 					}
 	
 				}
 			}
+			
 			if(curr == ';')
-			{
+			{ 
 				current_type = SEQUENCE_COMMAND;
 				if(nWords == 0 && !was_subshell)
 				{
@@ -688,8 +691,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					was_subshell =true;
 				}
 				else 
-				{
-					//if it's end of line, you won't need to start a new command
+				{	//if it's end of line, you won't need to start a new command
 					command_t new_command = (command_t)malloc(sizeof(command_t));
 					command_t temp = make_complete_command(new_command,curr, command_stack[stack_size-1]);
 					push(temp, command_stack, stack_size-1);
@@ -700,17 +702,17 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			else
 			{
 				//don't need to combine, just put the simple command into a complete command
-	
+				
 				command_t new_command = (command_t)malloc(sizeof(command_t));
 				command_t temp = make_complete_command(new_command,curr, current_command);
-	
+				
 				push(temp, command_stack, stack_size);
 				stack_size++; 
-			
+				
 			}
 		}
 		else if(curr == '(')
-		{
+		{ 
 			if( curr =='(' && prev =='(') 
 			{
 				// '(('
@@ -847,7 +849,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		}
 
 		else if (curr == '\n')
-		{	//newline can not appear after '<' or '>'
+		{
+			//newline can not appear after '<' or '>'
 			//newline can ONLY appear before '(' or ')'
 
 			if(prev == '<' ||prev =='>')
@@ -860,7 +863,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 			//end of line 
 			if( !was_subshell)
-			{
+			{ 
 				if( has_input )
 				{
 					if(nChars > wordsize)
@@ -903,7 +906,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				else
 				{
 					if(nChars >0)
-					  {
+					{
 						//copy word to word_buffer
 				
 						//strcpy(word_buffer[nWords], word);
@@ -919,7 +922,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				
 						word_buffer[nWords] = newword;
 						nWords ++;
-					
+		
 					}
 				
 				}
@@ -945,7 +948,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				}
 
 				while (stack_size >0)
-				{	command_t temp  = combine_complete_command(command_stack[stack_size-1], current_command);
+				{ 
+					command_t temp  = combine_complete_command(command_stack[stack_size-1], current_command);
 					pop(command_stack, stack_size);
 					stack_size--;
 					push(temp, command_stack, stack_size);
@@ -978,11 +982,11 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		curr = read_char(get_next_byte, get_next_byte_argument);
 	
 	}
+	
 
 	if( has_input )
 	{
-
-
+	
 		if(nChars > wordsize)
 		{
 			wordsize = nChars;
@@ -1034,13 +1038,12 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			{
 				newword[nChars-1]  = word[nChars -1];
 				word[nChars-1] = '\0';
-
 				nChars--;
 			}
 	
 			word_buffer[nWords] = newword;
 			nWords ++;
-			
+
 		}
 		
 	
@@ -1049,7 +1052,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				
 
 	if(nWords >0)
-	{	command_t new_command = (command_t)malloc(sizeof(command_t));
+	{	
+		command_t new_command = (command_t)malloc(sizeof(command_t));
 
 		char **words = (char**) malloc(maxwords * sizeof(char*));
 		int k;
@@ -1059,7 +1063,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			
 		}
 		current_command = make_simple_command(new_command,words,  input, output);
-
+	
 		input = NULL;
 		output = NULL;
 		nWords = 0;
@@ -1088,7 +1092,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	//when curr == 'EOF'
 	if(current_command != NULL)
 	{
-	
+		
 		while(stack_size >0 && (compare_operator(current_type, command_stack[stack_size-1]->type) <= 0))
 		{
 			command_t temp = combine_complete_command(command_stack[stack_size-1], current_command);
@@ -1101,11 +1105,24 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		}
 		
 
+
 		//new command stream (EOF)
 		command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
 		new_stream->current_root_command =current_command;
 		new_stream ->next_command_stream = NULL;
+	
+		if(head == NULL)
+		{	
+			head = new_stream;
+			current_stream = new_stream;
 
+		}
+		else
+		{	
+			current_stream ->next_command_stream = new_stream;
+			current_stream = new_stream;
+
+		}
 		current_command= NULL;
 	}
 
@@ -1122,14 +1139,15 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		exit(1);
 	}
 
+	command_t temp = head->current_root_command ->u.command[0];
+
 	return head;
 
 }
 
 command_t read_command_stream (command_stream_t s)
-{
+{	
 	command_t output = s -> current_root_command;
-
 	if (s -> next_command_stream == NULL)
 		memset(s,0,sizeof(struct command_stream));
 	else
