@@ -178,7 +178,14 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	  	fprintf(stderr, "%d: Nothing in the file \n", lineNumber);
         	exit(1);
 	}    //FILE IS EMPTY
-
+	if (!is_valid(curr)&& curr != ' ' &&  curr != '\n' && curr != '\t' && curr !='(')
+	{
+		if(prev =='\n')
+		{
+				fprintf(stderr, "%d: cannot start the first line with a operator \n", lineNumber);
+				exit(1);
+		}
+	}
 
 	char* input;//space for input storing 
 	char* output; //space for output storing
