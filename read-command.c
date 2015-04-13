@@ -274,6 +274,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				push(temp, command_stack, stack_size);
 				stack_size ++;
 				cstack[0]=command_stack [stack_size-1]; //contain subshell command
+				cstack_size = 1;
 				pop(command_stack, stack_size);
 				stack_size --;
 				
@@ -295,6 +296,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						push(temp, command_stack, stack_size);
 						stack_size ++;
 						cstack[0] = command_stack [stack_size-1]; //contain subshell command
+						cstack_size = 1;
 						pop(command_stack, stack_size);
 						stack_size --;
 					}
@@ -338,6 +340,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				stack_size ++;
 
 				cstack[0]=command_stack [stack_size-1]; //contain subshell command
+				cstack_size = 1;
 				pop(command_stack, stack_size);
 				stack_size --;
 
@@ -358,6 +361,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						push(temp, command_stack, stack_size);
 						stack_size ++;
 						cstack[0]=command_stack [stack_size-1]; //contain subshell command
+						cstack_size = 1;
 						pop(command_stack, stack_size);
 						stack_size --;
 					}
@@ -583,6 +587,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			{
 				//if just now was a sibshell. prev ==')'
 				cstack[0] = command_stack [stack_size-1]; //contain subshell command
+				cstack_size = 1;
 				pop(command_stack, stack_size);
 				stack_size --;
 				was_subshell= false;
@@ -665,6 +670,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						word_buffer[k] = NULL;
 					}
 					cstack[0]= make_simple_command(new_command,words, input, output);
+					cstack_size = 1;
 					input = NULL;
 					output = NULL;
 					nWords =0;
@@ -687,6 +693,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					push(temp, command_stack, stack_size);
 					stack_size ++;
 					cstack[0] = command_stack [stack_size-1]; //contain subshell command
+					cstack_size = 1;
 					pop(command_stack, stack_size);
 					stack_size --;
 				}
@@ -957,7 +964,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						word_buffer[k] = NULL;
 					}
 					cstack[0]= make_simple_command(new_command,words, input, output);
-					
+					cstack_size = 1;
 					input = NULL;
 					output = NULL;
 					nWords =0;
@@ -973,6 +980,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					push(temp, command_stack, stack_size);
 					stack_size ++;
 					cstack[0] = command_stack [stack_size-1]; //contain subshell command
+					cstack_size = 1;
 					pop(command_stack, stack_size);
 					stack_size --;
 				}
@@ -1083,6 +1091,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			
 		}
 		cstack[0] = make_simple_command(new_command,words,  input, output);
+		cstack_size = 1;
 		if(new_command -> type == SIMPLE_COMMAND)
 		{
 			printf("%d: just made simple command, new commadn type is simple\n",__LINE__);
@@ -1128,6 +1137,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			push(temp, command_stack, stack_size);
 			stack_size ++;
 			cstack[0] = command_stack [stack_size-1]; //contain subshell command				pop(command_stack, stack_size);
+			cstack_size = 1;
 			stack_size --;
 		}
 		
