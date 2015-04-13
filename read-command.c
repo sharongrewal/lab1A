@@ -24,7 +24,7 @@ bool is_valid(char c)
 		return false;
 }
 
-command_t make_simple_command (command_t new_command, char** words,  char* i, char* o, int nWords)
+command_t make_simple_command (command_t new_command, char** words,  char* i, char* o)
 { 
 	new_command ->type = SIMPLE_COMMAND;
 
@@ -585,7 +585,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 							words[k] = word_buffer[k];
 							word_buffer[k] = NULL;
 						}
-						current_command= make_simple_command(new_command,words, input, output, nWords);
+						current_command= make_simple_command(new_command,words, input, output);
 						input = NULL;
 						output = NULL;
 						nWords =0;
@@ -870,7 +870,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 						words[k] = word_buffer[k];
 						word_buffer[k] = NULL;
 					}
-					current_command = make_simple_command(new_command,words, input, output, nWords);
+					current_command = make_simple_command(new_command,words, input, output);
 					
 					input = NULL;
 					output = NULL;
@@ -992,7 +992,7 @@ printf("%d: curr :%c\n",__LINE__,curr);
 			words[k]= word_buffer[k];
 			
 		}
-		current_command = make_simple_command(new_command,words,  input, output, nWords);
+		current_command = make_simple_command(new_command,words,  input, output);
 printf("%d: curr :%c\n",__LINE__,curr);
 		input = NULL;
 		output = NULL;
