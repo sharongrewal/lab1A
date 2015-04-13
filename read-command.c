@@ -1,4 +1,3 @@
-ALMOST good
 
 // UCLA CS 111 LAB1a read-command.c
 #include "command.h"
@@ -112,7 +111,7 @@ void push (command_t  curr_command, command_t* stack, int stack_size)
 void pop (command_t* stack, int stack_size)
 {
 	if(stack_size != 0) //don't pop an empty stack
-      stack[stack_size-1] = NULL; 
+	  stack[stack_size-1] = NULL; 
 }
 
 //need detailed implementation
