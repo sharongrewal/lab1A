@@ -60,7 +60,7 @@ command_t make_complete_command (command_t new_command,char curr, command_t stac
         	new_command -> u.command[0] = stack;
         		break;
       	case '|':
-        	new_command -> type = PIPE_COMMAND;
+        	new_command -> type = OR_COMMAND;
         	new_command -> u.command[0] = stack;
         		break;
       	case '(':
@@ -191,7 +191,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	enum command_type current_type = SIMPLE_COMMAND; //what is command_type? has it been declared?
 
 	//struct command * current_command = (struct command *) malloc (sizeof(struct command));
-	command_stream_t current_command = NULL;
+	command_stream_t current_command =  (command_stream_t)malloc(sizeof(struct command_stream));
 	
 	//stack
 	int stack_size = 0;
@@ -220,7 +220,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			{
 				//new command stream (new line)
 				command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
-				  new_stream->current_root_command = current_command->current_root_command;
+				 new_stream->current_root_command = current_command->current_root_command;
 				new_stream ->next_command_stream = NULL;
 				
 				if(head == NULL)
