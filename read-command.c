@@ -566,7 +566,67 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				fprintf(stderr, "%d: invalid operator, ex) ;; , &&&, |||\n", lineNumber);
 				exit(1);
 			}
-			
+			f(nChars>0)
+			{ 
+				if( has_input )
+				{	
+					if(nChars > wordsize)
+					{
+						wordsize = nChars;
+						input = (char*) realloc(input,wordsize);
+					}
+	
+					input = (char*) malloc(wordsize*sizeof(char));
+					 strcpy(input, word);
+	
+					while(nChars > 0) //delete word or set everything to ''
+					{
+						word[nChars-1] = '\0';
+						nChars--;
+					}
+					has_input = false;
+				}
+				else if (has_output)
+				{
+					if(nChars > wordsize)
+					{
+						wordsize = nChars;
+						output = (char*) realloc(output,wordsize);
+	
+					}
+					
+					 output = (char*) malloc(wordsize*sizeof(char));
+					 strcpy(output, word);
+					
+					
+					while(nChars > 0) //delete word
+					{
+						word[nChars-1] = '\0';
+						nChars--;
+					}
+					has_output = false;
+				}
+				else
+				{
+					if(nChars >0)
+					{
+					
+						char* newword = (char*)malloc(20*sizeof(char));
+	
+						while(nChars > 0) //delete word
+						{
+							newword[nChars-1]  = word[nChars -1];
+							word[nChars-1] = '\0';
+							nChars--;
+						}
+	
+						word_buffer[nWords] = newword;
+						nWords ++;
+						
+					}
+	
+				}
+			}
 			if(curr == ';')
 			{ 
 				current_type = SEQUENCE_COMMAND;
