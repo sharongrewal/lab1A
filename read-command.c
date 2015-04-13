@@ -214,8 +214,10 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			{
 				curr = read_char(get_next_byte, get_next_byte_argument);
 			}
+			printf("%d: just got out of the loop for comments, curr: %c, prev:%c, prev_prev:%c\n",__LINE__, curr, prev, prev_prev);;
+		
 		}
-	
+			
 		if(is_valid (curr))
 		{ 
 			if(prev_prev =='\n' && prev =='\n')
@@ -914,9 +916,12 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		curr = read_char(get_next_byte, get_next_byte_argument);
 	
 	}
-	printf("%d: nwords :%d\n",__LINE__,nWords);
+	
+	printf("%d: met EOF\n",__LINE__,nWords);
 	if( has_input )
 	{
+	printf("%d: met EOF, has input\n",__LINE__,nWords);
+
 		if(nChars > wordsize)
 		{
 			wordsize = nChars;
@@ -936,7 +941,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 	}
 	else if (has_output)
-	{
+	{printf("%d: met EOF, has output",__LINE__,nWords);
 		if(nChars > wordsize)
 		{
 			wordsize = nChars;
@@ -955,9 +960,9 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		has_output = false;
 	}
 	else
-	{printf("%d: nChar :%d\n",__LINE__,nChars);
+	{printf("%d: met EOF, need to make last simple command \n",__LINE__,nWords);
 		if(nChars >0)
-		{printf("%d: curr :%c\n",__LINE__,curr);
+		{printf("%d: nChars:%d, you still have characters in word_\n",__LINE__,nChars);
 			//copy word to word_buffer
 	
 			//strcpy(word_buffer[nWords], word);
@@ -965,15 +970,16 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			char* newword = (char*)malloc(20*sizeof(char));
 	
 			while(nChars > 0) //delete word
-			{printf("%d: curr :%c\n",__LINE__,curr);
+			{
 				newword[nChars-1]  = word[nChars -1];
 				word[nChars-1] = '\0';
+				printf("%d:copying from word : %c\n",__LINE__,newword[nChars-1]);
 				nChars--;
 			}
 	
 			word_buffer[nWords] = newword;
 			nWords ++;
-			printf("%d: curr :%d\n",__LINE__,nWords);
+			printf("%d: word copied: nWords :%d\n",__LINE__,nWords);
 		}
 	
 	}
@@ -981,11 +987,10 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				
 
 	if(nWords >0)
-	{	printf("%d: curr :%c\n",__LINE__,curr);
+	{	printf("%d: you have %d words in word_buffer left. Need to make simple command\n",__LINE__,nWords);
 		command_t new_command = (command_t)malloc(sizeof(command_t));
 
 		char **words = (char**) malloc(maxwords * sizeof(char*));
-printf("%d: curr :%c\n",__LINE__,curr);
 		int k;
 		for(k =0; k<nWords;k++)
 		{
@@ -993,7 +998,14 @@ printf("%d: curr :%c\n",__LINE__,curr);
 			
 		}
 		current_command = make_simple_command(new_command,words,  input, output);
-printf("%d: curr :%c\n",__LINE__,curr);
+		if(new_command -> type == SIMPLE_COMMAND)
+		{
+			printf("%d: just made simple command, new commadn type is simple\n",__LINE__);
+		}
+		if(current_command -> type == SIMPLE_COMMAND)
+		{
+			printf("%d: just made simple command, current commadn type is simple\n",__LINE__);
+		}
 		input = NULL;
 		output = NULL;
 		nWords = 0;
@@ -1021,22 +1033,23 @@ printf("%d: curr :%c\n",__LINE__,curr);
 
 	//when curr == 'EOF'
 	if(current_command != NULL)
-	{printf("%d: curr :%c\n",__LINE__,curr);
+	{
+		printf("%d: You still have current_command left. Thsi current_command is the root command \n",__LINE__);
 		
 		//new command stream (new line)
 		command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
 		new_stream->current_root_command =current_command;
 		new_stream ->next_command_stream = NULL;
-	printf("%d: curr :%c\n",__LINE__,curr);
+	
 		if(head == NULL)
-		{
+		{	printf("%d: head NULL, you are making the first command stream\n",__LINE__);
 			head = new_stream;
-		printf("%d: curr :%c\n",__LINE__,curr);
 			current_stream = new_stream;
 
 		}
 		else
-		{
+		{	printf("%d: head not NULL, you are making more than one command string\n",__LINE__);
+			
 			current_stream ->next_command_stream = new_stream;
 			current_stream = new_stream;
 
