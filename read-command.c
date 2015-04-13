@@ -354,7 +354,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					{
 						//if it's end of line, you won't need to start a new command
 						command_t new_command = (command_t)malloc(sizeof(command_t));
-						command _t temp= make_complete_command(new_command,curr, command_stack[stack_size-1]);
+						command_t temp= make_complete_command(new_command,curr, command_stack[stack_size-1]);
 						push(temp, command_stack, stack_size-1);
 						//this push overwrites an entry; does not increase stack_size
 					}
@@ -884,6 +884,11 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					command_t temp  = combine_complete_command(command_stack[stack_size-1], current_command);
 					pop(command_stack, stack_size);
 					stack_size--;
+					push(temp, command_stack, stack_size);
+					stack_size ++;
+					current_command = command_stack [stack_size-1]; //contain subshell command
+					pop(command_stack, stack_size);
+					stack_size --;
 				}
 			
 			}
