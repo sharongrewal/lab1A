@@ -329,8 +329,104 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			{
 			// did you make a simple command yet??
 			
-				// A \n B == A ; B
-				// A must be already in simple_command when the program reached '\n'
+				// pipe command
+				//if simple command not yet made
+				if( was_subshell && stack_size >0)
+				{
+					//if just now was a sibshell. prev ==')'
+					current_command = command_stack [stack_size-1]; //contain subshell command
+					pop(command_stack, stack_size);
+					stack_size --;
+					was_subshell= false;
+				}
+				else
+				{
+					// make simple command when you reached  '&&' '|' '||' ')'
+					// add everything in word buffer into simple command
+					//if there's input and output assign them too.
+					//copy last word to word_buffer
+	
+					if( has_input )
+					{
+						if(nChars > wordsize)
+						{
+							wordsize = nChars;
+							input = (char*) realloc(input,wordsize);
+						}
+		
+						input = (char*) malloc(wordsize*sizeof(char));
+						 strcpy(input, word);
+		
+						while(nChars > 0) //delete word or set everything to ''
+						{
+							word[nChars-1] = '\0';
+							nChars--;
+						}
+						has_input = false;
+					}
+					else if (has_output)
+					{
+						if(nChars > wordsize)
+						{
+							wordsize = nChars;
+							output = (char*) realloc(output,wordsize);
+							//
+						}
+						
+						output = (char*) malloc(wordsize*sizeof(char));
+						strcpy(output, word);
+						
+						while(nChars > 0) //delete word
+						{
+							word[nChars-1] = '\0';
+							nChars--;
+						}
+						has_output = false;
+					}
+					else
+					{
+						if(nChars >0)
+						{
+							//copy word to word_buffer
+		
+							//strcpy(word_buffer[nWords], word);
+							//strcpy (word_buffer[nWords],newword);
+							char* newword = (char*)malloc(20*sizeof(char));
+		
+							while(nChars > 0) //delete word
+							{
+								newword[nChars-1]  = word[nChars -1];
+								word[nChars-1] = '\0';
+								nChars--;
+							}
+		
+							word_buffer[nWords] = newword;
+							nWords ++;
+						}
+		
+					}
+		
+					if(nWords >0)
+					{
+						command_t new_command = (command_t)malloc(sizeof(command_t));
+						char **words = (char**) malloc (maxwords * sizeof(char*));
+						int k;
+						for(k =0; k<nWords;k++)
+						{
+							words[k] = word_buffer[k];
+							word_buffer[k] = NULL;
+						}
+						current_command= make_simple_command(new_command,words, input, output);
+						input = NULL;
+						output = NULL;
+						nWords =0;
+						//word_buffer = NULL:
+						// shoudl reset input, output to NULL here or inside make_simple_command
+					}
+					
+				}
+	
+				
 				current_type = PIPE_COMMAND;
 				command_t new_command = (command_t)malloc(sizeof(command_t));
 				command_t temp = make_complete_command(new_command,'|', current_command);
@@ -469,67 +565,6 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 				fprintf(stderr, "%d: invalid operator, ex) ;; , &&&, |||\n", lineNumber);
 				exit(1);
-			}
-			if(nChars>0)
-			{ 
-				if( has_input )
-				{	
-					if(nChars > wordsize)
-					{
-						wordsize = nChars;
-						input = (char*) realloc(input,wordsize);
-					}
-	
-					input = (char*) malloc(wordsize*sizeof(char));
-					 strcpy(input, word);
-	
-					while(nChars > 0) //delete word or set everything to ''
-					{
-						word[nChars-1] = '\0';
-						nChars--;
-					}
-					has_input = false;
-				}
-				else if (has_output)
-				{
-					if(nChars > wordsize)
-					{
-						wordsize = nChars;
-						output = (char*) realloc(output,wordsize);
-	
-					}
-					
-					 output = (char*) malloc(wordsize*sizeof(char));
-					 strcpy(output, word);
-					
-					
-					while(nChars > 0) //delete word
-					{
-						word[nChars-1] = '\0';
-						nChars--;
-					}
-					has_output = false;
-				}
-				else
-				{
-					if(nChars >0)
-					{
-					
-						char* newword = (char*)malloc(20*sizeof(char));
-	
-						while(nChars > 0) //delete word
-						{
-							newword[nChars-1]  = word[nChars -1];
-							word[nChars-1] = '\0';
-							nChars--;
-						}
-	
-						word_buffer[nWords] = newword;
-						nWords ++;
-						
-					}
-	
-				}
 			}
 			
 			if(curr == ';')
