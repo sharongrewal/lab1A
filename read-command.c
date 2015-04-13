@@ -1,5 +1,5 @@
 
-/ UCLA CS 111 LAB1a read-command.c
+// UCLA CS 111 LAB1a read-command.c
 #include "command.h"
 #include "command-internals.h"
 
