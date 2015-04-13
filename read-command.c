@@ -313,7 +313,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 				}
 				else
-				{printf("%d: stack >0, making a complete command\n",__LINE__);
+				{printf("%d: stack =0, making a complete command\n",__LINE__);
 					//don't need to combine, just put the simple command into a complete command
 					command_t new_command = (command_t)malloc(sizeof(command_t));
 					command_t temp = make_complete_command(new_command,curr, current_command);
@@ -388,7 +388,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			word[nChars] = curr;
 
 			nChars++;
-			printf("%d: curr :%c, char: %d\n",__LINE__,curr,nChars);
+			printf("%d: put curr to word  curr :%c, nChars: %d\n",__LINE__,curr,nChars);
 
 		}
 		else if( curr ==' ' && (is_valid (prev) || prev ==')'))
@@ -456,166 +456,163 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 
 		}
-		else if( curr== ';' ||  curr == '&' ||curr == '|' ||curr ==')')
+		else if( curr== ';' ||  (prev == '&&' &&curr == '&' )||(prev == '|' && curr == '|') ||curr ==')')
 		{
+			printf("%d: curr :%c, you met a operator, ex. second letter of && or first ; \n",__LINE__,curr);
 			if( (curr ==';' && prev ==';') || (curr =='&' && prev =='&' && prev_prev =='&')
 			                 || (curr =='|' && prev =='|' && prev_prev =='|')) 
 			{
 				// ;; , &&&, |||, invalid operators
 
-				fprintf(stderr, "%d: invalid operator\n", lineNumber);
+				fprintf(stderr, "%d: invalid operator, ex) ;; , &&&, |||\n", lineNumber);
 				exit(1);
 			}
-			if(prev == '\n')
+			if(prev == '\n' || (prev_prev =='\n' &&(curr == '&' ||curr =='|')))
 			{
 				//when newline starts with operators
 				fprintf(stderr, "%d: Cannot start a new line with operator\n", lineNumber);
 				exit(1);
 			}
-			if(( curr == ';') || (curr == '&' && prev == '&')||(curr == '|' && prev == '|')||(curr ==')'))
-			{
+
 				printf("%d: you met operator, need to make copmlete command\n",__LINE__);
-		
-				if(curr == ';')
-				{
-					current_type = SEQUENCE_COMMAND;
-					if(nWords == 0 && !was_subshell)
-					{
-						fprintf(stderr, "%d: No LHS\n", lineNumber);
-						exit(1);
-					}
-				}
-				else if(curr == '&' && prev == '&')
-				{printf("%d: you met AND COMMAND, nWords = %d\n",__LINE__,nWords);
-		
-					current_type = AND_COMMAND;
-					if(nWords == 0 && !was_subshell)
-					{
-						fprintf(stderr, "%d: No LHS\n", lineNumber);
-						exit(1);
-					}
-				}
-				else if(curr == '|' && prev == '|')
-				{
-					current_type = OR_COMMAND;
-					if(nWords == 0 && !was_subshell)
-					{
-						fprintf(stderr, "%d: No LHS\n", lineNumber);
-						exit(1);
-					}
-				}
-				else if (curr ==')')
-				{
-					current_type = SUBSHELL_COMMAND;
 	
-					if(nWords == 0  && !was_subshell)
-					{
-						fprintf(stderr, "%d: No LHS\n", lineNumber);
-						exit(1);
-					}
-				} 
-	
-				if( was_subshell && stack_size >0)
+			if(curr == ';')
+			{ printf("%d: you met SEQUENCE COMMAND, nWords = %d\n",__LINE__,nWords);
+				current_type = SEQUENCE_COMMAND;
+				if(nWords == 0 && !was_subshell)
 				{
-					//if just now was a sibshell. prev ==')'
-					current_command = command_stack [stack_size-1]; //contain subshell command
-					pop(command_stack, stack_size);
-					stack_size --;
-					was_subshell= false;
+					fprintf(stderr, "%d: No LHS\n", lineNumber);
+					exit(1);
+				}
+			}
+			else if(curr == '&' && prev == '&')
+			{printf("%d: you met AND COMMAND, nWords = %d\n",__LINE__,nWords);
+	
+				current_type = AND_COMMAND;
+				if(nWords == 0 && !was_subshell)
+				{
+					fprintf(stderr, "%d: No LHS\n", lineNumber);
+					exit(1);
+				}
+			}
+			else if(curr == '|' && prev == '|')
+			{printf("%d: you met OR COMMAND, nWords = %d\n",__LINE__,nWords);
+				current_type = OR_COMMAND;
+				if(nWords == 0 && !was_subshell)
+				{
+					fprintf(stderr, "%d: No LHS\n", lineNumber);
+					exit(1);
+				}
+			}
+			else if (curr ==')')
+			{printf("%d: END OF SUBSHELL nWords = %d\n",__LINE__,nWords);
+				current_type = SUBSHELL_COMMAND;
+
+				if(nWords == 0  && !was_subshell)
+				{
+					fprintf(stderr, "%d: No LHS\n", lineNumber);
+					exit(1);
+				}
+			} 
+
+			if( was_subshell && stack_size >0)
+			{
+				//if just now was a sibshell. prev ==')'
+				current_command = command_stack [stack_size-1]; //contain subshell command
+				pop(command_stack, stack_size);
+				stack_size --;
+				was_subshell= false;
+			}
+			else
+			{
+				// make simple command when you reached  '&&' '|' '||' ')'
+				// add everything in word buffer into simple command
+				//if there's input and output assign them too.
+				//copy last word to word_buffer
+
+				if( has_input )
+				{
+					if(nChars > wordsize)
+					{
+						wordsize = nChars;
+						input = (char*) realloc(input,wordsize);
+					}
+	
+					input = (char*) malloc(wordsize*sizeof(char));
+					 strcpy(input, word);
+	
+					while(nChars > 0) //delete word or set everything to ''
+					{
+						word[nChars-1] = '\0';
+						nChars--;
+					}
+					has_input = false;
+				}
+				else if (has_output)
+				{
+					if(nChars > wordsize)
+					{
+						wordsize = nChars;
+						output = (char*) realloc(output,wordsize);
+						//
+					}
+					
+					output = (char*) malloc(wordsize*sizeof(char));
+					strcpy(output, word);
+					
+					while(nChars > 0) //delete word
+					{
+						word[nChars-1] = '\0';
+						nChars--;
+					}
+					has_output = false;
 				}
 				else
 				{
-					// make simple command when you reached  '&&' '|' '||' ')'
-					// add everything in word buffer into simple command
-					//if there's input and output assign them too.
-					//copy last word to word_buffer
+					if(nChars >0)
+					{
+						//copy word to word_buffer
 	
-					if( has_input )
-					{
-						if(nChars > wordsize)
-						{
-							wordsize = nChars;
-							input = (char*) realloc(input,wordsize);
-						}
-		
-						input = (char*) malloc(wordsize*sizeof(char));
-						 strcpy(input, word);
-		
-						while(nChars > 0) //delete word or set everything to ''
-						{
-							word[nChars-1] = '\0';
-							nChars--;
-						}
-						has_input = false;
-					}
-					else if (has_output)
-					{
-						if(nChars > wordsize)
-						{
-							wordsize = nChars;
-							output = (char*) realloc(output,wordsize);
-							//
-						}
-						
-						output = (char*) malloc(wordsize*sizeof(char));
-						strcpy(output, word);
-						
+						//strcpy(word_buffer[nWords], word);
+						//strcpy (word_buffer[nWords],newword);
+						char* newword = (char*)malloc(20*sizeof(char));
+	
 						while(nChars > 0) //delete word
 						{
+							newword[nChars-1]  = word[nChars -1];
 							word[nChars-1] = '\0';
 							nChars--;
 						}
-						has_output = false;
+	
+						word_buffer[nWords] = newword;
+						nWords ++;
 					}
-					else
-					{
-						if(nChars >0)
-						{
-							//copy word to word_buffer
-		
-							//strcpy(word_buffer[nWords], word);
-							//strcpy (word_buffer[nWords],newword);
-							char* newword = (char*)malloc(20*sizeof(char));
-		
-							while(nChars > 0) //delete word
-							{
-								newword[nChars-1]  = word[nChars -1];
-								word[nChars-1] = '\0';
-								nChars--;
-							}
-		
-							word_buffer[nWords] = newword;
-							nWords ++;
-						}
-		
-					}
-		
-					if(nWords >0)
-					{printf("%d: nWords: %d, making a simple command\n",__LINE__, nWords);
-						command_t new_command = (command_t)malloc(sizeof(command_t));
-						char **words = (char**) malloc (maxwords * sizeof(char*));
-						int k;
-						for(k =0; k<nWords;k++)
-						{
-							words[k] = word_buffer[k];
-							word_buffer[k] = NULL;
-						}
-						current_command= make_simple_command(new_command,words, input, output);
-						input = NULL;
-						output = NULL;
-						nWords =0;
-						//word_buffer = NULL:
-						// shoudl reset input, output to NULL here or inside make_simple_command
-					}
-					
+	
 				}
 	
-	
-	
+				if(nWords >0)
+				{printf("%d: nWords: %d, making a simple command\n",__LINE__, nWords);
+					command_t new_command = (command_t)malloc(sizeof(command_t));
+					char **words = (char**) malloc (maxwords * sizeof(char*));
+					int k;
+					for(k =0; k<nWords;k++)
+					{
+						words[k] = word_buffer[k];
+						word_buffer[k] = NULL;
+					}
+					current_command= make_simple_command(new_command,words, input, output);
+					input = NULL;
+					output = NULL;
+					nWords =0;
+					//word_buffer = NULL:
+					// shoudl reset input, output to NULL here or inside make_simple_command
+				}
+				
 			}
+
 			
 			if(stack_size > 0)
-			{
+			{printf("%d: STACK size >0, combine complete commands stack size :%d\n",__LINE__,stack_size);
 				//combining LHS!!!
 					
 				while(stack_size >0 && (compare_operator(current_type, command_stack[stack_size-1]->type) <= 0))
@@ -638,7 +635,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 					was_subshell =true;
 				}
 				else 
-				{printf("%d: making a complete command\n",__LINE__);
+				{	printf("%d: making a complete command\n",__LINE__);
 					//if it's end of line, you won't need to start a new command
 					command_t new_command = (command_t)malloc(sizeof(command_t));
 					command_t temp = make_complete_command(new_command,curr, command_stack[stack_size-1]);
@@ -648,7 +645,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 			}
 			else
-			{printf("%d: stack size>0,making a complete command\n",__LINE__);
+			{printf("%d: stack size=0,making a complete command\n",__LINE__);
 				//don't need to combine, just put the simple command into a complete command
 				command_t new_command = (command_t)malloc(sizeof(command_t));
 				command_t temp = make_complete_command(new_command,curr, current_command);
