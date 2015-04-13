@@ -1132,6 +1132,10 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		{	printf("%d: head NULL, you are making the first command stream\n",__LINE__);
 			head = new_stream;
 			current_stream = new_stream;
+			if (head ->current_root_command ->type == AND_COMMAND)
+			{
+			printf("%d: root command of head commadn type is AND\n",__LINE__);
+			}
 
 		}
 		else
