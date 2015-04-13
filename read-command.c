@@ -213,12 +213,12 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	while (curr != EOF)
 	{
 		if (curr == '#' && (prev == ' ' || prev == '\n' || prev =='\t'))
-		{
+		{	printf("comment\n");
 			while(curr != '\n' && curr  != EOF)
-			{
+			{	printf("in while loop curr : %ccomment\n",c);
 				curr = read_char(get_next_byte, get_next_byte_argument);
 			}
-		
+		printf("curr : %c\n",c);
 		
 		}
 			
@@ -1054,6 +1054,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		}
 		else if (curr != ' ' && curr != '&' && curr != '|')
 		{
+			printf("curr : %c\n",c);
 			//anything invalid 
 			//it's here just in case.. something is missing
 			fprintf(stderr, "%d: Invalid Syntax\n", lineNumber);
