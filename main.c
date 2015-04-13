@@ -51,17 +51,15 @@ main (int argc, char **argv)
 
   command_stream_t command_stream =
     make_command_stream (get_next_byte, script_stream);
-	printf("%d: MAIN FUNCTION, make_cmd stream read ",__LINE__);
   command_t last_command = NULL;
   command_t command;
 
   while ((command = read_command_stream (command_stream)))
-    {printf("%d: MAIN FUNCTION ",__LINE__);
+    {
 
       if (print_tree)
 	{
 	  printf ("# %d\n", command_number++);
-
 	  print_command (command);
 
 	}
