@@ -214,7 +214,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			{
 				curr = read_char(get_next_byte, get_next_byte_argument);
 			}
-			printf("%d: just got out of the loop for comments, curr: %c, prev:%c, prev_prev:%c\n",__LINE__, curr, prev, prev_prev);;
+		printf("%d: just got out of the loop for comments, curr: %c, prev:%c, prev_prev:%c\n",__LINE__, curr, prev, prev_prev);;
 		
 		}
 			
@@ -456,7 +456,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 
 		}
-		else if( curr== ';' ||  (prev == '&&' &&curr == '&' )||(prev == '|' && curr == '|') ||curr ==')')
+		else if( curr== ';' ||  (prev == '&' &&curr == '&' )||(prev == '|' && curr == '|') ||curr ==')')
 		{
 			printf("%d: curr :%c, you met a operator, ex. second letter of && or first ; \n",__LINE__,curr);
 			if( (curr ==';' && prev ==';') || (curr =='&' && prev =='&' && prev_prev =='&')
