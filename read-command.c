@@ -1114,7 +1114,16 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			current_command = command_stack [stack_size-1]; //contain subshell command				pop(command_stack, stack_size);
 			stack_size --;
 		}
-		//new command stream (new line)
+		
+		if(current_command->type == SIMPLE_COMMAND)
+		{
+			printf("%d: just made completed commadn but current commadn type is simple\n",__LINE__);
+		}
+		else if (current_command ->type == AND_COMMAND)
+		{
+			printf("%d: just made complex command, current commadn type is AND\n",__LINE__);
+		}
+		//new command stream (EOF)
 		command_stream_t new_stream = (command_stream_t)malloc(sizeof(struct command_stream));
 		new_stream->current_root_command =current_command;
 		new_stream ->next_command_stream = NULL;
