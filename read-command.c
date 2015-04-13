@@ -218,7 +218,8 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 		}
 			
 		if(is_valid (curr))
-		{ 
+		{ 	
+			
 			if(prev_prev =='\n' && prev =='\n')
 			{	
 		
@@ -322,11 +323,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 			else if(is_valid(prev_prev) && prev =='|')
 			{
 			// did you make a simple command yet??
-				if(prev_prev =='\n')
-				{
-					fprintf(stderr, "%d: cannot start a new line with '|'\n", lineNumber);
-					exit(1);
-				}
+			
 				// A \n B == A ; B
 				// A must be already in simple_command when the program reached '\n'
 				current_type = PIPE_COMMAND;
@@ -391,6 +388,14 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 			nChars++;
 		
+		}
+		else if (!is_valid(curr)&& curr != ' ' &&  curr != '\n' && curr != '\t' && curr !='(')
+		{
+			if(prev =='\n')
+			{
+					fprintf(stderr, "%d: cannot start a new line with a operator \n", lineNumber);
+					exit(1);
+			}
 		}
 		else if( curr ==' ' && (is_valid (prev) || prev ==')'))
 		{
@@ -466,12 +471,6 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				// ;; , &&&, |||, invalid operators
 
 				fprintf(stderr, "%d: invalid operator, ex) ;; , &&&, |||\n", lineNumber);
-				exit(1);
-			}
-			if(prev == '\n' || (prev_prev =='\n' &&(curr == '&' ||curr =='|')))
-			{
-				//when newline starts with operators
-				fprintf(stderr, "%d: Cannot start a new line with operator\n", lineNumber);
 				exit(1);
 			}
 			if(nChars>0)
