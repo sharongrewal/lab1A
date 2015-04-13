@@ -474,7 +474,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				exit(1);
 			}
 			if(nChars>0)
-			{ printf("%d: your nChars>0 need to put that in word buffer and make simple command, nChars: %d, nWords:%d \n",__LINE__,curr, nChars, nWords);
+			{ printf("%d: your nChars>0 need to put that in word buffer and make simple command, nChars: %d, nWords:%d \n",__LINE__, nChars, nWords);
 				if( has_input )
 				{printf("%d: has input\n",__LINE__);
 					if(nChars > wordsize)
@@ -1165,7 +1165,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 	if(head->current_root_command ->u.command[0]->type == SIMPLE_COMMAND)
 	{
 		printf("%d:u.command[0] of root command is simple \n",__LINE__);
-		printf("%s",head->current_root_command ->u.command[0]->u.word[0])
+		printf("%s",head->current_root_command ->u.command[0]->u.word[0]);
 	}
 	return head;
 
