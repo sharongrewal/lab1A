@@ -195,12 +195,13 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 
 	//struct command * current_command = (struct command *) malloc (sizeof(struct command));
 	command_t current_command = NULL;
+	int max_stack_size = 501;
+	
 	command_t* cstack = (command_t*)malloc (sizeof(command_t)*max_stack_size);
 	int cstack_size=0;
 	int cstack_p;
 	//stack
 	int stack_size = 0;
-	int max_stack_size = 501;
 	command_t* command_stack = (command_t*)malloc(sizeof(command_t)*max_stack_size);
 
 	if((stack_size +1) == max_stack_size)
@@ -276,7 +277,7 @@ command_stream_t make_command_stream (int (*get_next_byte) (void *), void *get_n
 				stack_size ++;
 				cstack[cstack_size]=command_stack [stack_size-1]; //contain subshell command
 				cstack_size ++;
-				cstack_p++
+				cstack_p++;
 				pop(command_stack, stack_size);
 				stack_size --;
 				
